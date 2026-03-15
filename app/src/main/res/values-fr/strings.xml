@@ -103,7 +103,7 @@
     <string name="about_range_normal">0 - 299 ppm</string>
     <string name="about_range_warning">300 - 799 ppm</string>
     <string name="about_range_danger">800+ ppm</string>
-    <string name="about_source">Source: https://github.com/traitimtrongvag/gas-leak-detector</string>
+    <string name="about_source">Source: https://github.com/gasleakdetector/gasleakdetector</string>
     <string name="about_copyright">© 2026 Gas Leak Detector\nTous droits réservés</string>
     <string name="notif_channel_foreground_name">Gas Leak Detector</string>
     <string name="notif_channel_foreground_desc">Fonctionne en arrière-plan</string>
