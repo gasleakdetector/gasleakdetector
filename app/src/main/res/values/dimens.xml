@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Toolbar and touch targets -->
+    <dimen name="toolbar_button_size">48dp</dimen>
+    <dimen name="toolbar_button_padding">12dp</dimen>
+
+    <!-- Gauge -->
+    <dimen name="gauge_size">280dp</dimen>
+
+    <!-- Menu drawer -->
+    <dimen name="menu_panel_width">260dp</dimen>
+    <dimen name="menu_item_height">56dp</dimen>
+    <dimen name="menu_item_padding_horizontal">16dp</dimen>
+    <dimen name="menu_header_padding">20dp</dimen>
+
+    <!-- Common spacing -->
+    <dimen name="chart_padding">16dp</dimen>
+    <dimen name="section_padding_top">32dp</dimen>
+    <dimen name="section_padding_bottom">16dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="text_title">24sp</dimen>
+    <dimen name="text_reading_large">80sp</dimen>
+    <dimen name="text_status">20sp</dimen>
+    <dimen name="text_hint">14sp</dimen>
+    <dimen name="text_toolbar_title">18sp</dimen>
+    <dimen name="text_menu_item">16sp</dimen>
+</resources>

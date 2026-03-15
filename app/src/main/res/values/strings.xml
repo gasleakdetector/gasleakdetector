@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gas Leak Detector</string>
+    <string name="toolbar_title">Gas Leak Detector</string>
+    <string name="menu_content_description">Menu</string>
+    <string name="back_content_description">Back</string>
+    <string name="play_content_description">Start monitoring</string>
+    <string name="stop_content_description">Stop monitoring</string>
+    <string name="edit_content_description">Edit configuration</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_statistics">Statistics</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+    <string name="menu_reset_data">Reset Data</string>
+    <string name="current_reading">Current Reading</string>
+    <string name="status_prefix">Status: </string>
+    <string name="status_placeholder">--</string>
+    <string name="status_full_placeholder">Status: --</string>
+    <string name="status_normal">Normal</string>
+    <string name="status_warning">Warning</string>
+    <string name="status_danger">Danger</string>
+    <string name="status_unknown">Unknown</string>
+    <string name="tap_chart_hint">Tap on chart to view details</string>
+    <string name="statistics_title">Statistics</string>
+    <string name="statistics_coming_soon">Coming soon\u2026</string>
+    <string name="no_cached_data">No cached data. Waiting for network\u2026</string>
+    <string name="cache_empty">Cache is empty</string>
+    <string name="from_cache"> (from cache)</string>
+    <string name="offline_mode"> (offline mode)</string>
+    <string name="configure_api_prompt">Please configure API settings to view historical data</string>
+    <string name="loading_data">Loading data\u2026</string>
+    <string name="loading_historical">Loading historical data from server\u2026</string>
+    <string name="no_historical_data">No historical data available yet</string>
+    <string name="loaded_data_points">Loaded %1$d data points from server</string>
+    <string name="network_error_cache">Network error. Using cached data.</string>
+    <string name="failed_load_data">Failed to load historical data: %1$s</string>
+    <string name="value_at_time">Value: %1$d ppm at %2$s</string>
+    <string name="date_format">dd MMM yyyy, HH:mm:ss</string>
+    <string name="msg_normal">Gas level is normal</string>
+    <string name="msg_warning">Gas level is high: %1$d ppm</string>
+    <string name="msg_danger">Danger! Gas leak detected: %1$d ppm</string>
+    <string name="msg_unknown">Unknown status</string>
+    <string name="config_saved">Configuration saved</string>
+    <string name="config_required">Please configure API settings first</string>
+    <string name="connected">Connected to realtime stream</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="error_prefix">Error: %1$s</string>
+
+    <!-- Config dialog -->
+    <string name="dialog_config_title">Realtime Configuration</string>
+    <string name="hint_api_url">API URL *</string>
+    <string name="hint_api_key">API Key *</string>
+    <string name="hint_device_id">Device ID (optional)</string>
+    <string name="btn_save">Save</string>
+    <string name="error_api_url_required">API URL is required</string>
+    <string name="error_api_key_required">API Key is required</string>
+
+    <!-- Dialogs -->
+    <string name="reset_data_title">Reset Data</string>
+    <string name="reset_data_message">Are you sure you want to reset all data?\n\nThis will clear the cache and reload history from the server.</string>
+    <string name="btn_reset">Reset</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_clear">Clear</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="section_notifications">Notifications</string>
+    <string name="label_enable_alerts">Enable Alerts</string>
+    <string name="desc_enable_alerts">Show notifications when gas levels are abnormal</string>
+    <string name="section_data">Data</string>
+    <string name="label_auto_refresh">Auto-refresh Chart</string>
+    <string name="desc_auto_refresh">Automatically refresh chart when receiving new data</string>
+    <string name="label_auto_stream">Auto Enable Realtime Stream</string>
+    <string name="desc_auto_stream">Automatically start realtime stream when app launches or after saving config</string>
+    <string name="label_keep_running">Keep App Running</string>
+    <string name="desc_keep_running">Keep screen on and prevent app from sleeping (uses more battery)</string>
+    <string name="section_display">Display</string>
+    <string name="label_language">Language</string>
+    <string name="section_advanced">Advanced</string>
+    <string name="label_clear_cache">Clear Cache</string>
+    <string name="desc_clear_cache">Clear all cached data and historical records</string>
+    <string name="label_reset_defaults">Reset to Defaults</string>
+    <string name="desc_reset_defaults">Reset all settings to their default values</string>
+    <string name="chevron">&#8250;</string>
+    <string name="toast_notifications_enabled">Notifications enabled</string>
+    <string name="toast_notifications_disabled">Notifications disabled</string>
+    <string name="toast_auto_refresh_enabled">Auto-refresh enabled</string>
+    <string name="toast_auto_refresh_disabled">Auto-refresh disabled</string>
+    <string name="toast_auto_stream_enabled">Auto stream enabled</string>
+    <string name="toast_auto_stream_disabled">Auto stream disabled</string>
+    <string name="toast_keep_running_enabled">Keep app running enabled</string>
+    <string name="toast_keep_running_disabled">Keep app running disabled</string>
+    <string name="toast_settings_reset">Settings reset to defaults</string>
+    <string name="clear_cache_title">Clear Cache</string>
+    <string name="clear_cache_message">This will clear all cached data and historical records.\n\n%1$s\n\nContinue?</string>
+    <string name="reset_defaults_title">Reset to Defaults</string>
+    <string name="reset_defaults_message">This will reset all settings to their default values.\n\nContinue?</string>
+
+    <!-- About screen -->
+    <string name="about_title">About</string>
+    <string name="about_version">Version 1.0</string>
+    <string name="about_section_about">About</string>
+    <string name="about_description">Gas Leak Detector is an open-source gas leak monitoring app developed by 11a9. Uses ESP8266 and MQ-6.</string>
+    <string name="about_section_features">Features</string>
+    <string name="about_features">&#8226; Monitor gas concentration in real time\n&#8226; Display charts and measurement history\n&#8226; Data visualization\n&#8226; Leak notifications via email and app.</string>
+    <string name="about_section_safety">Safety Levels</string>
+    <string name="about_level_normal">Normal</string>
+    <string name="about_level_warning">Warning</string>
+    <string name="about_level_danger">Danger</string>
+    <string name="about_range_normal">0 - 299 ppm</string>
+    <string name="about_range_warning">300 - 799 ppm</string>
+    <string name="about_range_danger">800+ ppm</string>
+    <string name="about_source">Source: https://github.com/traitimtrongvag/gas-leak-detector</string>
+    <string name="about_copyright">&#169; 2026 Gas Leak Detector\nAll rights reserved</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_foreground_name">Gas Leak Detector</string>
+    <string name="notif_channel_foreground_desc">Running in background</string>
+    <string name="notif_foreground_title">Gas Leak Detector</string>
+    <string name="notif_foreground_text">Monitoring in background</string>
+    <string name="notif_action_exit">Exit</string>
+    <string name="notif_channel_alert_name">Gas Alerts</string>
+    <string name="notif_channel_alert_desc">Critical gas leak alerts</string>
+    <string name="notif_channel_status_name">Status Updates</string>
+    <string name="notif_channel_status_desc">Gas monitoring status</string>
+    <string name="notif_danger_title">Gas Leak Detected!</string>
+    <string name="notif_warning_title">Gas Warning</string>
+    <string name="notif_status_title">Gas Monitor Status</string>
+    <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
+    <string name="chart_empty_message">Waiting for data\u2026</string>
+
+    <!-- Statistics fragment -->
+    <string name="stat_loading">Loading\u2026</string>
+    <string name="stat_loading_nodes">Loading %1$d nodes\u2026</string>
+    <string name="stat_no_data">No data for range %1$s</string>
+    <string name="stat_error">Error: %1$s</string>
+    <string name="stat_config_missing">API not configured. Go to Settings to add your API details.</string>
+    <string name="stat_avg">Avg: %.1f PPM</string>
+    <string name="stat_min">Min: %.0f PPM</string>
+    <string name="stat_max">Max: %.0f PPM</string>
+    <string name="stat_nodes">Nodes: %1$d</string>
+</resources>

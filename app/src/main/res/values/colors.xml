@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#4CAF50</color>
+
+    <!-- Gas level status colors — used by text, gauge, and notifications -->
+    <color name="statusNormal">#4CAF50</color>
+    <color name="statusWarning">#FFC107</color>
+    <color name="statusDanger">#F44336</color>
+
+    <!-- Background surfaces -->
+    <color name="backgroundLight">#FFFFFF</color>
+    <color name="backgroundDark">#303030</color>
+    <color name="surfaceLight">#F5F5F5</color>
+    <color name="surfaceDark">#424242</color>
+
+    <!-- Text on backgrounds -->
+    <color name="onBackgroundLight">#000000</color>
+    <color name="onBackgroundDark">#FFFFFF</color>
+
+    <!-- Dividers and overlays -->
+    <color name="divider">#424242</color>
+    <color name="overlayLight">#99000000</color>
+    <color name="overlayDark">#CC000000</color>
+
+    <!-- Menu drawer active/inactive states -->
+    <color name="menuActiveBackground">#1A4CAF50</color>
+    <color name="menuInactiveText">#CCFFFFFF</color>
+</resources>

@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/backgroundDark">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_menu"
+                    android:layout_width="@dimen/toolbar_button_size"
+                    android:layout_height="@dimen/toolbar_button_size"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_menu"
+                    android:padding="@dimen/toolbar_button_padding"
+                    android:contentDescription="@string/menu_content_description"/>
+
+                <TextView
+                    android:id="@+id/toolbarTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/toolbar_title"
+                    android:textColor="@color/onBackgroundDark"
+                    android:textSize="@dimen/text_toolbar_title"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
+
+                <ImageButton
+                    android:id="@+id/btn_play"
+                    android:layout_width="@dimen/toolbar_button_size"
+                    android:layout_height="@dimen/toolbar_button_size"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_play"
+                    android:contentDescription="@string/play_content_description"
+                    android:padding="@dimen/toolbar_button_padding"
+                    android:scaleType="fitCenter"/>
+
+                <ImageButton
+                    android:id="@+id/btn_edit"
+                    android:layout_width="@dimen/toolbar_button_size"
+                    android:layout_height="@dimen/toolbar_button_size"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_edit"
+                    android:contentDescription="@string/edit_content_description"
+                    android:padding="@dimen/toolbar_button_padding"
+                    android:scaleType="fitCenter"/>
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <LinearLayout
+            android:id="@+id/homePanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/current_reading"
+                android:textSize="@dimen/text_title"
+                android:textColor="@color/onBackgroundDark"
+                android:gravity="center"
+                android:paddingTop="@dimen/section_padding_top"
+                android:paddingBottom="@dimen/section_padding_bottom"/>
+
+            <FrameLayout
+                android:id="@+id/gaugeSection"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:padding="@dimen/card_padding">
+
+                <com.gasleak.ui.widget.CircularGaugeView
+                    android:id="@+id/gaugeView"
+                    android:layout_width="@dimen/gauge_size"
+                    android:layout_height="@dimen/gauge_size"
+                    android:layout_gravity="center_horizontal"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/gasLevelText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_placeholder"
+                        android:textSize="@dimen/text_reading_large"
+                        android:textColor="@color/onBackgroundDark"
+                        android:fontFamily="sans-serif-light"/>
+
+                    <TextView
+                        android:id="@+id/gasStatusText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/status_full_placeholder"
+                        android:textSize="@dimen/text_status"
+                        android:textColor="@color/statusNormal"
+                        android:layout_marginTop="8dp"/>
+                </LinearLayout>
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <com.gasleak.ui.widget.ChartView
+                    android:id="@+id/chartView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/chart_padding"/>
+
+                <!-- Thin divider above the chart area -->
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider"
+                    android:layout_marginLeft="@dimen/chart_padding"
+                    android:layout_marginRight="@dimen/chart_padding"
+                    android:layout_alignParentTop="true"/>
+
+                <FrameLayout
+                    android:id="@+id/chartLoadingOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/overlayDark"
+                    android:visibility="gone"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/chart_padding">
+
+                <TextView
+                    android:id="@+id/nodeInfoText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tap_chart_hint"
+                    android:textSize="@dimen/text_hint"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.7"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/statisticsPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics_title"
+                android:textSize="@dimen/text_title"
+                android:textColor="@color/onBackgroundDark"
+                android:textStyle="bold"
+                android:paddingBottom="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics_coming_soon"
+                android:textSize="@dimen/text_hint"
+                android:textColor="@color/onBackgroundDark"
+                android:alpha="0.5"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fullscreenLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlayLight"
+        android:visibility="gone"
+        android:clickable="true">
+
+        <ProgressBar
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/colorPrimary"/>
+    </FrameLayout>
+
+    <View
+        android:id="@+id/menuOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/overlayLight"
+        android:visibility="gone"
+        android:clickable="true"/>
+
+    <!-- Positioned off-screen left; actual offset is set in setupDrawer() once the width is known. -->
+    <LinearLayout
+        android:id="@+id/menuPanel"
+        android:layout_width="@dimen/menu_panel_width"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/surfaceDark"
+        android:elevation="8dp"
+        android:translationX="-800dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="@dimen/text_menu_item"
+            android:textColor="@color/onBackgroundDark"
+            android:textStyle="bold"
+            android:padding="@dimen/menu_header_padding"
+            android:background="?attr/colorPrimary"/>
+
+        <LinearLayout
+            android:id="@+id/menuItemHome"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/menu_item_height"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/menu_item_padding_horizontal"
+            android:paddingRight="@dimen/menu_item_padding_horizontal"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/menuHomeIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_home"/>
+
+            <TextView
+                android:id="@+id/menuHomeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_home"
+                android:textSize="@dimen/text_menu_item"
+                android:textStyle="bold"
+                android:textColor="@color/onBackgroundDark"
+                android:layout_marginLeft="@dimen/menu_item_padding_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/menuItemStatistics"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/menu_item_height"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/menu_item_padding_horizontal"
+            android:paddingRight="@dimen/menu_item_padding_horizontal"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:id="@+id/menuStatisticsIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_statistics"/>
+
+            <TextView
+                android:id="@+id/menuStatisticsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nav_statistics"
+                android:textSize="@dimen/text_menu_item"
+                android:textColor="@color/onBackgroundDark"
+                android:layout_marginLeft="@dimen/menu_item_padding_horizontal"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

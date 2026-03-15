@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black">
+
+    <!-- Range selector bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="#1A1A1A">
+
+        <Button
+            android:id="@+id/btn_range_1h"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="1H"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"/>
+
+        <Button
+            android:id="@+id/btn_range_6h"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="6H"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"/>
+
+        <Button
+            android:id="@+id/btn_range_1d"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="1D"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"/>
+
+        <Button
+            android:id="@+id/btn_range_7d"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="7D"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"/>
+
+        <Button
+            android:id="@+id/btn_range_30d"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="30D"
+            android:textSize="12sp"
+            android:textColor="#4CAF50"/>
+
+    </LinearLayout>
+
+    <!-- Stats row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="#111111">
+
+        <TextView
+            android:id="@+id/tv_avg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Avg: --"
+            android:textSize="11sp"
+            android:textColor="#CCFFFFFF"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_min"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Min: --"
+            android:textSize="11sp"
+            android:textColor="#CCFFFFFF"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_max"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Max: --"
+            android:textSize="11sp"
+            android:textColor="#CCFFFFFF"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_samples"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Samples: --"
+            android:textSize="11sp"
+            android:textColor="#CCFFFFFF"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <!-- Chart + loading overlay -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.gasleak.ui.widget.ChartView
+            android:id="@+id/chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <FrameLayout
+            android:id="@+id/loading_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#AA000000"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Loading..."
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"/>
+
+        </FrameLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

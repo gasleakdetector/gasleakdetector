@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuSettings"
+        android:title="@string/menu_settings"
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menuAbout"
+        android:title="@string/menu_about"
+        android:icon="@drawable/ic_about"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menuReset"
+        android:title="@string/menu_reset_data"
+        android:icon="@drawable/ic_reset"
+        app:showAsAction="never"/>
+</menu>

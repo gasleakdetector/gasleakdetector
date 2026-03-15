@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="gaugeView" type="id"/>
+    <item name="chartView" type="id"/>
+    <item name="gasLevelText" type="id"/>
+    <item name="gasStatusText" type="id"/>
+    <item name="nodeInfoText" type="id"/>
+    <item name="logText" type="id"/>
+    <item name="logScroll" type="id"/>
+    <item name="themeSwitch" type="id"/>
+    <item name="menuSettings" type="id"/>
+    <item name="menuAbout" type="id"/>
+    <item name="menuReset" type="id"/>
+    <item name="drawerLayout" type="id"/>
+    <item name="navigationView" type="id"/>
+    <item name="fragmentContainer" type="id"/>
+    <item name="btn_menu" type="id"/>
+    <item name="nav_home" type="id"/>
+    <item name="nav_statistics" type="id"/>
+    <item name="menuPanel" type="id"/>
+    <item name="menuOverlay" type="id"/>
+    <item name="menuItemHome" type="id"/>
+    <item name="menuItemStatistics" type="id"/>
+    <item name="mainContent" type="id"/>
+</resources>
