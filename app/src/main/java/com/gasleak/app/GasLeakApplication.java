@@ -30,7 +30,7 @@ public class GasLeakApplication extends Application {
     public List<HistoricalDataPoint> getCachedNodes() { return cachedDataPoints; }
 
     public void setCachedNodes(List<HistoricalDataPoint> points) {
-        cachedDataPoints = points != null ? points : new ArrayList<>();
+        cachedDataPoints = points != null ? points : new ArrayList<HistoricalDataPoint>();
     }
 
     public boolean hasInMemoryData() { return !cachedDataPoints.isEmpty(); }
