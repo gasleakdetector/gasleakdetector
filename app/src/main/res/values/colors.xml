@@ -27,4 +27,12 @@
     <!-- Menu drawer active/inactive states -->
     <color name="menuActiveBackground">#1A4CAF50</color>
     <color name="menuInactiveText">#CCFFFFFF</color>
+
+    <!-- Text colors (overridden in values-night) -->
+    <color name="textPrimary">#000000</color>
+    <color name="textSecondary">#757575</color>
+
+    <!-- Surface backgrounds (overridden in values-night) -->
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="cardBackground">#F5F5F5</color>
 </resources>
