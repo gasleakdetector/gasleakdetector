@@ -5,7 +5,7 @@
  * Project : Gas Leak Detector
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
- * GitHub  : https://github.com/traitimtrongvag/gasleakdetector-app
+ * GitHub  : https://github.com/gasleakdetector/gasleakdetector
  * Modified: 2026-03-15
  */
 package com.gasleak.notification;
