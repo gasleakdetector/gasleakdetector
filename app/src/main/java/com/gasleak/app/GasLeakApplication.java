@@ -15,6 +15,7 @@ import android.content.Context;
 import com.gasleak.data.model.HistoricalDataPoint;
 import com.gasleak.data.prefs.SharedPrefs;
 import com.gasleak.notification.NotificationChannelManager;
+import com.gasleak.util.CrashHandler;
 import com.gasleak.util.LocaleHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class GasLeakApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        CrashHandler.init(this);
         try {
             NotificationChannelManager.createChannels(this);
         } catch (Throwable t) {

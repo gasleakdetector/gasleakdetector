@@ -33,6 +33,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.gasleak.R;
 import com.gasleak.app.GasLeakApplication;
@@ -143,6 +146,7 @@ public class MainActivity extends AppCompatActivity
         setupKeepAppRunning();
         setupDrawer();
         updatePlayButton();
+        requestNotificationPermission();
 
         AppForegroundService.start(this);
 
@@ -166,6 +170,19 @@ public class MainActivity extends AppCompatActivity
             mainHandler.postDelayed(new Runnable() {
                 @Override public void run() { if (!isMonitoring) startMonitoring(); }
             }, 1000);
+        }
+    }
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
+                    1
+                );
+            }
         }
     }
 
