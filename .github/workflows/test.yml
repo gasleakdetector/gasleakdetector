@@ -21,6 +21,12 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
+      - name: Download gradle-wrapper.jar
+        run: |
+          mkdir -p gradle/wrapper
+          curl -sL "https://github.com/gradle/gradle/raw/v6.7.1/gradle/wrapper/gradle-wrapper.jar" \
+            -o gradle/wrapper/gradle-wrapper.jar
+
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest --no-daemon
 
