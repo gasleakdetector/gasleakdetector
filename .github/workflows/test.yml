@@ -24,7 +24,7 @@ jobs:
       - name: Download gradle-wrapper.jar
         run: |
           mkdir -p gradle/wrapper
-          curl -sL "https://github.com/gradle/gradle/raw/v6.7.1/gradle/wrapper/gradle-wrapper.jar" \
+          curl -sL "https://github.com/gradle/gradle/raw/v7.5/gradle/wrapper/gradle-wrapper.jar" \
             -o gradle/wrapper/gradle-wrapper.jar
 
       - name: Run unit tests
