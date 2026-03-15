@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 33
+    buildToolsVersion "33.0.2"
 
     defaultConfig {
         applicationId "com.gasleak"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
     }
@@ -20,6 +20,10 @@ android {
             storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
             keyAlias      System.getenv("KEY_ALIAS")         ?: ""
             keyPassword   System.getenv("KEY_PASSWORD")      ?: ""
+            // V1 (JAR) + V2 (APK) + V3 (APK, Android 9+)
+            v1SigningEnabled true
+            v2SigningEnabled true
+            v3SigningEnabled true
         }
     }
 
