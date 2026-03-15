@@ -93,24 +93,25 @@ public class HistoricalDataPointTest {
     @Test
     public void getTimestamp_withIsoDateAndZOffset_parsesCorrectly() {
         HistoricalDataPoint p = new HistoricalDataPoint();
-        // 2026-01-01T00:00:00Z = 1735689600000 ms
+        // 2026-01-01T00:00:00Z = 1767225600000 ms
         p.setCreatedAt("2026-01-01T00:00:00Z");
-        assertEquals(1735689600000L, p.getTimestamp());
+        assertEquals(1767225600000L, p.getTimestamp());
     }
 
     @Test
     public void getTimestamp_withColonOffset_parsesCorrectly() {
         HistoricalDataPoint p = new HistoricalDataPoint();
-        // +07:00 offset → UTC = 2026-01-01T00:00:00 - 7h
+        // 2026-01-01T07:00:00+07:00 → UTC midnight = 1767225600000 ms
         p.setCreatedAt("2026-01-01T07:00:00+07:00");
-        assertEquals(1735689600000L, p.getTimestamp());
+        assertEquals(1767225600000L, p.getTimestamp());
     }
 
     @Test
     public void getTimestamp_withDateOnly_parsesCorrectly() {
         HistoricalDataPoint p = new HistoricalDataPoint();
+        // 2026-01-01 (date-only parsed as UTC midnight)
         p.setCreatedAt("2026-01-01");
-        assertEquals(1735689600000L, p.getTimestamp());
+        assertEquals(1767225600000L, p.getTimestamp());
     }
 
     @Test
@@ -118,7 +119,7 @@ public class HistoricalDataPointTest {
         HistoricalDataPoint p = new HistoricalDataPoint();
         p.setCreatedAt("2026-01-01T00:00:00Z");
         p.setBucket("2026-02-01T00:00:00Z");
-        // bucket is set → getTimestamp() uses bucket
-        assertEquals(1738368000000L, p.getTimestamp());
+        // bucket is set → getTimestamp() uses bucket = 1769904000000 ms
+        assertEquals(1769904000000L, p.getTimestamp());
     }
 }
