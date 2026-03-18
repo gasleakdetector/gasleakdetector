@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-15
+ * Modified: 2026-03-17
  */
 package com.gasleak.ui.main;
 
@@ -425,9 +425,13 @@ public class MainActivity extends AppCompatActivity
         RealtimeConfig currentConfig = sharedPrefs.getRealtimeConfig();
         new ConfigDialog(this, currentConfig, new ConfigDialog.OnConfigSavedListener() {
             @Override
-            public void onConfigSaved(RealtimeConfig config) {
-                sharedPrefs.saveRealtimeConfig(config);
+            public void onConfigSaved(RealtimeConfig newConfig) {
+                boolean configChanged = !newConfig.hasSameParams(currentConfig);
+                sharedPrefs.saveRealtimeConfig(newConfig);
                 Toast.makeText(MainActivity.this, getString(R.string.config_saved), Toast.LENGTH_SHORT).show();
+
+                if (!configChanged) return;
+
                 app.setHistoricalDataLoaded(false);
                 app.setCachedNodes(null);
                 chartView.clearData();
