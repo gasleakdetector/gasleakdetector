@@ -34,7 +34,7 @@
     <string name="loaded_data_points">已从服务器加载 %1$d 个数据点</string>
     <string name="network_error_cache">网络错误，使用缓存数据。</string>
     <string name="failed_load_data">加载历史数据失败: %1$s</string>
-    <string name="value_at_time">数值: %1$d ppm 于 %2$s</string>
+    <string name="value_at_time">数值: %1$d ppm 于 %2$s (%3$s)</string>
     <string name="date_format">yyyy年MM月dd日 HH:mm:ss</string>
     <string name="msg_normal">气体浓度正常</string>
     <string name="msg_warning">气体浓度偏高: %1$d ppm</string>
