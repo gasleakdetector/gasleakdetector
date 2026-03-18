@@ -34,7 +34,7 @@
     <string name="loaded_data_points">サーバーから%1$d件のデータを読み込みました</string>
     <string name="network_error_cache">ネットワークエラー。キャッシュデータを使用中。</string>
     <string name="failed_load_data">履歴データの読み込みに失敗: %1$s</string>
-    <string name="value_at_time">値: %1$d ppm (%2$s)</string>
+    <string name="value_at_time">値: %1$d ppm (%2$s) (%3$s)</string>
     <string name="date_format">yyyy年MM月dd日 HH:mm:ss</string>
     <string name="msg_normal">ガス濃度は正常です</string>
     <string name="msg_warning">ガス濃度が高いです: %1$d ppm</string>
