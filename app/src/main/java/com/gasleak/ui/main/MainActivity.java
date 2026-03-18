@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity
         HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
         updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
         SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp()))));
+        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), getActiveDeviceId()));
     }
 
     @Override
@@ -525,7 +525,7 @@ public class MainActivity extends AppCompatActivity
                 if (!isNodeLocked) {
                     updateUIAnimated(createStatusFromValue(gasPpm, newPoint.getTimestamp()));
                     SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp()))));
+                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), getActiveDeviceId()));
                 }
 
                 /* Send an alert notification when gas level is above normal. */
@@ -574,7 +574,7 @@ public class MainActivity extends AppCompatActivity
             isNodeLocked      = true;
             selectedNodeIndex = index;
             SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-            nodeInfoText.setText(getString(R.string.value_at_time, value, fmt.format(new Date(timestamp))));
+            nodeInfoText.setText(getString(R.string.value_at_time, value, fmt.format(new Date(timestamp)), getActiveDeviceId()));
             updateUIAnimated(createStatusFromValue(value, timestamp));
         }
     }
@@ -586,6 +586,13 @@ public class MainActivity extends AppCompatActivity
             selectedNodeIndex = -1;
             updateToLatestNode();
         }
+    }
+
+    private String getActiveDeviceId() {
+        RealtimeConfig config = sharedPrefs.getRealtimeConfig();
+        if (config == null) return "";
+        String deviceId = config.getDeviceId();
+        return (deviceId != null && !deviceId.isEmpty()) ? deviceId : "";
     }
 
     private GasStatus createStatusFromValue(int value, long timestamp) {
