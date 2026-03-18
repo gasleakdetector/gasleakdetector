@@ -34,7 +34,7 @@
     <string name="loaded_data_points">%1$d puntos de datos cargados del servidor</string>
     <string name="network_error_cache">Error de red. Usando datos en caché.</string>
     <string name="failed_load_data">Error al cargar datos históricos: %1$s</string>
-    <string name="value_at_time">Valor: %1$d ppm en %2$s</string>
+    <string name="value_at_time">Valor: %1$d ppm en %2$s (%3$s)</string>
     <string name="date_format">dd MMM yyyy, HH:mm:ss</string>
     <string name="msg_normal">El nivel de gas es normal</string>
     <string name="msg_warning">Nivel de gas elevado: %1$d ppm</string>
