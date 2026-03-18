@@ -34,7 +34,7 @@
     <string name="loaded_data_points">Đã tải %1$d điểm dữ liệu từ server</string>
     <string name="network_error_cache">Lỗi mạng. Đang dùng dữ liệu cache.</string>
     <string name="failed_load_data">Tải dữ liệu thất bại: %1$s</string>
-    <string name="value_at_time">Giá trị: %1$d ppm lúc %2$s</string>
+    <string name="value_at_time">Giá trị: %1$d ppm lúc %2$s (%3$s)</string>
     <string name="date_format">dd MMM yyyy, HH:mm:ss</string>
     <string name="msg_normal">Nồng độ khí bình thường</string>
     <string name="msg_warning">Nồng độ khí cao: %1$d ppm</string>
