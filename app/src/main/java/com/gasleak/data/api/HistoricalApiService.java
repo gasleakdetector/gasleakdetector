@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-15
+ * Modified: 2026-03-19
  */
 package com.gasleak.data.api;
 
@@ -159,6 +159,7 @@ public class HistoricalApiService {
                 pt.setMaxGas(o.optInt("gas_ppm", 0));
                 pt.setSampleCount(1);
                 pt.setStatus(o.optString("status", "normal"));
+                pt.setDeviceId(o.optString("device_id", ""));
                 pt.setCreatedAt(o.optString("created_at", ""));
                 pt.setBucket(o.optString("created_at", ""));
                 points.add(pt);
