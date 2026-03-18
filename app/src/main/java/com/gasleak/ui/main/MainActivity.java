@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-17
+ * Modified: 2026-03-19
  */
 package com.gasleak.ui.main;
 
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity
         HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
         updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
         SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), getActiveDeviceId()));
+        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), last.getDeviceId() != null ? last.getDeviceId() : ""));
     }
 
     @Override
@@ -516,6 +516,8 @@ public class MainActivity extends AppCompatActivity
                 HistoricalDataPoint newPoint = new HistoricalDataPoint();
                 newPoint.setGasPpm(gasPpm);
                 newPoint.setStatus(status);
+                RealtimeConfig activeConfig = sharedPrefs.getRealtimeConfig();
+                if (activeConfig != null) newPoint.setDeviceId(activeConfig.getDeviceId());
                 newPoint.setCreatedAt(timestamp.isEmpty()
                     ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).format(new Date())
                     : timestamp);
@@ -525,7 +527,7 @@ public class MainActivity extends AppCompatActivity
                 if (!isNodeLocked) {
                     updateUIAnimated(createStatusFromValue(gasPpm, newPoint.getTimestamp()));
                     SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), getActiveDeviceId()));
+                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), newPoint.getDeviceId() != null ? newPoint.getDeviceId() : ""));
                 }
 
                 /* Send an alert notification when gas level is above normal. */
@@ -574,7 +576,9 @@ public class MainActivity extends AppCompatActivity
             isNodeLocked      = true;
             selectedNodeIndex = index;
             SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-            nodeInfoText.setText(getString(R.string.value_at_time, value, fmt.format(new Date(timestamp)), getActiveDeviceId()));
+            String selectedDeviceId = (index >= 0 && index < dataPoints.size() && dataPoints.get(index).getDeviceId() != null)
+                    ? dataPoints.get(index).getDeviceId() : "";
+            nodeInfoText.setText(getString(R.string.value_at_time, value, fmt.format(new Date(timestamp)), selectedDeviceId));
             updateUIAnimated(createStatusFromValue(value, timestamp));
         }
     }
@@ -586,13 +590,6 @@ public class MainActivity extends AppCompatActivity
             selectedNodeIndex = -1;
             updateToLatestNode();
         }
-    }
-
-    private String getActiveDeviceId() {
-        RealtimeConfig config = sharedPrefs.getRealtimeConfig();
-        if (config == null) return "";
-        String deviceId = config.getDeviceId();
-        return (deviceId != null && !deviceId.isEmpty()) ? deviceId : "";
     }
 
     private GasStatus createStatusFromValue(int value, long timestamp) {
