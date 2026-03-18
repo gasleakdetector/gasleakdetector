@@ -93,7 +93,7 @@
     <string name="about_title">Giới thiệu</string>
     <string name="about_version">Phiên bản 1.0</string>
     <string name="about_section_about">Giới thiệu</string>
-    <string name="about_description">Gas Leak Detector là ứng dụng theo dõi rò rỉ khí gas mã nguồn mở được phát triển bởi 11a9. Sử dụng ESP8266 và MQ-6.</string>
+    <string name="about_description">Gas Leak Detector là ứng dụng theo dõi rò rỉ khí gas mã Mã nguồn mở được phát triển bởi 11a9. Sử dụng ESP8266 và MQ-6.</string>
     <string name="about_section_features">Tính năng</string>
     <string name="about_features">• Giám sát nồng độ khí gas theo thời gian thực\n• Hiển thị biểu đồ và lịch sử đo đạc\n• Biểu đồ dữ liệu\n• Thông báo rò rỉ qua email và ứng dụng.</string>
     <string name="about_section_safety">Mức độ an toàn</string>
@@ -103,7 +103,7 @@
     <string name="about_range_normal">0 - 299 ppm</string>
     <string name="about_range_warning">300 - 799 ppm</string>
     <string name="about_range_danger">800+ ppm</string>
-    <string name="about_source">Nguồn: https://github.com/gasleakdetector/gasleakdetector</string>
+    <string name="about_source">Mã nguồn: https://github.com/gasleakdetector/gasleakdetector</string>
     <string name="about_copyright">© 2026 Gas Leak Detector\nBản quyền được bảo lưu</string>
     <string name="notif_channel_foreground_name">Gas Leak Detector</string>
     <string name="notif_channel_foreground_desc">Đang chạy nền</string>
