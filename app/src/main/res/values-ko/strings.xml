@@ -34,7 +34,8 @@
     <string name="loaded_data_points">서버에서 %1$d개 데이터 로드됨</string>
     <string name="network_error_cache">네트워크 오류. 캐시된 데이터 사용 중.</string>
     <string name="failed_load_data">기록 데이터 로드 실패: %1$s</string>
-    <string name="value_at_time">수치: %1$d ppm (%2$s) (%3$s)</string>
+    <string name="value_at_time">수치: %1$d ppm (%2$s)
+(%3$s)</string>
     <string name="date_format">yyyy년 MM월 dd일 HH:mm:ss</string>
     <string name="msg_normal">가스 농도가 정상입니다</string>
     <string name="msg_warning">가스 농도가 높습니다: %1$d ppm</string>
