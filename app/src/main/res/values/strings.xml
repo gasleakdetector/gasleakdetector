@@ -34,7 +34,8 @@
     <string name="loaded_data_points">Loaded %1$d data points from server</string>
     <string name="network_error_cache">Network error. Using cached data.</string>
     <string name="failed_load_data">Failed to load historical data: %1$s</string>
-    <string name="value_at_time">Value: %1$d ppm at %2$s (%3$s)</string>
+    <string name="value_at_time">Value: %1$d ppm at %2$s
+(%3$s)</string>
     <string name="date_format">dd MMM yyyy, HH:mm:ss</string>
     <string name="msg_normal">Gas level is normal</string>
     <string name="msg_warning">Gas level is high: %1$d ppm</string>
