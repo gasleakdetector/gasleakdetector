@@ -119,4 +119,6 @@
     <string name="notif_warning_title">气体警告</string>
     <string name="notif_status_title">气体监测状态</string>
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
+    <string name="stat_col_time">时间</string>
+    <string name="stat_col_avg">平均</string>
 </resources>
