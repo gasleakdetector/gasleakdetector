@@ -119,4 +119,6 @@
     <string name="notif_warning_title">Cảnh báo khí gas</string>
     <string name="notif_status_title">Trạng thái theo dõi khí</string>
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
+    <string name="stat_col_time">Thời gian</string>
+    <string name="stat_col_avg">Trung bình</string>
 </resources>
