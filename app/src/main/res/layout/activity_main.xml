@@ -166,12 +166,15 @@
 
                 <TextView
                     android:id="@+id/nodeInfoText"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/tap_chart_hint"
                     android:textSize="@dimen/text_hint"
                     android:textColor="@color/onBackgroundDark"
-                    android:alpha="0.7"/>
+                    android:alpha="0.7"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:scrollHorizontally="true"/>
             </LinearLayout>
         </LinearLayout>
 
