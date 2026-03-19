@@ -34,7 +34,8 @@
     <string name="loaded_data_points">%1$d Datenpunkte vom Server geladen</string>
     <string name="network_error_cache">Netzwerkfehler. Zwischengespeicherte Daten werden verwendet.</string>
     <string name="failed_load_data">Verlaufsdaten konnten nicht geladen werden: %1$s</string>
-    <string name="value_at_time">Wert: %1$d ppm um %2$s (%3$s)</string>
+    <string name="value_at_time">Wert: %1$d ppm um %2$s
+(%3$s)</string>
     <string name="date_format">dd. MMM yyyy, HH:mm:ss</string>
     <string name="msg_normal">Gaskonzentration ist normal</string>
     <string name="msg_warning">Gaskonzentration ist hoch: %1$d ppm</string>
