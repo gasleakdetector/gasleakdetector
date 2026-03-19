@@ -172,9 +172,9 @@
                     android:textSize="@dimen/text_hint"
                     android:textColor="@color/onBackgroundDark"
                     android:alpha="0.7"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:scrollHorizontally="true"/>
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:ellipsize="end"/>
             </LinearLayout>
         </LinearLayout>
 
