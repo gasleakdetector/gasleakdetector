@@ -49,6 +49,7 @@ import com.gasleak.data.websocket.WebSocketManager;
 import com.gasleak.notification.GasNotificationHelper;
 import com.gasleak.service.AppForegroundService;
 import com.gasleak.ui.dialog.ConfigDialog;
+import com.gasleak.ui.main.StatisticsFragment;
 import com.gasleak.ui.widget.ChartView;
 import com.gasleak.ui.widget.CircularGaugeView;
 import com.gasleak.util.LocaleHelper;
@@ -102,7 +103,8 @@ public class MainActivity extends AppCompatActivity
     private TextView     menuStatisticsText;
     private ImageView    menuHomeIcon;
     private ImageView    menuStatisticsIcon;
-    private boolean      isMenuOpen = false;
+    private boolean      isMenuOpen           = false;
+    private boolean      statisticsLoaded     = false;
 
     @Override
     protected void attachBaseContext(android.content.Context base) {
@@ -231,6 +233,13 @@ public class MainActivity extends AppCompatActivity
                 statisticsPanel.setVisibility(View.VISIBLE);
                 setActiveTab(false);
                 closeMenu();
+                if (!statisticsLoaded) {
+                    statisticsLoaded = true;
+                    getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.statisticsPanel, new StatisticsFragment())
+                        .commit();
+                }
             }
         });
     }
