@@ -100,8 +100,6 @@ public class StatisticsFragment extends Fragment {
     private void renderTable(List<HourlyStatPoint> points) {
         if (tableContainer == null) return;
         tableContainer.removeAllViews();
-        tableContainer.addView(buildHeaderRow());
-        tableContainer.addView(buildDivider());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         for (HourlyStatPoint p : points) {
