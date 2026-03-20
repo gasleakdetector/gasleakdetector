@@ -122,5 +122,5 @@
     <string name="stat_col_time">Zeit</string>
     <string name="stat_col_avg">Durchschnitt</string>
     <string name="menu_feedback">Feedback</string>
-    <string name="feedback_email">Gas Leak Detector - Feedback v%1$s</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>

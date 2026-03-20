@@ -122,5 +122,5 @@
     <string name="stat_col_time">시간</string>
     <string name="stat_col_avg">평균</string>
     <string name="menu_feedback">피드백</string>
-    <string name="feedback_email">Gas Leak Detector - 피드백 v%1$s</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>
