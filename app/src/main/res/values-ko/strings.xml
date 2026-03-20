@@ -121,6 +121,7 @@
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
     <string name="stat_col_time">시간</string>
     <string name="stat_col_avg">평균</string>
-    <string name="menu_feedback">피드백</string>
-    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+    <string name="welcome_title">환영합니다</string>
+    <string name="welcome_description">이 앱은 가정 내 가스 농도를 모니터링하여 안전한 환경을 유지하는 데 도움을 줍니다.</string>
+    <string name="welcome_btn_continue">계속</string>
 </resources>

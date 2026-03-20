@@ -121,6 +121,7 @@
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
     <string name="stat_col_time">Thời gian</string>
     <string name="stat_col_avg">Trung bình</string>
-    <string name="menu_feedback">Phản hồi</string>
-    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+    <string name="welcome_title">Chào mừng</string>
+    <string name="welcome_description">Ứng dụng giúp bạn theo dõi nồng độ khí gas trong nhà để giữ môi trường an toàn.</string>
+    <string name="welcome_btn_continue">Tiếp tục</string>
 </resources>

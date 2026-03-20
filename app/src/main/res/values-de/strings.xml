@@ -121,6 +121,7 @@
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
     <string name="stat_col_time">Zeit</string>
     <string name="stat_col_avg">Durchschnitt</string>
-    <string name="menu_feedback">Feedback</string>
-    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+    <string name="welcome_title">Willkommen</string>
+    <string name="welcome_description">Diese App hilft Ihnen, die Gaswerte in Ihrem Zuhause zu überwachen.</string>
+    <string name="welcome_btn_continue">Weiter</string>
 </resources>

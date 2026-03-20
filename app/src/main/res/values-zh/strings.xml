@@ -121,6 +121,7 @@
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
     <string name="stat_col_time">时间</string>
     <string name="stat_col_avg">平均</string>
-    <string name="menu_feedback">反馈</string>
-    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+    <string name="welcome_title">欢迎</string>
+    <string name="welcome_description">此应用帮助您监控家中气体浓度，保持环境安全。</string>
+    <string name="welcome_btn_continue">继续</string>
 </resources>
