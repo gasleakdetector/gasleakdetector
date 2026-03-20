@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-20
+ * Modified: 2026-03-15
  */
 package com.gasleak.ui.widget;
 
@@ -267,11 +267,12 @@ public class ChartView extends View {
         int maxValue = getMaxValue();
         int lines    = 4;
         textPaint.setTextAlign(Paint.Align.RIGHT);
+        float textHalfHeight = (textPaint.descent() - textPaint.ascent()) / 2f - textPaint.descent();
         for (int i = 0; i <= lines; i++) {
             float ratio = (float) i / lines;
             int   value = (int) (maxValue - ratio * (maxValue - minValue));
             float y     = chartTop + (chartBottom - chartTop) * ratio;
-            canvas.drawText(String.valueOf(value), chartLeft - 10, y + 8, textPaint);
+            canvas.drawText(String.valueOf(value), chartLeft - 10, y + textHalfHeight, textPaint);
         }
     }
 
@@ -417,7 +418,8 @@ public class ChartView extends View {
         if (dataPoints.isEmpty()) return 1000;
         int max = Integer.MIN_VALUE;
         for (DataPoint p : dataPoints) if (p.value > max) max = p.value;
-        return max;
+        int range = max - getMinValue();
+        return max + Math.max(1, (int)(range * 0.15f));
     }
 
     // ── Inner classes ─────────────────────────────────────────────────────────
