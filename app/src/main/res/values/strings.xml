@@ -146,4 +146,6 @@
     <string name="welcome_title">Welcome</string>
     <string name="welcome_description">This app helps you monitor gas levels inside your home to keep your environment safe.</string>
     <string name="welcome_btn_continue">Continue</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>
