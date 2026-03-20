@@ -37,10 +37,11 @@ import java.util.TimeZone;
 
 public class StatisticsFragment extends Fragment {
 
-    private StatsChartView chartView;
-    private LinearLayout   tableContainer;
-    private FrameLayout    loadingOverlay;
-    private TextView       tvLoading;
+    private StatsChartView             chartView;
+    private LinearLayout               tableContainer;
+    private FrameLayout                loadingOverlay;
+    private TextView                   tvLoading;
+    private android.widget.ScrollView  tableScrollView;
 
     private RealtimeConfig config;
     private final Handler  mainHandler = new Handler(Looper.getMainLooper());
@@ -48,10 +49,11 @@ public class StatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_statistics, container, false);
-        chartView      = root.findViewById(R.id.stats_chart_view);
-        tableContainer = root.findViewById(R.id.table_container);
-        loadingOverlay = root.findViewById(R.id.loading_overlay);
-        tvLoading      = root.findViewById(R.id.tv_loading);
+        chartView       = root.findViewById(R.id.stats_chart_view);
+        tableContainer  = root.findViewById(R.id.table_container);
+        loadingOverlay  = root.findViewById(R.id.loading_overlay);
+        tvLoading       = root.findViewById(R.id.tv_loading);
+        tableScrollView = root.findViewById(R.id.table_scroll_view);
         config = new SharedPrefs(requireContext()).getRealtimeConfig();
         loadStats();
         return root;
@@ -77,6 +79,7 @@ public class StatisticsFragment extends Fragment {
                         }
                         renderChart(points);
                         renderTable(points);
+                        if (tableScrollView != null) tableScrollView.scrollTo(0, 0);
                     }
                 });
             }
