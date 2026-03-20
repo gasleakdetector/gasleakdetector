@@ -27,6 +27,7 @@ public class SharedPrefs {
     private static final String KEY_KEEP_RUNNING         = "keep_app_running";
     private static final String KEY_LANGUAGE             = "language";
     private static final String KEY_LAST_FETCH_TIME      = "last_fetch_time";
+    private static final String KEY_INTRO_SHOWN          = "intro_shown";
 
     /* Re-fetch historical data if the last fetch is older than this. */
     private static final long REFETCH_INTERVAL_MS = 5 * 60 * 1000L;
@@ -89,6 +90,9 @@ public class SharedPrefs {
         long last = prefs.getLong(KEY_LAST_FETCH_TIME, 0);
         return (System.currentTimeMillis() - last) > REFETCH_INTERVAL_MS;
     }
+
+    public boolean isIntroShown()       { return prefs.getBoolean(KEY_INTRO_SHOWN, false); }
+    public void    setIntroShown(boolean v) { prefs.edit().putBoolean(KEY_INTRO_SHOWN, v).apply(); }
 
     public void resetToDefaults() {
         prefs.edit()
