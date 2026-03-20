@@ -121,4 +121,6 @@
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
     <string name="stat_col_time">時刻</string>
     <string name="stat_col_avg">平均</string>
+    <string name="menu_feedback">フィードバック</string>
+    <string name="feedback_email">Gas Leak Detector - フィードバック v%1$s</string>
 </resources>
