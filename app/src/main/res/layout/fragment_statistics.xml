@@ -5,6 +5,7 @@
     android:orientation="vertical"
     android:background="#0D0D0D">
 
+    <!-- Chart -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -40,6 +41,44 @@
         android:layout_height="1dp"
         android:background="#44FFFFFF"/>
 
+    <!-- Header cố định — không nằm trong ScrollView -->
+    <LinearLayout
+        android:id="@+id/table_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1A4CAF50"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/stat_col_time"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#FFFFFFFF"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/stat_col_avg"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="#FFFFFFFF"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#33FFFFFF"/>
+
+    <!-- Data rows cuộn được -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -51,7 +90,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="4dp"
             android:paddingBottom="16dp"/>
 
     </ScrollView>
