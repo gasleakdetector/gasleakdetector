@@ -124,4 +124,6 @@
     <string name="welcome_title">ようこそ</string>
     <string name="welcome_description">このアプリは室内のガス濃度を監視し、安全な環境を保つお手伝いをします。</string>
     <string name="welcome_btn_continue">続ける</string>
+    <string name="menu_feedback">フィードバック</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>
