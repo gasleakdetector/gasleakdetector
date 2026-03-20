@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-19
+ * Modified: 2026-03-20
  */
 package com.gasleak.ui.main;
 
@@ -49,6 +49,7 @@ import com.gasleak.data.websocket.WebSocketManager;
 import com.gasleak.notification.GasNotificationHelper;
 import com.gasleak.service.AppForegroundService;
 import com.gasleak.ui.dialog.ConfigDialog;
+import com.gasleak.ui.main.StatisticsFragment;
 import com.gasleak.ui.widget.ChartView;
 import com.gasleak.ui.widget.CircularGaugeView;
 import com.gasleak.util.LocaleHelper;
@@ -102,7 +103,8 @@ public class MainActivity extends AppCompatActivity
     private TextView     menuStatisticsText;
     private ImageView    menuHomeIcon;
     private ImageView    menuStatisticsIcon;
-    private boolean      isMenuOpen = false;
+    private boolean      isMenuOpen           = false;
+    private boolean      statisticsLoaded     = false;
 
     @Override
     protected void attachBaseContext(android.content.Context base) {
@@ -231,6 +233,13 @@ public class MainActivity extends AppCompatActivity
                 statisticsPanel.setVisibility(View.VISIBLE);
                 setActiveTab(false);
                 closeMenu();
+                if (!statisticsLoaded) {
+                    statisticsLoaded = true;
+                    getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.statisticsPanel, new StatisticsFragment())
+                        .commit();
+                }
             }
         });
     }
@@ -338,6 +347,26 @@ public class MainActivity extends AppCompatActivity
     private void handleHistoricalDataSuccess(List<HistoricalDataPoint> points) {
         app.setHistoricalDataLoaded(true);
         if (points == null || points.isEmpty()) {
+            RealtimeConfig cfg = sharedPrefs.getRealtimeConfig();
+            if (cfg != null && cfg.getDeviceId() != null && !cfg.getDeviceId().isEmpty()) {
+                RealtimeConfig cfgNoDevice = new RealtimeConfig(cfg.getApiUrl(), cfg.getApiKey(), "");
+                HistoricalApiService.fetchHistoricalData(cfgNoDevice,
+                    new HistoricalApiService.HistoricalDataCallback() {
+                        @Override public void onSuccess(final List<HistoricalDataPoint> pts) {
+                            mainHandler.post(new Runnable() {
+                                @Override public void run() { handleHistoricalDataFallback(pts); }
+                            });
+                        }
+                        @Override public void onError(final String err) {
+                            mainHandler.post(new Runnable() {
+                                @Override public void run() {
+                                    nodeInfoText.setText(getString(R.string.no_historical_data));
+                                }
+                            });
+                        }
+                    });
+                return;
+            }
             chartView.clearData();
             dataPoints.clear();
             gaugeView.setValue(0);
@@ -346,6 +375,25 @@ public class MainActivity extends AppCompatActivity
             nodeInfoText.setText(getString(R.string.no_historical_data));
             return;
         }
+        chartView.clearData();
+        for (HistoricalDataPoint point : points) {
+            chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
+        }
+        dataPoints.clear();
+        dataPoints.addAll(points);
+        app.setCachedNodes(dataPoints);
+        localStorage.saveNodes(points);
+        sharedPrefs.markFetchTime();
+        updateToLatestNode();
+        nodeInfoText.setText(getString(R.string.loaded_data_points, points.size()));
+    }
+
+    private void handleHistoricalDataFallback(List<HistoricalDataPoint> points) {
+        if (points == null || points.isEmpty()) {
+            nodeInfoText.setText(getString(R.string.no_historical_data));
+            return;
+        }
+        app.setHistoricalDataLoaded(true);
         chartView.clearData();
         for (HistoricalDataPoint point : points) {
             chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());

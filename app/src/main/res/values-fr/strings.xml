@@ -119,4 +119,6 @@
     <string name="notif_warning_title">Avertissement de gaz</string>
     <string name="notif_status_title">Statut du moniteur de gaz</string>
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
+    <string name="stat_col_time">Heure</string>
+    <string name="stat_col_avg">Moyenne</string>
 </resources>

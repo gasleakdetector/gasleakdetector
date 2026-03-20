@@ -119,4 +119,6 @@
     <string name="notif_warning_title">ガス警告</string>
     <string name="notif_status_title">ガス監視ステータス</string>
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
+    <string name="stat_col_time">時刻</string>
+    <string name="stat_col_avg">平均</string>
 </resources>

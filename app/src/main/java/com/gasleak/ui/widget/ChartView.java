@@ -263,14 +263,16 @@ public class ChartView extends View {
     }
 
     private void drawYAxisLabels(Canvas canvas) {
+        int minValue = getMinValue();
         int maxValue = getMaxValue();
         int lines    = 4;
-        int step     = Math.max(1, maxValue / lines);
         textPaint.setTextAlign(Paint.Align.RIGHT);
+        float textHalfHeight = (textPaint.descent() - textPaint.ascent()) / 2f - textPaint.descent();
         for (int i = 0; i <= lines; i++) {
-            int   value = maxValue - (i * step);
-            float y     = chartTop + (chartBottom - chartTop) * i / lines;
-            canvas.drawText(String.valueOf(value), chartLeft - 10, y + 8, textPaint);
+            float ratio = (float) i / lines;
+            int   value = Math.round(maxValue - ratio * (maxValue - minValue));
+            float y     = chartTop + (chartBottom - chartTop) * ratio;
+            canvas.drawText(String.valueOf(value), chartLeft - 10, y + textHalfHeight, textPaint);
         }
     }
 
@@ -409,14 +411,15 @@ public class ChartView extends View {
         if (dataPoints.isEmpty()) return 0;
         int min = Integer.MAX_VALUE;
         for (DataPoint p : dataPoints) if (p.value < min) min = p.value;
-        return min;
+        return Math.max(0, (int) (min * 0.85f));
     }
 
     private int getMaxValue() {
         if (dataPoints.isEmpty()) return 1000;
         int max = Integer.MIN_VALUE;
         for (DataPoint p : dataPoints) if (p.value > max) max = p.value;
-        return max;
+        int range = max - getMinValue();
+        return max + Math.max(1, (int)(range * 0.15f));
     }
 
     // ── Inner classes ─────────────────────────────────────────────────────────
