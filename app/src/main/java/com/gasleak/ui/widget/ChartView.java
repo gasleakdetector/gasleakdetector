@@ -270,7 +270,7 @@ public class ChartView extends View {
         float textHalfHeight = (textPaint.descent() - textPaint.ascent()) / 2f - textPaint.descent();
         for (int i = 0; i <= lines; i++) {
             float ratio = (float) i / lines;
-            int   value = (int) (maxValue - ratio * (maxValue - minValue));
+            int   value = Math.round(maxValue - ratio * (maxValue - minValue));
             float y     = chartTop + (chartBottom - chartTop) * ratio;
             canvas.drawText(String.valueOf(value), chartLeft - 10, y + textHalfHeight, textPaint);
         }
