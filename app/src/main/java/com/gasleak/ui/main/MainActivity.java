@@ -15,6 +15,9 @@ import android.animation.ValueAnimator;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity
         implements WebSocketManager.Callback, ChartView.OnNodeSelectedListener {
 
     private static final int  TEXT_ANIMATION_DURATION = 500;
+    private static final String FEEDBACK_EMAIL          = "pan2512811@gmail.com";
     private static final long NOTIF_COOLDOWN_MS       = 30_000; // 30-second cooldown between repeated alerts
 
     /* Key for saving/restoring the historical-loaded flag across config changes. */
@@ -435,15 +439,40 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this, SettingActivity.class));
             overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
             return true;
-        } else if (id == R.id.menuAbout) {
-            startActivity(new Intent(this, InfoActivity.class));
-            overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
+        } else if (id == R.id.menuFeedback) {
+            openFeedbackEmail();
             return true;
         } else if (id == R.id.menuReset) {
             showResetDataDialog();
             return true;
+        } else if (id == R.id.menuAbout) {
+            startActivity(new Intent(this, InfoActivity.class));
+            overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openFeedbackEmail() {
+        String versionName = getAppVersionName();
+        String subject     = getString(R.string.feedback_email, versionName);
+        String mailto      = "mailto:" + FEEDBACK_EMAIL
+                           + "?subject=" + Uri.encode(subject);
+        Intent intent      = new Intent(Intent.ACTION_VIEW, Uri.parse(mailto));
+        try {
+            startActivity(intent);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, FEEDBACK_EMAIL, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private String getAppVersionName() {
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
     }
 
     private void showResetDataDialog() {

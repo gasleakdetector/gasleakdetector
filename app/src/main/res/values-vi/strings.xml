@@ -121,4 +121,6 @@
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
     <string name="stat_col_time">Thời gian</string>
     <string name="stat_col_avg">Trung bình</string>
+    <string name="menu_feedback">Phản hồi</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>

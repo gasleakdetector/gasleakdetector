@@ -143,4 +143,6 @@
     <string name="stat_nodes">Nodes: %1$d</string>
     <string name="stat_col_time">Time</string>
     <string name="stat_col_avg">Average</string>
+    <string name="menu_feedback">Feedback</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>
