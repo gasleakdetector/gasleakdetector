@@ -124,4 +124,6 @@
     <string name="welcome_title">Bienvenue</string>
     <string name="welcome_description">Cette application vous aide à surveiller les niveaux de gaz dans votre maison.</string>
     <string name="welcome_btn_continue">Continuer</string>
+    <string name="menu_feedback">Commentaires</string>
+    <string name="feedback_email">Gas Leak Detector - v%1$s</string>
 </resources>
