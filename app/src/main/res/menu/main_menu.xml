@@ -7,13 +7,18 @@
         android:icon="@drawable/ic_settings"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/menuAbout"
-        android:title="@string/menu_about"
-        android:icon="@drawable/ic_about"
+        android:id="@+id/menuFeedback"
+        android:title="@string/menu_feedback"
+        android:icon="@drawable/ic_feedback"
         app:showAsAction="never"/>
     <item
         android:id="@+id/menuReset"
         android:title="@string/menu_reset_data"
         android:icon="@drawable/ic_reset"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/menuAbout"
+        android:title="@string/menu_about"
+        android:icon="@drawable/ic_about"
         app:showAsAction="never"/>
 </menu>
