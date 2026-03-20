@@ -456,12 +456,13 @@ public class MainActivity extends AppCompatActivity
     private void openFeedbackEmail() {
         String versionName = getAppVersionName();
         String subject     = getString(R.string.feedback_email, versionName);
-        Intent intent      = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_EMAIL,   new String[]{FEEDBACK_EMAIL});
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        String mailto      = "mailto:" + FEEDBACK_EMAIL
+                           + "?subject=" + Uri.encode(subject);
+        Intent intent      = new Intent(Intent.ACTION_VIEW, Uri.parse(mailto));
+        try {
             startActivity(intent);
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, FEEDBACK_EMAIL, Toast.LENGTH_LONG).show();
         }
     }
 
