@@ -57,16 +57,18 @@
     <Button
         android:id="@+id/btn_continue"
         android:layout_width="wrap_content"
-        android:layout_height="56dp"
+        android:layout_height="52dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="48dp"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
         android:text="@string/welcome_btn_continue"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#4A7C59"
+        android:letterSpacing="0.08"
+        android:background="@drawable/btn_continue_ripple"
         android:stateListAnimator="@null"
+        android:elevation="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
