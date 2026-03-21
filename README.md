@@ -124,4 +124,4 @@ Each release includes a signed debug APK and the full source snapshot. CI builds
 
 ## License
 
-[Apache 2.0](LICENSE)
+Apache 2.0 © [Gas Leak Detector](LICENSE)
