@@ -33,6 +33,10 @@ The system is composed of three independent repositories that form one pipeline:
 | Backend | [gasleakdetector-server](https://github.com/gasleakdetector/gasleakdetector-server) | Node.js / Vercel / Supabase |
 | Mobile | **gasleakdetector** *(this repo)* | Android / Java |
 
+## Sample Demo
+
+[Watch Demo Video](https://www.youtube.com/watch?v=RLNf9Zphb1I)
+
 ## System Flow
 
 <p align="center">
