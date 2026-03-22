@@ -103,7 +103,7 @@ Open **Settings** in the app and fill in:
 |---|---|
 | API URL | Your Vercel deployment URL, e.g. `https://your-app.vercel.app` |
 | API Key | The `VALID_API_KEY` set in your Vercel environment variables |
-| Device ID | The `device_id` your ESP is sending, e.g. `ESP_GASLEAK_01` |
+| Device ID | The `device_id` your ESP is sending, e.g. `ESP_GASLEAK_01` (Leave this field blank if you want to include all devices.) |
 
 The app fetches Supabase credentials automatically from `/api/realtime-config` — no Supabase keys need to be entered manually.
 
