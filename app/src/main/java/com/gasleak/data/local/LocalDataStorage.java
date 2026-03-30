@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-15
+ * Modified: 2026-03-30
  */
 package com.gasleak.data.local;
 
@@ -33,7 +33,8 @@ public class LocalDataStorage {
     private static final String FILE_NAME = "gas_nodes_cache.json";
     private static final int    MAX_NODES = 1000;
 
-    private final File cacheFile;
+    private final File   cacheFile;
+    private final Object writeLock = new Object(); // #8: serialize concurrent disk writes
 
     public LocalDataStorage(Context context) {
         this.cacheFile = new File(context.getApplicationContext().getFilesDir(), FILE_NAME);
@@ -83,9 +84,11 @@ public class LocalDataStorage {
     /** Appends a single new point to the existing cache file. */
     public boolean addNode(HistoricalDataPoint newPoint) {
         if (newPoint == null) return false;
-        List<HistoricalDataPoint> current = loadNodes();
-        current.add(newPoint);
-        return saveNodes(current);
+        synchronized (writeLock) { // #8: prevent concurrent read-modify-write data loss
+            List<HistoricalDataPoint> current = loadNodes();
+            current.add(newPoint);
+            return saveNodes(current);
+        }
     }
 
     /** Reads cached data points from disk. Returns an empty list on any error. */
@@ -106,7 +109,7 @@ public class LocalDataStorage {
             for (int i = 0; i < nodesArray.length(); i++) {
                 JSONObject node = nodesArray.getJSONObject(i);
                 HistoricalDataPoint point = new HistoricalDataPoint();
-                point.setId(node.optInt("id"));
+                point.setId(node.optLong("id")); // #12: use optLong — Supabase IDs are bigint
                 point.setDeviceId(node.optString("device_id"));
                 point.setGasPpm(node.optInt("gas_ppm"));
                 point.setStatus(node.optString("status"));
