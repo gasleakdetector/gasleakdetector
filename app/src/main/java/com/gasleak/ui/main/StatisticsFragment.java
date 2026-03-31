@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-30
+ * Modified: 2026-03-31
  */
 package com.gasleak.ui.main;
 
@@ -103,9 +103,6 @@ public class StatisticsFragment extends Fragment {
     private void renderTable(List<HourlyStatPoint> points) {
         if (tableContainer == null) return;
         tableContainer.removeAllViews();
-        // #13: buildHeaderRow/buildDivider were dead code — wire them in so the table has column labels
-        tableContainer.addView(buildHeaderRow());
-        tableContainer.addView(buildDivider());
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         for (HourlyStatPoint p : points) {
