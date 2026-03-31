@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-20
+ * Modified: 2026-03-31
  */
 package com.gasleak.ui.widget;
 
@@ -21,6 +21,7 @@ import android.view.View;
 import com.gasleak.data.model.HourlyStatPoint;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -65,7 +66,8 @@ public class StatsChartView extends View {
     }
 
     public void setPoints(List<HourlyStatPoint> pts) {
-        points = (pts != null) ? pts : new ArrayList<HourlyStatPoint>();
+        points = pts != null ? new ArrayList<>(pts) : new ArrayList<HourlyStatPoint>();
+        Collections.reverse(points); // oldest → left, newest → right
         invalidate();
     }
 
