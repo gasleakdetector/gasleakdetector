@@ -30,6 +30,8 @@ import com.gasleak.data.model.RealtimeConfig;
 import com.gasleak.data.prefs.SharedPrefs;
 import com.gasleak.ui.widget.StatsChartView;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -103,9 +105,11 @@ public class StatisticsFragment extends Fragment {
     private void renderTable(List<HourlyStatPoint> points) {
         if (tableContainer == null) return;
         tableContainer.removeAllViews();
+        List<HourlyStatPoint> sorted = new ArrayList<>(points);
+        Collections.reverse(sorted); // newest at top, matches chart right-side
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
-        for (HourlyStatPoint p : points) {
+        for (HourlyStatPoint p : sorted) {
             tableContainer.addView(buildDataRow(
                 formatBucket(p.getBucket(), sdf),
                 String.format(Locale.getDefault(), "%.1f ppm", p.getAvgGas())
