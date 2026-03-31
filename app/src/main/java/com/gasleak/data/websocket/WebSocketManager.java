@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-15
+ * Modified: 2026-03-30
  */
 package com.gasleak.data.websocket;
 
@@ -278,7 +278,14 @@ public class WebSocketManager {
             public void run() {
                 if (!shouldReconnect || isDestroyed) return;
                 closeClient();
-                connectWebSocket(cachedWsUrl != null ? cachedWsUrl : "");
+                // #10: if cachedWsUrl is null, redo full config fetch instead of passing empty string
+                if (cachedWsUrl != null) {
+                    connectWebSocket(cachedWsUrl);
+                } else {
+                    new Thread(new Runnable() {
+                        @Override public void run() { fetchConfigAndConnect(); }
+                    }).start();
+                }
             }
         }, RECONNECT_MS);
     }

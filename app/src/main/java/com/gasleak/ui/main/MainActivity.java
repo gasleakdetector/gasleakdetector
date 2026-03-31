@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-20
+ * Modified: 2026-03-30
  */
 package com.gasleak.ui.main;
 
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         implements WebSocketManager.Callback, ChartView.OnNodeSelectedListener {
 
     private static final int    TEXT_ANIMATION_DURATION = 500;
+    private static final int    MAX_NODES               = 1000; // #9: cap in-memory list
     private static final String FEEDBACK_EMAIL          = "pan2512811@gmail.com";
     private static final long   NOTIF_COOLDOWN_MS       = 30_000; // 30-second cooldown between repeated alerts
 
@@ -283,11 +284,15 @@ public class MainActivity extends AppCompatActivity
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
             if (powerManager != null) {
+                // #15: release any existing lock before creating a new one to prevent leaks on recreation
+                if (wakeLock != null && wakeLock.isHeld()) {
+                    wakeLock.release();
+                }
                 wakeLock = powerManager.newWakeLock(
                     PowerManager.PARTIAL_WAKE_LOCK,
                     getString(R.string.wakelock_tag)
                 );
-                wakeLock.acquire(10 * 60 * 60 * 1000L);
+                wakeLock.acquire(); // no hard-coded timeout — released explicitly in onDestroy
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -598,6 +603,10 @@ public class MainActivity extends AppCompatActivity
                     ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).format(new Date())
                     : timestamp);
                 dataPoints.add(newPoint);
+                // #9: prevent unbounded in-memory growth — mirror the on-disk cap
+                if (dataPoints.size() > MAX_NODES) {
+                    dataPoints.subList(0, dataPoints.size() - MAX_NODES).clear();
+                }
                 app.setCachedNodes(dataPoints);
 
                 if (!isNodeLocked) {

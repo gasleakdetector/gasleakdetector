@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-03-19
+ * Modified: 2026-03-30
  */
 package com.gasleak.data.api;
 
@@ -154,9 +154,10 @@ public class HistoricalApiService {
                 HistoricalDataPoint pt = new HistoricalDataPoint();
                 pt.setId(o.optLong("id", 0));
                 pt.setGasPpm(o.optInt("gas_ppm", 0));
-                pt.setAvgGas(o.optInt("gas_ppm", 0));
-                pt.setMinGas(o.optInt("gas_ppm", 0));
-                pt.setMaxGas(o.optInt("gas_ppm", 0));
+                // #11: read correct aggregate fields — were all reading gas_ppm before
+                pt.setAvgGas((float) o.optDouble("avg_gas", o.optInt("gas_ppm", 0)));
+                pt.setMinGas((float) o.optDouble("min_gas", o.optInt("gas_ppm", 0)));
+                pt.setMaxGas((float) o.optDouble("max_gas", o.optInt("gas_ppm", 0)));
                 pt.setSampleCount(1);
                 pt.setStatus(o.optString("status", "normal"));
                 pt.setDeviceId(o.optString("device_id", ""));
