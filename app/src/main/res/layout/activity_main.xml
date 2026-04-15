@@ -97,7 +97,7 @@
                 android:layout_weight="1"
                 android:padding="@dimen/card_padding">
 
-                <com.gasleak.ui.widget.CircularGaugeView
+                <com.gasleakdetector.ui.widget.CircularGaugeView
                     android:id="@+id/gaugeView"
                     android:layout_width="@dimen/gauge_size"
                     android:layout_height="@dimen/gauge_size"
@@ -135,7 +135,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <com.gasleak.ui.widget.ChartView
+                <com.gasleakdetector.ui.widget.ChartView
                     android:id="@+id/chartView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
