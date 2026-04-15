@@ -4,7 +4,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.gasleak"
+        applicationId "com.gasleakdetector"
         minSdk 21
         targetSdk 33
         versionCode 1
