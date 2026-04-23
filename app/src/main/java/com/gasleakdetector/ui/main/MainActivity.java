@@ -592,8 +592,6 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                chartView.addDataPointWithTimestamp(gasPpm, newPoint.getTimestamp());
-
                 HistoricalDataPoint newPoint = new HistoricalDataPoint();
                 newPoint.setGasPpm(gasPpm);
                 newPoint.setStatus(status);
@@ -602,6 +600,7 @@ public class MainActivity extends AppCompatActivity
                 newPoint.setCreatedAt(timestamp.isEmpty()
                     ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).format(new Date())
                     : timestamp);
+                chartView.addDataPointWithTimestamp(gasPpm, newPoint.getTimestamp());
                 dataPoints.add(newPoint);
                 // #9: prevent unbounded in-memory growth — mirror the on-disk cap
                 if (dataPoints.size() > MAX_NODES) {
