@@ -138,7 +138,7 @@ public class ChartView extends View {
         timeFormat   = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
         /* Load from resources so the empty state respects the app locale. */
-        emptyMessage = context.getString(com.gasleakdetector.R.string.waiting_for_data);
+        emptyMessage = context.getString(com.gasleakdetector.R.string.chart_empty_message);
 
         gestureDetector      = new GestureDetector(context, new ChartGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(context, new ChartScaleListener());
