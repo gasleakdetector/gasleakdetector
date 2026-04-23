@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-04-23
  */
 package com.gasleakdetector.data.model;
 
@@ -26,9 +26,16 @@ public class HistoricalDataPointTest {
     }
 
     @Test
-    public void getGasPpm_whenGasPpmZero_fallsBackToAvgGas() {
+    public void getGasPpm_whenGasPpmZero_returnsZeroNotAvgGas() {
         HistoricalDataPoint p = new HistoricalDataPoint();
         p.setGasPpm(0);
+        p.setAvgGas(320f);
+        assertEquals(0, p.getGasPpm());
+    }
+
+    @Test
+    public void getGasPpm_whenGasPpmNotSet_fallsBackToAvgGas() {
+        HistoricalDataPoint p = new HistoricalDataPoint();
         p.setAvgGas(320f);
         assertEquals(320, p.getGasPpm());
     }

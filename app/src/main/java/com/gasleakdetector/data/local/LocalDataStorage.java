@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-04-23
  */
 package com.gasleakdetector.data.local;
 
@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,9 +71,9 @@ public class LocalDataStorage {
             root.put("count",    nodesToSave.size());
             root.put("nodes",    nodesArray);
 
-            FileOutputStream fos = new FileOutputStream(cacheFile);
-            fos.write(root.toString().getBytes("UTF-8"));
-            fos.close();
+            try (FileOutputStream fos = new FileOutputStream(cacheFile)) {
+                fos.write(root.toString().getBytes(StandardCharsets.UTF_8));
+            }
             return true;
 
         } catch (Exception e) {
@@ -97,25 +98,24 @@ public class LocalDataStorage {
         if (!cacheFile.exists()) return dataPoints;
 
         try {
-            FileInputStream fis = new FileInputStream(cacheFile);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-            reader.close();
-            fis.close();
+            try (FileInputStream fis = new FileInputStream(cacheFile);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8))) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) sb.append(line);
 
-            JSONArray nodesArray = new JSONObject(sb.toString()).getJSONArray("nodes");
-            for (int i = 0; i < nodesArray.length(); i++) {
-                JSONObject node = nodesArray.getJSONObject(i);
-                HistoricalDataPoint point = new HistoricalDataPoint();
-                point.setId(node.optLong("id")); // #12: use optLong — Supabase IDs are bigint
-                point.setDeviceId(node.optString("device_id"));
-                point.setGasPpm(node.optInt("gas_ppm"));
-                point.setStatus(node.optString("status"));
-                point.setIpAddress(node.optString("ip_address"));
-                point.setCreatedAt(node.optString("created_at"));
-                dataPoints.add(point);
+                JSONArray nodesArray = new JSONObject(sb.toString()).getJSONArray("nodes");
+                for (int i = 0; i < nodesArray.length(); i++) {
+                    JSONObject node = nodesArray.getJSONObject(i);
+                    HistoricalDataPoint point = new HistoricalDataPoint();
+                    point.setId(node.optLong("id")); // #12: use optLong — Supabase IDs are bigint
+                    point.setDeviceId(node.optString("device_id"));
+                    point.setGasPpm(node.optInt("gas_ppm"));
+                    point.setStatus(node.optString("status"));
+                    point.setIpAddress(node.optString("ip_address"));
+                    point.setCreatedAt(node.optString("created_at"));
+                    dataPoints.add(point);
+                }
             }
 
         } catch (Exception e) {
@@ -137,21 +137,19 @@ public class LocalDataStorage {
     public String getCacheInfo() {
         if (!hasCache()) return "No cache available";
         try {
-            FileInputStream fis = new FileInputStream(cacheFile);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(fis, "UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) sb.append(line);
-            reader.close();
-            fis.close();
+            try (FileInputStream fis = new FileInputStream(cacheFile);
+                 BufferedReader reader = new BufferedReader(new InputStreamReader(fis, StandardCharsets.UTF_8))) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) sb.append(line);
 
-            JSONObject root   = new JSONObject(sb.toString());
-            long savedAt      = root.optLong("saved_at", 0);
-            int  count        = root.optInt("count", 0);
-            String savedDate  = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US)
-                                    .format(new java.util.Date(savedAt));
-            return String.format("Cached %d nodes (saved at: %s)", count, savedDate);
-
+                JSONObject root  = new JSONObject(sb.toString());
+                long savedAt     = root.optLong("saved_at", 0);
+                int  count       = root.optInt("count", 0);
+                String savedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.US)
+                                       .format(new java.util.Date(savedAt));
+                return String.format("Cached %d nodes (saved at: %s)", count, savedDate);
+            }
         } catch (Exception e) {
             return "Cache info unavailable";
         }

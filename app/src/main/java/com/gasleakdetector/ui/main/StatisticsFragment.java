@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-04-23
  */
 package com.gasleakdetector.ui.main;
 
@@ -105,6 +105,8 @@ public class StatisticsFragment extends Fragment {
     private void renderTable(List<HourlyStatPoint> points) {
         if (tableContainer == null) return;
         tableContainer.removeAllViews();
+        tableContainer.addView(buildHeaderRow());
+        tableContainer.addView(buildDivider());
         List<HourlyStatPoint> sorted = new ArrayList<>(points);
         Collections.reverse(sorted); // newest at top, matches chart right-side
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM", Locale.getDefault());

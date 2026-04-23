@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-04-23
  */
 package com.gasleakdetector.ui.widget;
 
@@ -62,6 +62,11 @@ public class ChartView extends View {
     private final List<DataPoint> dataPoints = new ArrayList<>();
     private int selectedIndex = -1;
     private OnNodeSelectedListener listener;
+
+    // Cached per-frame min/max to avoid re-scanning the full list on every draw call.
+    private int  cachedMin        = 0;
+    private int  cachedMax        = 1000;
+    private boolean minMaxDirty   = true;
 
     private float chartLeft;
     private float chartTop;
@@ -132,8 +137,8 @@ public class ChartView extends View {
         scroller     = new Scroller(context);
         timeFormat   = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
-        /* Cache so we don't call getString() inside onDraw(). */
-        emptyMessage = "Waiting for data\u2026";
+        /* Load from resources so the empty state respects the app locale. */
+        emptyMessage = context.getString(com.gasleakdetector.R.string.chart_empty_message);
 
         gestureDetector      = new GestureDetector(context, new ChartGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(context, new ChartScaleListener());
@@ -147,6 +152,7 @@ public class ChartView extends View {
 
     public void addDataPointWithTimestamp(int value, long timestamp) {
         dataPoints.add(new DataPoint(value, timestamp));
+        minMaxDirty = true;
         updateScrollBounds();
         scrollToEnd();
         invalidate();
@@ -158,6 +164,7 @@ public class ChartView extends View {
         for (HistoricalDataPoint p : points) {
             dataPoints.add(new DataPoint(p.getGasPpm(), p.getTimestamp()));
         }
+        minMaxDirty = true;
         updateScrollBounds();
         scrollToEnd();
         invalidate();
@@ -168,6 +175,7 @@ public class ChartView extends View {
         selectedIndex = -1;
         scrollX    = 0f;
         maxScrollX = 0f;
+        minMaxDirty = true;
         invalidate();
     }
 
@@ -224,6 +232,7 @@ public class ChartView extends View {
             drawEmptyMessage(canvas);
             return;
         }
+        refreshMinMaxIfNeeded();
         drawAxes(canvas);
         drawGrid(canvas);
         drawChart(canvas);
@@ -407,20 +416,31 @@ public class ChartView extends View {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private int getMinValue() {
-        if (dataPoints.isEmpty()) return 0;
-        int min = Integer.MAX_VALUE;
-        for (DataPoint p : dataPoints) if (p.value < min) min = p.value;
-        return Math.max(0, (int) (min * 0.85f));
+    // ── Min/Max cache ─────────────────────────────────────────────────────────
+
+    // Single pass over dataPoints; called once per frame at the start of onDraw.
+    private void refreshMinMaxIfNeeded() {
+        if (!minMaxDirty) return;
+        if (dataPoints.isEmpty()) {
+            cachedMin = 0;
+            cachedMax = 1000;
+        } else {
+            int min = Integer.MAX_VALUE;
+            int max = Integer.MIN_VALUE;
+            for (DataPoint p : dataPoints) {
+                if (p.value < min) min = p.value;
+                if (p.value > max) max = p.value;
+            }
+            int floor = Math.max(0, (int) (min * 0.85f));
+            int range = max - floor;
+            cachedMin = floor;
+            cachedMax = max + Math.max(1, (int) (range * 0.15f));
+        }
+        minMaxDirty = false;
     }
 
-    private int getMaxValue() {
-        if (dataPoints.isEmpty()) return 1000;
-        int max = Integer.MIN_VALUE;
-        for (DataPoint p : dataPoints) if (p.value > max) max = p.value;
-        int range = max - getMinValue();
-        return max + Math.max(1, (int)(range * 0.15f));
-    }
+    private int getMinValue() { return cachedMin; }
+    private int getMaxValue() { return cachedMax; }
 
     // ── Inner classes ─────────────────────────────────────────────────────────
 
