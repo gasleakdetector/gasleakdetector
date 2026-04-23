@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-04-23
  */
 package com.gasleakdetector.ui.main;
 
@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                chartView.addDataPoint(gasPpm);
+                chartView.addDataPointWithTimestamp(gasPpm, newPoint.getTimestamp());
 
                 HistoricalDataPoint newPoint = new HistoricalDataPoint();
                 newPoint.setGasPpm(gasPpm);
