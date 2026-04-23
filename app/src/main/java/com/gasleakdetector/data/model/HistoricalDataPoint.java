@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-04-23
  */
 package com.gasleakdetector.data.model;
 
@@ -32,7 +32,7 @@ public class HistoricalDataPoint {
     // ── Raw row fields ────────────────────────────────────────────────────────
     private long   id;
     private String deviceId;
-    private int    gasPpm;
+    private int    gasPpm = -1; // -1 = not set; 0 is a valid clean-air reading
     private String status;
     private String ipAddress;
     private String createdAt;
@@ -61,7 +61,7 @@ public class HistoricalDataPoint {
     public String getDeviceId()        { return deviceId; }
     public void   setDeviceId(String v){ deviceId = v; }
 
-    public int    getGasPpm()          { return gasPpm != 0 ? gasPpm : (int) avgGas; }
+    public int    getGasPpm()          { return gasPpm >= 0 ? gasPpm : (int) avgGas; }
     public void   setGasPpm(int v)     { gasPpm = v; }
 
     public String getStatus()          { return status; }
