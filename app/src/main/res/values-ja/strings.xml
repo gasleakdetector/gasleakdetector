@@ -126,4 +126,12 @@
     <string name="welcome_btn_continue">続ける</string>
     <string name="menu_feedback">フィードバック</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- FCM push -->
+    <string name="label_fcm_push">プッシュ通知（FCM）</string>
+    <string name="desc_fcm_push">Firebase Cloud Messaging 経由でアプリが閉じていても警告を受け取る</string>
+    <string name="toast_fcm_push_enabled">プッシュ通知を有効にしました</string>
+    <string name="toast_fcm_push_disabled">プッシュ通知を無効にしました</string>
+    <string name="notif_channel_fcm_push_name">プッシュアラート</string>
+    <string name="notif_channel_fcm_push_desc">Firebase Cloud Messaging 経由のガス警報</string>
 </resources>
