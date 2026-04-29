@@ -126,4 +126,12 @@
     <string name="welcome_btn_continue">Continuar</string>
     <string name="menu_feedback">Comentarios</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- Notificaciones push FCM -->
+    <string name="label_fcm_push">Notificaciones push (FCM)</string>
+    <string name="desc_fcm_push">Recibe alertas incluso cuando la aplicación está cerrada, a través de Firebase Cloud Messaging</string>
+    <string name="toast_fcm_push_enabled">Notificaciones push activadas</string>
+    <string name="toast_fcm_push_disabled">Notificaciones push desactivadas</string>
+    <string name="notif_channel_fcm_push_name">Alertas push</string>
+    <string name="notif_channel_fcm_push_desc">Alertas de gas enviadas a través de Firebase Cloud Messaging</string>
 </resources>
