@@ -85,6 +85,45 @@
                     android:checked="true"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surfaceDark"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_fcm_push"
+                        android:textSize="16sp"
+                        android:textColor="@color/onBackgroundDark"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desc_fcm_push"
+                        android:textSize="12sp"
+                        android:textColor="@color/onBackgroundDark"
+                        android:alpha="0.6"
+                        android:paddingTop="2dp"/>
+                </LinearLayout>
+
+                <Switch
+                    android:id="@+id/fcmPushSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
