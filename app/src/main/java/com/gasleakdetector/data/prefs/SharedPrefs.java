@@ -28,6 +28,8 @@ public class SharedPrefs {
     private static final String KEY_LANGUAGE             = "language";
     private static final String KEY_LAST_FETCH_TIME      = "last_fetch_time";
     private static final String KEY_INTRO_SHOWN          = "intro_shown";
+    private static final String KEY_FCM_TOKEN            = "fcm_token";
+    private static final String KEY_FCM_PUSH_ENABLED     = "fcm_push_enabled";
 
     /* Re-fetch historical data if the last fetch is older than this. */
     private static final long REFETCH_INTERVAL_MS = 5 * 60 * 1000L;
@@ -94,6 +96,15 @@ public class SharedPrefs {
     public boolean isIntroShown()       { return prefs.getBoolean(KEY_INTRO_SHOWN, false); }
     public void    setIntroShown(boolean v) { prefs.edit().putBoolean(KEY_INTRO_SHOWN, v).apply(); }
 
+    /* FCM push notification token. */
+    public void   setFcmToken(String token) { prefs.edit().putString(KEY_FCM_TOKEN, token).apply(); }
+    public String getFcmToken()             { return prefs.getString(KEY_FCM_TOKEN, ""); }
+    public boolean hasFcmToken()            { return !getFcmToken().isEmpty(); }
+
+    /* FCM push notification user toggle (default true). */
+    public void    setFcmPushEnabled(boolean v) { prefs.edit().putBoolean(KEY_FCM_PUSH_ENABLED, v).apply(); }
+    public boolean getFcmPushEnabled()           { return prefs.getBoolean(KEY_FCM_PUSH_ENABLED, true); }
+
     public void resetToDefaults() {
         prefs.edit()
             .putInt(KEY_THEME, 1)
@@ -101,6 +112,7 @@ public class SharedPrefs {
             .putBoolean(KEY_AUTO_REFRESH, true)
             .putBoolean(KEY_AUTO_STREAM, true)
             .putBoolean(KEY_KEEP_RUNNING, true)
+            .putBoolean(KEY_FCM_PUSH_ENABLED, true)
             .apply();
     }
 }
