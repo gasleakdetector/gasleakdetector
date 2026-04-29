@@ -54,6 +54,29 @@
             android:exported="false"
             android:foregroundServiceType="dataSync"/>
 
+        <!--
+            FcmService: receives push messages from the Vercel backend even
+            when the app is killed. HIGH_PRIORITY data messages bypass Doze mode.
+        -->
+        <service
+            android:name=".service.FcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <!--
+            Disable FCM auto-init so we can respect the user's push preference
+            before sending the token to the backend for the first time.
+        -->
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false"/>
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false"/>
+
     </application>
 
 </manifest>
