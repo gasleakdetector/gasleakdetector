@@ -12,11 +12,14 @@ package com.gasleakdetector.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+import com.gasleakdetector.data.api.FcmTokenApiService;
 import com.gasleakdetector.data.model.HistoricalDataPoint;
 import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.notification.NotificationChannelManager;
 import com.gasleakdetector.util.CrashHandler;
 import com.gasleakdetector.util.LocaleHelper;
+import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +48,37 @@ public class GasLeakApplication extends Application {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+        initFcm();
+    }
+
+    /**
+     * Initialises FCM: enables auto-init only when the user has FCM push on,
+     * then fetches the current token and registers it with the backend if a
+     * config is already saved (i.e. not first-run).
+     */
+    private void initFcm() {
+        final SharedPrefs prefs = new SharedPrefs(getApplicationContext());
+
+        /* Honour the manual opt-in flag before letting FCM send the token upstream. */
+        FirebaseMessaging.getInstance().setAutoInitEnabled(prefs.getFcmPushEnabled());
+
+        if (!prefs.getFcmPushEnabled() || !prefs.hasRealtimeConfig()) return;
+
+        FirebaseMessaging.getInstance().getToken()
+            .addOnSuccessListener(token -> {
+                if (token == null || token.isEmpty()) return;
+                Log.d("GasLeakApplication", "FCM token obtained on startup");
+                prefs.setFcmToken(token);
+                FcmTokenApiService.register(
+                    getApplicationContext(),
+                    prefs.getRealtimeConfig(),
+                    token,
+                    null /* fire-and-forget */
+                );
+            })
+            .addOnFailureListener(e ->
+                Log.w("GasLeakApplication", "FCM getToken failed: " + e.getMessage())
+            );
     }
 
     @Override

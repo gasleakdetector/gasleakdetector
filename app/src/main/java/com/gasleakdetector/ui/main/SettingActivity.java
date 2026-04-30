@@ -22,10 +22,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gasleakdetector.R;
+import com.gasleakdetector.data.api.FcmTokenApiService;
 import com.gasleakdetector.data.local.LocalDataStorage;
 import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.util.LocaleHelper;
 import com.gasleakdetector.util.ThemeUtil;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -33,6 +35,7 @@ public class SettingActivity extends AppCompatActivity {
     private Switch   autoRefreshSwitch;
     private Switch   autoStreamSwitch;
     private Switch   keepAppRunningSwitch;
+    private Switch   fcmPushSwitch;
     private View     clearCacheButton;
     private View     resetDefaultsButton;
     private View     languageButton;
@@ -72,6 +75,7 @@ public class SettingActivity extends AppCompatActivity {
         autoRefreshSwitch    = findViewById(R.id.autoRefreshSwitch);
         autoStreamSwitch     = findViewById(R.id.autoStreamSwitch);
         keepAppRunningSwitch = findViewById(R.id.keepAppRunningSwitch);
+        fcmPushSwitch        = findViewById(R.id.fcmPushSwitch);
         clearCacheButton     = findViewById(R.id.clearCacheButton);
         resetDefaultsButton  = findViewById(R.id.resetDefaultsButton);
         languageButton       = findViewById(R.id.languageButton);
@@ -83,6 +87,7 @@ public class SettingActivity extends AppCompatActivity {
         autoRefreshSwitch.setChecked(sharedPrefs.getAutoRefreshEnabled());
         autoStreamSwitch.setChecked(sharedPrefs.getAutoStreamEnabled());
         keepAppRunningSwitch.setChecked(sharedPrefs.getKeepAppRunning());
+        fcmPushSwitch.setChecked(sharedPrefs.getFcmPushEnabled());
         updateLanguageLabel();
     }
 
@@ -127,6 +132,34 @@ public class SettingActivity extends AppCompatActivity {
                 sharedPrefs.setKeepAppRunning(isChecked);
                 Toast.makeText(SettingActivity.this,
                     getString(isChecked ? R.string.toast_keep_running_enabled : R.string.toast_keep_running_disabled),
+                    Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        fcmPushSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton b, boolean isChecked) {
+                sharedPrefs.setFcmPushEnabled(isChecked);
+
+                /* Sync FCM auto-init with the new preference. */
+                FirebaseMessaging.getInstance().setAutoInitEnabled(isChecked);
+
+                if (isChecked && sharedPrefs.hasRealtimeConfig()) {
+                    /* Re-fetch token and register with backend when the user opts in. */
+                    FirebaseMessaging.getInstance().getToken()
+                        .addOnSuccessListener(token -> {
+                            if (token == null || token.isEmpty()) return;
+                            sharedPrefs.setFcmToken(token);
+                            FcmTokenApiService.register(
+                                SettingActivity.this,
+                                sharedPrefs.getRealtimeConfig(),
+                                token,
+                                null
+                            );
+                        });
+                }
+
+                Toast.makeText(SettingActivity.this,
+                    getString(isChecked ? R.string.toast_fcm_push_enabled : R.string.toast_fcm_push_disabled),
                     Toast.LENGTH_SHORT).show();
             }
         });

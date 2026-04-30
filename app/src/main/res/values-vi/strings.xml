@@ -126,4 +126,12 @@
     <string name="welcome_btn_continue">Tiếp tục</string>
     <string name="menu_feedback">Phản hồi</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- Thong bao FCM push -->
+    <string name="label_fcm_push">Thông báo đẩy (FCM)</string>
+    <string name="desc_fcm_push">Nhận cảnh báo ngay cả khi ứng dụng đã đóng, qua Firebase Cloud Messaging</string>
+    <string name="toast_fcm_push_enabled">Đã bật thông báo đẩy</string>
+    <string name="toast_fcm_push_disabled">Đã tắt thông báo đẩy</string>
+    <string name="notif_channel_fcm_push_name">Cảnh báo đẩy</string>
+    <string name="notif_channel_fcm_push_desc">Cảnh báo khí gas qua Firebase Cloud Messaging</string>
 </resources>

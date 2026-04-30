@@ -22,6 +22,7 @@ public class NotificationChannelManager {
     public static final String CHANNEL_FOREGROUND = "foreground_service";
     public static final String CHANNEL_GAS_ALERT  = "gas_alert";
     public static final String CHANNEL_STATUS      = "gas_status";
+    public static final String CHANNEL_FCM_PUSH    = "fcm_push";
 
     public static void createChannels(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -31,6 +32,7 @@ public class NotificationChannelManager {
                 createForegroundChannel(context, manager);
                 createAlertChannel(context, manager);
                 createStatusChannel(context, manager);
+                createFcmPushChannel(context, manager);
             }
         }
     }
@@ -73,6 +75,20 @@ public class NotificationChannelManager {
             );
             channel.setDescription(context.getString(R.string.notif_channel_status_desc));
             channel.enableVibration(false);
+            manager.createNotificationChannel(channel);
+        }
+    }
+
+    private static void createFcmPushChannel(Context context, NotificationManager manager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                CHANNEL_FCM_PUSH,
+                context.getString(R.string.notif_channel_fcm_push_name),
+                NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription(context.getString(R.string.notif_channel_fcm_push_desc));
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{0, 500, 200, 500});
             manager.createNotificationChannel(channel);
         }
     }
