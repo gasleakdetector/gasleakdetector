@@ -129,7 +129,7 @@
 
     <!-- Notifications push FCM -->
     <string name="label_fcm_push">Notifications push (FCM)</string>
-    <string name="desc_fcm_push">Recevez des alertes même lorsque l'application est fermée, via Firebase Cloud Messaging</string>
+    <string name="desc_fcm_push">Recevez des alertes même lorsque l\'application est fermée, via Firebase Cloud Messaging</string>
     <string name="toast_fcm_push_enabled">Notifications push activées</string>
     <string name="toast_fcm_push_disabled">Notifications push désactivées</string>
     <string name="notif_channel_fcm_push_name">Alertes push</string>
