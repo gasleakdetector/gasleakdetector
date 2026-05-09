@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-09
  */
 package com.gasleakdetector.notification;
 
@@ -45,6 +45,25 @@ public class GasNotificationHelper {
     public void showAlert(GasStatus status) {
         if (status.isDanger())       showDangerNotification(status);
         else if (status.isWarning()) showWarningNotification(status);
+    }
+
+    /** Posts an alert sourced from an FCM push message on the dedicated FCM channel. */
+    public void showFcmAlert(GasStatus status) {
+        if (status.isDanger()) {
+            notificationManager.notify(nextAlertId.getAndIncrement(), buildNotification(
+                NotificationChannelManager.CHANNEL_FCM_PUSH,
+                context.getString(R.string.notif_danger_title),
+                status.getMessage() + "\n" + getCurrentDateTime(),
+                Notification.PRIORITY_MAX
+            ));
+        } else if (status.isWarning()) {
+            notificationManager.notify(nextAlertId.getAndIncrement(), buildNotification(
+                NotificationChannelManager.CHANNEL_FCM_PUSH,
+                context.getString(R.string.notif_warning_title),
+                status.getMessage() + "\n" + getCurrentDateTime(),
+                Notification.PRIORITY_HIGH
+            ));
+        }
     }
 
     private void showDangerNotification(GasStatus status) {
