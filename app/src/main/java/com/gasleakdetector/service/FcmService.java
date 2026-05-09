@@ -6,10 +6,11 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-29
+ * Modified: 2026-05-09
  */
 package com.gasleakdetector.service;
 
+import android.content.Context;
 import android.util.Log;
 import com.gasleakdetector.R;
 import com.gasleakdetector.data.api.FcmTokenApiService;
@@ -107,7 +108,7 @@ public class FcmService extends FirebaseMessagingService {
 
         String    device = data.containsKey(KEY_DEVICE_ID) ? data.get(KEY_DEVICE_ID) : "";
         GasStatus status = buildStatus(ppm, level, device);
-        new GasNotificationHelper(getApplicationContext()).showAlert(status);
+        new GasNotificationHelper(getApplicationContext()).showFcmAlert(status);
         Log.d(TAG, "FCM alert posted: " + ppm + " ppm, level=" + level);
     }
 
@@ -128,10 +129,11 @@ public class FcmService extends FirebaseMessagingService {
 
     /** Builds a GasStatus from the FCM payload for use in a local notification. */
     private GasStatus buildStatus(int ppm, int level, String deviceId) {
+        Context ctx    = getApplicationContext();
         String prefix  = (deviceId != null && !deviceId.isEmpty()) ? "[" + deviceId + "] " : "";
         String message = (level == GasStatus.LEVEL_DANGER)
-            ? prefix + getString(R.string.msg_danger,  ppm)
-            : prefix + getString(R.string.msg_warning, ppm);
+            ? prefix + ctx.getString(R.string.msg_danger,  ppm)
+            : prefix + ctx.getString(R.string.msg_warning, ppm);
         return new GasStatus(level, ppm, System.currentTimeMillis(), message);
     }
 }
