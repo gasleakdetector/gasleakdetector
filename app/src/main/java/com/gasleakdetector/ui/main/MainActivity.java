@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-05-11
  */
 package com.gasleakdetector.ui.main;
 
@@ -41,6 +41,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.gasleakdetector.R;
 import com.gasleakdetector.app.GasLeakApplication;
+import com.gasleakdetector.data.api.FcmTokenApiService;
 import com.gasleakdetector.data.api.HistoricalApiService;
 import com.gasleakdetector.data.local.LocalDataStorage;
 import com.gasleakdetector.data.model.GasStatus;
@@ -510,6 +511,18 @@ public class MainActivity extends AppCompatActivity
                 boolean configChanged = !newConfig.hasSameParams(currentConfig);
                 sharedPrefs.saveRealtimeConfig(newConfig);
                 Toast.makeText(MainActivity.this, getString(R.string.config_saved), Toast.LENGTH_SHORT).show();
+
+                /* Re-register FCM token whenever config is saved so the server
+                 * always has a valid token — covers first-run and config changes. */
+                String fcmToken = sharedPrefs.getFcmToken();
+                if (sharedPrefs.getFcmPushEnabled() && !fcmToken.isEmpty()) {
+                    FcmTokenApiService.register(
+                        MainActivity.this,
+                        newConfig,
+                        fcmToken,
+                        null /* fire-and-forget */
+                    );
+                }
 
                 if (!configChanged) return;
 
