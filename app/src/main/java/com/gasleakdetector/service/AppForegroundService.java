@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-17
  */
 package com.gasleakdetector.service;
 
@@ -57,7 +57,6 @@ public class AppForegroundService extends Service {
         if (ACTION_EXIT.equals(action)) {
             stopForeground(true);
             stopSelf();
-            android.os.Process.killProcess(android.os.Process.myPid());
             return START_NOT_STICKY;
         }
 
