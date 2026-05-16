@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-09
+ * Modified: 2026-05-17
  */
 package com.gasleakdetector.service;
 
@@ -56,9 +56,11 @@ public class FcmService extends FirebaseMessagingService {
         Log.d(TAG, "FCM token refreshed");
 
         SharedPrefs prefs = new SharedPrefs(getApplicationContext());
+
+        /* Always persist the latest token so onConfigSaved() can pick it up
+         * even if the user has not finished setup yet when the token rotates. */
         prefs.setFcmToken(token);
 
-        /* Only register when the user has FCM push enabled and a config is present. */
         if (prefs.getFcmPushEnabled() && prefs.hasRealtimeConfig()) {
             FcmTokenApiService.register(
                 getApplicationContext(),

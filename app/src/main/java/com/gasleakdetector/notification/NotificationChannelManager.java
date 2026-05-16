@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-17
  */
 package com.gasleakdetector.notification;
 
@@ -89,6 +89,8 @@ public class NotificationChannelManager {
             channel.setDescription(context.getString(R.string.notif_channel_fcm_push_desc));
             channel.enableVibration(true);
             channel.setVibrationPattern(new long[]{0, 500, 200, 500});
+            /* Allow FCM alerts to show as heads-up even in battery saver / Doze. */
+            channel.setBypassDnd(true);
             manager.createNotificationChannel(channel);
         }
     }

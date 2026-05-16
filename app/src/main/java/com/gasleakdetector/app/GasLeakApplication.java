@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-17
  */
 package com.gasleakdetector.app;
 
@@ -52,29 +52,40 @@ public class GasLeakApplication extends Application {
     }
 
     /**
-     * Initialises FCM: enables auto-init only when the user has FCM push on,
-     * then fetches the current token and registers it with the backend if a
-     * config is already saved (i.e. not first-run).
+     * Initialises FCM: always enables auto-init and fetches the token so it is
+     * persisted locally before the user finishes setup. Registration with the
+     * backend happens here only when a config is already saved; otherwise
+     * MainActivity.onConfigSaved() will do it immediately after the user saves
+     * their server config for the first time.
      */
     private void initFcm() {
         final SharedPrefs prefs = new SharedPrefs(getApplicationContext());
 
-        /* Honour the manual opt-in flag before letting FCM send the token upstream. */
-        FirebaseMessaging.getInstance().setAutoInitEnabled(prefs.getFcmPushEnabled());
+        if (!prefs.getFcmPushEnabled()) {
+            FirebaseMessaging.getInstance().setAutoInitEnabled(false);
+            return;
+        }
 
-        if (!prefs.getFcmPushEnabled() || !prefs.hasRealtimeConfig()) return;
+        /* Always enable auto-init when FCM push is on so the token is generated
+         * even before the user has entered the server config. */
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
 
         FirebaseMessaging.getInstance().getToken()
             .addOnSuccessListener(token -> {
                 if (token == null || token.isEmpty()) return;
                 Log.d("GasLeakApplication", "FCM token obtained on startup");
                 prefs.setFcmToken(token);
-                FcmTokenApiService.register(
-                    getApplicationContext(),
-                    prefs.getRealtimeConfig(),
-                    token,
-                    null /* fire-and-forget */
-                );
+
+                /* Register with backend only when config is already available.
+                 * First-run case is handled in MainActivity.onConfigSaved(). */
+                if (prefs.hasRealtimeConfig()) {
+                    FcmTokenApiService.register(
+                        getApplicationContext(),
+                        prefs.getRealtimeConfig(),
+                        token,
+                        null /* fire-and-forget */
+                    );
+                }
             })
             .addOnFailureListener(e ->
                 Log.w("GasLeakApplication", "FCM getToken failed: " + e.getMessage())
