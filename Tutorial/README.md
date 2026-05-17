@@ -4,7 +4,13 @@ Complete setup guide for the Gas Leak Detector project. This document covers all
 
 <div align="center">
 	<p>English&nbsp;&nbsp;|&nbsp;&nbsp;
-	    <a target="_blank" href="README-vi.md">Vietnamese</a>&nbsp;&nbsp&nbsp;&nbsp;
+	    <a target="_blank" href="README-vi.md">Tiếng Việt</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-es.md">Español</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-fr.md">Français</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-ja.md">日本語</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-ko.md">한국어</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-zh.md">中文</a>
 </div>
 
 ## Requirements
