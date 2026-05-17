@@ -2,6 +2,17 @@
 
 Hướng dẫn đầy đủ để cài đặt dự án Gas Leak Detector. Tài liệu này bao gồm cả bốn thành phần — server backend, Supabase, firmware ESP8266 và ứng dụng Android — theo đúng thứ tự cần thực hiện.
 
+<div align="center">
+	<p><a target="_blank" href="README.md">English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    Tiếng Việt&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-es.md">Español</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-fr.md">Français</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-ja.md">日本語</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-ko.md">한국어</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+	    <a target="_blank" href="README-zh.md">中文</a>
+</div>
+
 ## Yêu Cầu
 
 ### Phần Cứng
