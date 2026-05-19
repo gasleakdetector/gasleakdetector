@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-05-19
  */
 package com.gasleakdetector.ui.main;
 
@@ -588,15 +588,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDataReceived(final int gasPpm, final String status, final String timestamp) {
+    public void onDataReceived(final int gasPpm, final String status, final String timestamp, final String deviceId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 HistoricalDataPoint newPoint = new HistoricalDataPoint();
                 newPoint.setGasPpm(gasPpm);
                 newPoint.setStatus(status);
-                RealtimeConfig activeConfig = sharedPrefs.getRealtimeConfig();
-                if (activeConfig != null) newPoint.setDeviceId(activeConfig.getDeviceId());
+                // Use deviceId from server (record.device_id) if provided, otherwise fallback to config
+                if (deviceId != null && !deviceId.isEmpty()) {
+                    newPoint.setDeviceId(deviceId);
+                } else {
+                    RealtimeConfig activeConfig = sharedPrefs.getRealtimeConfig();
+                    if (activeConfig != null) newPoint.setDeviceId(activeConfig.getDeviceId());
+                }
                 newPoint.setCreatedAt(timestamp.isEmpty()
                     ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).format(new Date())
                     : timestamp);
@@ -611,7 +616,8 @@ public class MainActivity extends AppCompatActivity
                 if (!isNodeLocked) {
                     updateUIAnimated(createStatusFromValue(gasPpm, newPoint.getTimestamp()));
                     SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), newPoint.getDeviceId() != null ? newPoint.getDeviceId() : ""));
+                    String displayDeviceId = (newPoint.getDeviceId() != null) ? newPoint.getDeviceId() : "";
+                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), displayDeviceId));
                 }
 
                 /* Send an alert notification when gas level is above normal. */
