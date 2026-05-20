@@ -126,4 +126,7 @@
     <string name="welcome_btn_continue">Tiếp tục</string>
     <string name="menu_feedback">Phản hồi</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="notif_channel_fcm_push_name">Cảnh báo đẩy</string>
+    <string name="notif_channel_fcm_push_desc">Cảnh báo khí gas qua Firebase Cloud Messaging</string>
 </resources>

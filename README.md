@@ -65,9 +65,10 @@ You can view a detailed guide on how to set up the entire project [Here](Tutoria
 - [x] First-run intro screen — shown once, skipped on all subsequent launches
 - [x] Feedback — one-tap email prefilled with app version in the subject
 - [x] Internationalization — 8 languages: English, Vietnamese, German, Spanish, French, Japanese, Korean, Chinese
-- [ ] Widget
+- [x] **Push Notifications via FCM** — receive danger/warning alerts even when the app is fully killed; FCM token auto-registered with backend; user-controlled toggle in Settings
+- [x] Widget
 - [ ] Multi-threshold configuration per device
-- [ ] Push notifications via FCM
+- [x] Push notifications via FCM
 
 ## Data Management
 

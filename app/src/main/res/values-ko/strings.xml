@@ -126,4 +126,7 @@
     <string name="welcome_btn_continue">계속</string>
     <string name="menu_feedback">피드백</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="notif_channel_fcm_push_name">푸시 알림</string>
+    <string name="notif_channel_fcm_push_desc">Firebase Cloud Messaging을 통한 가스 경보</string>
 </resources>

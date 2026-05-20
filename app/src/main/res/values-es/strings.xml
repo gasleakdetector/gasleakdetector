@@ -126,4 +126,7 @@
     <string name="welcome_btn_continue">Continuar</string>
     <string name="menu_feedback">Comentarios</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="notif_channel_fcm_push_name">Alertas push</string>
+    <string name="notif_channel_fcm_push_desc">Alertas de gas enviadas a través de Firebase Cloud Messaging</string>
 </resources>

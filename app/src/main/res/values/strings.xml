@@ -129,6 +129,9 @@
     <string name="notif_warning_title">Gas Warning</string>
     <string name="notif_status_title">Gas Monitor Status</string>
     <string name="wakelock_tag">GasLeak:KeepAppRunning</string>
+
+    <string name="notif_channel_fcm_push_name">Push Alerts</string>
+    <string name="notif_channel_fcm_push_desc">Gas alerts delivered via Firebase Cloud Messaging</string>
     <string name="chart_empty_message">Waiting for data\u2026</string>
 
     <!-- Statistics fragment -->

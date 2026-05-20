@@ -126,4 +126,7 @@
     <string name="welcome_btn_continue">继续</string>
     <string name="menu_feedback">反馈</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="notif_channel_fcm_push_name">推送警报</string>
+    <string name="notif_channel_fcm_push_desc">通过 Firebase Cloud Messaging 发送的气体警报</string>
 </resources>
