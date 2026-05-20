@@ -197,6 +197,17 @@ Appuyez sur **Save**. L'application se connectera et commencera à afficher les 
 
 ---
 
+> ❕ Dans la version stable actuelle, l'application ne prend en charge les **alertes push que lorsqu'elle tourne en arrière-plan**.
+> 
+> Si tu veux recevoir des notifications **même quand l'application est complètement fermée**, consulte les branches de développement ci-dessous :
+> 
+> * [Branche Android avec FCM](https://github.com/gasleakdetector/gasleakdetector/tree/feature/fcm-push-notification)
+> * [Branche serveur avec support FCM](https://github.com/gasleakdetector/gasleakdetector-server/tree/feature/fcm-push-notification)
+> 
+> **Remarque :** Pour des raisons de sécurité et de configuration (un fichier `google-services.json` personnel est requis), ces branches ne peuvent pas être fusionnées dans la branche principale. La fonctionnalité est encore en développement. Tu peux ignorer ceci si ce n'est pas pertinent pour toi 😊.
+
+---
+
 ## Dépannage
 
 **L'ESP ne se connecte pas au Wi-Fi** — vérifiez le SSID et le mot de passe dans le portail captif. Maintenez le bouton appuyé pendant 5 secondes pour réinitialiser aux paramètres d'usine et reconfigurer.
