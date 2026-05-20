@@ -197,6 +197,17 @@ Nhấn **Save**. Ứng dụng sẽ kết nối và hiển thị dữ liệu theo
 
 ---
 
+> ❕️Ở phiên bản chính hiện tại, dự án chỉ hỗ trợ **cảnh báo đẩy khi ứng dụng đang chạy nền** (chạy ngầm).
+> 
+> Nếu bạn muốn cải thiện để nhận thông báo đẩy **ngay cả khi ứng dụng đã bị đóng (không hoạt động)**, bạn có thể tham khảo các nhánh phụ đang phát triển tính năng FCM (Firebase Cloud Messaging) dưới đây:
+> 
+> *   [Nhánh Android với FCM](https://github.com/gasleakdetector/gasleakdetector/tree/feature/fcm-push-notification)
+> *   [Nhánh Server hỗ trợ FCM](https://github.com/gasleakdetector/gasleakdetector-server/tree/feature/fcm-push-notification)
+> 
+> **Lưu ý quan trọng:** Vì lý do bảo mật và cấu hình dịch vụ (cần file cấu hình `google-services.json` riêng), các nhánh này **không thể hợp nhất vào nhánh chính**. Tính năng này vẫn đang trong quá trình phát triển (có thể sẽ có hướng dẫn chi tiết hơn trong tương lai). Bạn có thể bỏ qua thông báo này nếu cảm thấy không cần thiết 😊.
+
+---
+
 ## Xử Lý Sự Cố
 
 **ESP không kết nối được Wi-Fi** — kiểm tra lại SSID và mật khẩu trong captive portal. Giữ nút 5 giây để reset về mặc định và cài đặt lại.
