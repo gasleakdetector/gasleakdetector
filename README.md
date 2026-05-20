@@ -3,11 +3,11 @@
 </p>
 
 <p align="center">
-  <img alt="License" src="https://img.shields.io/github/license/gasleakdetector/gasleakdetector?color=4A7C59&style=flat-square"/>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.2-4A7C59?style=flat-square"/>
-  <img alt="Min SDK" src="https://img.shields.io/badge/min%20SDK-21-4A7C59?style=flat-square&logo=android"/>
-  <img alt="Build" src="https://img.shields.io/github/actions/workflow/status/gasleakdetector/gasleakdetector/build.yml?style=flat-square&color=4A7C59"/>
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/gasleakdetector/gasleakdetector?color=4A7C59&style=flat-square"/>
+  <img alt="License" src="https://img.shields.io/github/license/gasleakdetector/gasleakdetector?color=04A8F4&style=flat-square"/>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.2-04A8F4?style=flat-square"/>
+  <img alt="Min SDK" src="https://img.shields.io/badge/min%20SDK-21-04A8F4?style=flat-square&logo=android"/>
+  <img alt="Build" src="https://img.shields.io/github/actions/workflow/status/gasleakdetector/gasleakdetector/build.yml?style=flat-square&color=04A8F4"/>
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/gasleakdetector/gasleakdetector?color=04A8F4&style=flat-square"/>
 </p>
 
 <div align="center">    
@@ -119,7 +119,7 @@ The app fetches Supabase credentials automatically from `/api/realtime-config` â
 
 Download the latest APK from the [Releases](https://github.com/gasleakdetector/gasleakdetector/releases) page.
 
-[<img src="https://img.shields.io/github/v/release/gasleakdetector/gasleakdetector?style=for-the-badge&color=4A7C59&label=Latest+Release" alt="Latest Release"/>](https://github.com/gasleakdetector/gasleakdetector/releases/latest)
+[<img src="https://img.shields.io/github/v/release/gasleakdetector/gasleakdetector?style=for-the-badge&color=04A8F4&label=Latest+Release" alt="Latest Release"/>](https://github.com/gasleakdetector/gasleakdetector/releases/latest)
 
 Each release includes a signed debug APK and the full source snapshot. CI builds are triggered automatically on every push via [GitHub Actions](https://github.com/gasleakdetector/gasleakdetector/actions).
 
