@@ -92,7 +92,7 @@
     <string name="reset_defaults_title">기본값으로 초기화</string>
     <string name="reset_defaults_message">모든 설정이 기본값으로 초기화됩니다.\n\n계속하시겠습니까?</string>
     <string name="about_title">앱 정보</string>
-    <string name="about_version_fmt">Version %s</string>
+    <string name="about_version_fmt">버전 %s</string>
     <string name="about_section_about">소개</string>
     <string name="about_description">Gas Leak Detector는 11a9이 개발한 오픈소스 가스 누출 모니터링 앱입니다. ESP8266과 MQ-6 사용.</string>
     <string name="about_section_features">기능</string>
