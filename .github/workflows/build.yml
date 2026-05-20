@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, feature/fcm-push-notification]
   pull_request:
     branches: [main, master]
   workflow_dispatch:
@@ -22,13 +22,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle 7.5
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '7.5'
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build debug APK
-        run: gradle assembleDebug --no-daemon
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Decode keystore
         env:
@@ -41,7 +39,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle assembleRelease --no-daemon
+        run: ./gradlew assembleRelease --no-daemon
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
