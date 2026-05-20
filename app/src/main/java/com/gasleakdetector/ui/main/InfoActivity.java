@@ -6,14 +6,16 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-20
  */
 package com.gasleakdetector.ui.main;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import com.gasleakdetector.BuildConfig;
 import com.gasleakdetector.R;
 import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.util.LocaleHelper;
@@ -32,6 +34,10 @@ public class InfoActivity extends AppCompatActivity {
         ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+        ((TextView) findViewById(R.id.tvVersion))
+            .setText(getString(R.string.about_version_fmt, BuildConfig.VERSION_NAME));
+
         findViewById(R.id.btnBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
