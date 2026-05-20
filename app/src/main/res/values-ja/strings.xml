@@ -92,7 +92,7 @@
     <string name="reset_defaults_title">デフォルトにリセット</string>
     <string name="reset_defaults_message">すべての設定がデフォルト値にリセットされます。\n\n続行しますか？</string>
     <string name="about_title">このアプリについて</string>
-    <string name="about_version_fmt">Version %s</string>
+    <string name="about_version_fmt">バージョン %s</string>
     <string name="about_section_about">概要</string>
     <string name="about_description">Gas Leak Detectorは11a9が開発したオープンソースのガス漏れ監視アプリです。ESP8266とMQ-6を使用。</string>
     <string name="about_section_features">機能</string>
