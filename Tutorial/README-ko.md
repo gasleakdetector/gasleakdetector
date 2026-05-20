@@ -197,6 +197,17 @@ Vercel의 `SUPABASE_ANON_KEY`와 `SUPABASE_SERVICE_KEY`에 할당합니다. `SUP
 
 ---
 
+> ❕ 현재 안정 버전에서는 **앱이 백그라운드에서 실행 중일 때만** 푸시 알림을 지원합니다.
+> 
+> **앱을 완전히 종료한 상태에서도 알림을 받고 싶다면** 아래 개발 브랜치를 참고하세요:
+> 
+> * [FCM 지원 Android 브랜치](https://github.com/gasleakdetector/gasleakdetector/tree/feature/fcm-push-notification)
+> * [FCM 지원 서버 브랜치](https://github.com/gasleakdetector/gasleakdetector-server/tree/feature/fcm-push-notification)
+> 
+> **참고:** 보안 및 서비스 설정 요건(개인 `google-services.json` 파일 필요)으로 인해 이 브랜치들은 메인 브랜치에 병합할 수 없습니다. 해당 기능은 아직 개발 중입니다. 필요하지 않다면 이 메시지는 무시해도 좋습니다 😊.
+
+---
+
 ## 문제 해결
 
 **ESP가 Wi-Fi에 연결되지 않는 경우** — 캡티브 포털에서 SSID와 비밀번호를 다시 확인하세요. 버튼을 5초간 누르면 공장 초기화되어 재설정할 수 있습니다.
