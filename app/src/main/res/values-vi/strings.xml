@@ -92,7 +92,7 @@
     <string name="reset_defaults_title">Khôi phục mặc định</string>
     <string name="reset_defaults_message">Thao tác này sẽ đặt lại tất cả cài đặt về mặc định.\n\nTiếp tục?</string>
     <string name="about_title">Giới thiệu</string>
-    <string name="about_version">Phiên bản 1.0</string>
+    <string name="about_version_fmt">Version %s</string>
     <string name="about_section_about">Giới thiệu</string>
     <string name="about_description">Gas Leak Detector là ứng dụng theo dõi rò rỉ khí gas mã Mã nguồn mở được phát triển bởi 11a9. Sử dụng ESP8266 và MQ-6.</string>
     <string name="about_section_features">Tính năng</string>

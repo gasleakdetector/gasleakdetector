@@ -100,7 +100,7 @@
 
     <!-- About screen -->
     <string name="about_title">About</string>
-    <string name="about_version">Version 1.0</string>
+    <string name="about_version_fmt">Version %s</string>
     <string name="about_section_about">About</string>
     <string name="about_description">Gas Leak Detector is an open-source gas leak monitoring app developed by 11a9. Uses ESP8266 and MQ-6.</string>
     <string name="about_section_features">Features</string>

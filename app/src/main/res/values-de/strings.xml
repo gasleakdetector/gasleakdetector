@@ -92,7 +92,7 @@
     <string name="reset_defaults_title">Auf Standardwerte zurücksetzen</string>
     <string name="reset_defaults_message">Alle Einstellungen werden auf Standardwerte zurückgesetzt.\n\nFortfahren?</string>
     <string name="about_title">Über die App</string>
-    <string name="about_version">Version 1.0</string>
+    <string name="about_version_fmt">Version %s</string>
     <string name="about_section_about">Über</string>
     <string name="about_description">Gas Leak Detector ist eine Open-Source-App zur Gasleck-Überwachung, entwickelt von 11a9. Verwendet ESP8266 und MQ-6.</string>
     <string name="about_section_features">Funktionen</string>

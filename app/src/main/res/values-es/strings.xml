@@ -92,7 +92,7 @@
     <string name="reset_defaults_title">Restablecer valores predeterminados</string>
     <string name="reset_defaults_message">Todos los ajustes se restablecerán a sus valores predeterminados.\n\n¿Continuar?</string>
     <string name="about_title">Acerca de</string>
-    <string name="about_version">Versión 1.0</string>
+    <string name="about_version_fmt">Version %s</string>
     <string name="about_section_about">Acerca de</string>
     <string name="about_description">Gas Leak Detector es una app de código abierto para monitoreo de fugas de gas desarrollada por 11a9. Usa ESP8266 y MQ-6.</string>
     <string name="about_section_features">Características</string>
