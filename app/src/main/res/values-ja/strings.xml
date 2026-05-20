@@ -126,4 +126,14 @@
     <string name="welcome_btn_continue">続ける</string>
     <string name="menu_feedback">フィードバック</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="section_thresholds">ガス閾値</string>
+    <string name="label_warning_threshold">警告閾値</string>
+    <string name="desc_warning_threshold">ガス濃度が上昇した際の警告レベル</string>
+    <string name="label_danger_threshold">危険閾値</string>
+    <string name="desc_danger_threshold">ガス濃度が危険な際の警告レベル</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">閾値を保存しました</string>
+    <string name="toast_threshold_invalid">警告値は危険値より低くしてください</string>
+
 </resources>

@@ -260,6 +260,121 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/section_thresholds"
+                android:textSize="18sp"
+                android:textColor="@color/onBackgroundDark"
+                android:textStyle="bold"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/warningThresholdButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surfaceDark"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_warning_threshold"
+                        android:textSize="16sp"
+                        android:textColor="@color/onBackgroundDark"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desc_warning_threshold"
+                        android:textSize="12sp"
+                        android:textColor="@color/onBackgroundDark"
+                        android:alpha="0.6"
+                        android:paddingTop="2dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/warningThresholdValueText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.6"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chevron"
+                    android:textSize="20sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.5"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dangerThresholdButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surfaceDark"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_danger_threshold"
+                        android:textSize="16sp"
+                        android:textColor="@color/onBackgroundDark"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desc_danger_threshold"
+                        android:textSize="12sp"
+                        android:textColor="@color/onBackgroundDark"
+                        android:alpha="0.6"
+                        android:paddingTop="2dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/dangerThresholdValueText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.6"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chevron"
+                    android:textSize="20sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.5"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/section_advanced"
                 android:textSize="18sp"
                 android:textColor="@color/onBackgroundDark"

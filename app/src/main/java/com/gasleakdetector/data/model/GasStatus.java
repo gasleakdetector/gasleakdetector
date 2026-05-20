@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-20
  */
 package com.gasleakdetector.data.model;
 
@@ -16,10 +16,9 @@ public class GasStatus {
     public static final int LEVEL_WARNING = 1;
     public static final int LEVEL_DANGER  = 2;
 
-    /* Concentration thresholds — single source of truth;
-     * referenced by gauge, chart, and notifications. */
-    public static final int WARNING_THRESHOLD = 300;
-    public static final int DANGER_THRESHOLD  = 800;
+    /* Default concentration thresholds — used when the user has not customised them. */
+    public static final int DEFAULT_WARNING_THRESHOLD = 300;
+    public static final int DEFAULT_DANGER_THRESHOLD  = 800;
 
     private final int    level;
     private final int    concentration;
@@ -34,12 +33,20 @@ public class GasStatus {
     }
 
     /**
-     * Derives a level constant from a raw ppm value.
-     * All code should call this instead of duplicating the threshold comparison.
+     * Derives a level constant from a raw ppm value using default thresholds.
+     * Prefer {@link #calculateLevel(int, int, int)} when user-configured values are available.
      */
     public static int calculateLevel(int ppm) {
-        if (ppm >= DANGER_THRESHOLD)  return LEVEL_DANGER;
-        if (ppm >= WARNING_THRESHOLD) return LEVEL_WARNING;
+        return calculateLevel(ppm, DEFAULT_WARNING_THRESHOLD, DEFAULT_DANGER_THRESHOLD);
+    }
+
+    /**
+     * Derives a level constant from a raw ppm value using caller-supplied thresholds.
+     * Use this overload everywhere the user may have configured custom values.
+     */
+    public static int calculateLevel(int ppm, int warningThreshold, int dangerThreshold) {
+        if (ppm >= dangerThreshold)  return LEVEL_DANGER;
+        if (ppm >= warningThreshold) return LEVEL_WARNING;
         return LEVEL_NORMAL;
     }
 
