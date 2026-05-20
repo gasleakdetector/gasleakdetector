@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-19
  */
 package com.gasleakdetector.data.websocket;
 
@@ -52,7 +52,7 @@ public class WebSocketManager {
     public interface Callback {
         void onConnected();
         void onDisconnected();
-        void onDataReceived(int gasPpm, String status, String timestamp);
+        void onDataReceived(int gasPpm, String status, String timestamp, String deviceId);
         void onError(String error);
     }
 
@@ -329,12 +329,13 @@ public class WebSocketManager {
                 final int    gasPpm    = record.optInt("gas_ppm", 0);
                 final String status    = record.optString("status", "normal");
                 final String timestamp = record.optString("created_at", "");
+                final String deviceId  = record.optString("device_id", "");
 
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         Callback cb = callbackRef.get();
-                        if (cb != null) cb.onDataReceived(gasPpm, status, timestamp);
+                        if (cb != null) cb.onDataReceived(gasPpm, status, timestamp, deviceId);
                     }
                 });
 

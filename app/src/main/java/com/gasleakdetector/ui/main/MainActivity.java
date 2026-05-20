@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-05-19
  */
 package com.gasleakdetector.ui.main;
 
@@ -66,12 +66,11 @@ public class MainActivity extends AppCompatActivity
         implements WebSocketManager.Callback, ChartView.OnNodeSelectedListener {
 
     private static final int    TEXT_ANIMATION_DURATION = 500;
-    private static final int    MAX_NODES               = 1000; // #9: cap in-memory list
+    private static final int    MAX_NODES               = 1000;
     private static final String FEEDBACK_EMAIL          = "pan2512811@gmail.com";
-    private static final long   NOTIF_COOLDOWN_MS       = 30_000; // 30-second cooldown between repeated alerts
-
-    /* Key for saving/restoring the historical-loaded flag across config changes. */
+    private static final long   NOTIF_COOLDOWN_MS       = 30_000;
     private static final String STATE_HISTORICAL_LOADED = "historicalLoaded";
+    private static final String DEFAULT_DEVICE_ID       = "ESP_GASLEAK_01";
 
     private CircularGaugeView gaugeView;
     private ChartView         chartView;
@@ -198,7 +197,6 @@ public class MainActivity extends AppCompatActivity
         menuPanel       = findViewById(R.id.menuPanel);
         menuOverlay     = findViewById(R.id.menuOverlay);
 
-        /* Positioned off-screen left; actual offset is set here once the width is known. */
         menuPanel.post(new Runnable() {
             @Override public void run() { menuPanel.setTranslationX(-menuPanel.getWidth()); }
         });
@@ -284,7 +282,6 @@ public class MainActivity extends AppCompatActivity
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
             if (powerManager != null) {
-                // #15: release any existing lock before creating a new one to prevent leaks on recreation
                 if (wakeLock != null && wakeLock.isHeld()) {
                     wakeLock.release();
                 }
@@ -292,7 +289,7 @@ public class MainActivity extends AppCompatActivity
                     PowerManager.PARTIAL_WAKE_LOCK,
                     getString(R.string.wakelock_tag)
                 );
-                wakeLock.acquire(); // no hard-coded timeout — released explicitly in onDestroy
+                wakeLock.acquire();
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -313,7 +310,11 @@ public class MainActivity extends AppCompatActivity
             nodeInfoText.setText(getString(R.string.cache_empty));
             return;
         }
+        // Ensure each cached point has a non-empty deviceId
         for (HistoricalDataPoint point : cached) {
+            if (point.getDeviceId() == null || point.getDeviceId().isEmpty()) {
+                point.setDeviceId(getDefaultDeviceId());
+            }
             chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
         }
         dataPoints.clear();
@@ -385,6 +386,9 @@ public class MainActivity extends AppCompatActivity
         }
         chartView.clearData();
         for (HistoricalDataPoint point : points) {
+            if (point.getDeviceId() == null || point.getDeviceId().isEmpty()) {
+                point.setDeviceId(getDefaultDeviceId());
+            }
             chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
         }
         dataPoints.clear();
@@ -404,6 +408,9 @@ public class MainActivity extends AppCompatActivity
         app.setHistoricalDataLoaded(true);
         chartView.clearData();
         for (HistoricalDataPoint point : points) {
+            if (point.getDeviceId() == null || point.getDeviceId().isEmpty()) {
+                point.setDeviceId(getDefaultDeviceId());
+            }
             chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
         }
         dataPoints.clear();
@@ -426,7 +433,9 @@ public class MainActivity extends AppCompatActivity
         HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
         updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
         SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), last.getDeviceId() != null ? last.getDeviceId() : ""));
+        String deviceId = (last.getDeviceId() != null && !last.getDeviceId().isEmpty())
+                ? last.getDeviceId() : getDefaultDeviceId();
+        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), deviceId));
     }
 
     @Override
@@ -567,7 +576,6 @@ public class MainActivity extends AppCompatActivity
                 boolean wasMonitoring = isMonitoring;
                 isMonitoring = true;
                 updatePlayButton();
-                /* Only show the toast on the first connection; suppress it during auto-reconnects. */
                 if (!wasMonitoring) {
                     Toast.makeText(MainActivity.this, getString(R.string.connected), Toast.LENGTH_SHORT).show();
                 }
@@ -580,29 +588,32 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                /* Don't set isMonitoring = false here — the socket reconnects automatically.
-                 * Only flip the flag when the user explicitly presses Stop. */
                 updatePlayButton();
             }
         });
     }
 
     @Override
-    public void onDataReceived(final int gasPpm, final String status, final String timestamp) {
+    public void onDataReceived(final int gasPpm, final String status, final String timestamp, final String deviceId) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 HistoricalDataPoint newPoint = new HistoricalDataPoint();
                 newPoint.setGasPpm(gasPpm);
                 newPoint.setStatus(status);
-                RealtimeConfig activeConfig = sharedPrefs.getRealtimeConfig();
-                if (activeConfig != null) newPoint.setDeviceId(activeConfig.getDeviceId());
+                if (deviceId != null && !deviceId.isEmpty()) {
+                    newPoint.setDeviceId(deviceId);
+                } else {
+                    RealtimeConfig activeConfig = sharedPrefs.getRealtimeConfig();
+                    String id = (activeConfig != null && activeConfig.getDeviceId() != null && !activeConfig.getDeviceId().isEmpty())
+                            ? activeConfig.getDeviceId() : getDefaultDeviceId();
+                    newPoint.setDeviceId(id);
+                }
                 newPoint.setCreatedAt(timestamp.isEmpty()
                     ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).format(new Date())
                     : timestamp);
                 chartView.addDataPointWithTimestamp(gasPpm, newPoint.getTimestamp());
                 dataPoints.add(newPoint);
-                // #9: prevent unbounded in-memory growth — mirror the on-disk cap
                 if (dataPoints.size() > MAX_NODES) {
                     dataPoints.subList(0, dataPoints.size() - MAX_NODES).clear();
                 }
@@ -611,10 +622,10 @@ public class MainActivity extends AppCompatActivity
                 if (!isNodeLocked) {
                     updateUIAnimated(createStatusFromValue(gasPpm, newPoint.getTimestamp()));
                     SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), newPoint.getDeviceId() != null ? newPoint.getDeviceId() : ""));
+                    String displayDeviceId = (newPoint.getDeviceId() != null) ? newPoint.getDeviceId() : getDefaultDeviceId();
+                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), displayDeviceId));
                 }
 
-                /* Send an alert notification when gas level is above normal. */
                 GasStatus liveStatus = createStatusFromValue(gasPpm, newPoint.getTimestamp());
                 if (sharedPrefs.getNotificationsEnabled() && !liveStatus.isNormal()) {
                     long now             = System.currentTimeMillis();
@@ -660,8 +671,11 @@ public class MainActivity extends AppCompatActivity
             isNodeLocked      = true;
             selectedNodeIndex = index;
             SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
-            String selectedDeviceId = (index >= 0 && index < dataPoints.size() && dataPoints.get(index).getDeviceId() != null)
-                    ? dataPoints.get(index).getDeviceId() : "";
+            String selectedDeviceId = getDefaultDeviceId();
+            if (index >= 0 && index < dataPoints.size()) {
+                String id = dataPoints.get(index).getDeviceId();
+                if (id != null && !id.isEmpty()) selectedDeviceId = id;
+            }
             nodeInfoText.setText(getString(R.string.value_at_time, value, fmt.format(new Date(timestamp)), selectedDeviceId));
             updateUIAnimated(createStatusFromValue(value, timestamp));
         }
@@ -745,6 +759,14 @@ public class MainActivity extends AppCompatActivity
             case GasStatus.LEVEL_DANGER:  return R.color.statusDanger;
             default:                      return R.color.statusNormal;
         }
+    }
+
+    private String getDefaultDeviceId() {
+        RealtimeConfig cfg = sharedPrefs.getRealtimeConfig();
+        if (cfg != null && cfg.getDeviceId() != null && !cfg.getDeviceId().isEmpty()) {
+            return cfg.getDeviceId();
+        }
+        return DEFAULT_DEVICE_ID;
     }
 
     @Override
