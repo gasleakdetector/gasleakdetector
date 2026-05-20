@@ -197,6 +197,17 @@ Tippen Sie auf **Save**. Die App verbindet sich und zeigt Live-Messwerte an.
 
 ---
 
+> ❕ In der aktuellen stabilen Version unterstützt die App **Push-Benachrichtigungen nur, solange die App im Hintergrund läuft**.
+> 
+> Wenn du Benachrichtigungen **auch nach dem vollständigen Schließen der App** erhalten möchtest, findest du hier die entsprechenden Entwicklungszweige:
+> 
+> * [Android-Branch mit FCM](https://github.com/gasleakdetector/gasleakdetector/tree/feature/fcm-push-notification)
+> * [Server-Branch mit FCM-Unterstützung](https://github.com/gasleakdetector/gasleakdetector-server/tree/feature/fcm-push-notification)
+> 
+> **Hinweis:** Aufgrund von Sicherheits- und Konfigurationsanforderungen (eine eigene `google-services.json` wird benötigt) können diese Branches nicht in den Hauptzweig gemergt werden. Das Feature ist noch in Entwicklung. Du kannst diesen Hinweis ignorieren, wenn er für dich nicht relevant ist 😊.
+
+---
+
 ## Fehlerbehebung
 
 **ESP verbindet sich nicht mit WLAN** — überprüfen Sie SSID und Passwort im Captive Portal. Halten Sie die Taste 5 Sekunden gedrückt, um auf Werkseinstellungen zurückzusetzen und neu zu konfigurieren.
