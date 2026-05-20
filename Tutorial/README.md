@@ -197,6 +197,17 @@ Tap **Save**. The app will connect and begin displaying live readings.
 
 ---
 
+> ❕ In the current stable version, the app only supports **push alerts while the app is running in the background**.
+> 
+> If you'd like to receive push notifications **even when the app is fully closed**, check out the feature branches below:
+> 
+> * [Android branch with FCM](https://github.com/gasleakdetector/gasleakdetector/tree/feature/fcm-push-notification)
+> * [Server branch with FCM support](https://github.com/gasleakdetector/gasleakdetector-server/tree/feature/fcm-push-notification)
+> 
+> **Note:** Due to security and service configuration requirements (a private `google-services.json` is needed), these branches cannot be merged into main. The feature is still in development. Feel free to ignore this if it's not relevant to you 😊.
+
+---
+
 ## Troubleshooting
 
 **ESP not connecting to Wi-Fi** — double-check SSID and password in the captive portal. Hold the button for 5 seconds to factory reset and reconfigure.
