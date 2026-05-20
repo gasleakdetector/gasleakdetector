@@ -126,4 +126,14 @@
     <string name="welcome_btn_continue">Weiter</string>
     <string name="menu_feedback">Feedback</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="section_thresholds">Gasschwellenwerte</string>
+    <string name="label_warning_threshold">Warnschwelle</string>
+    <string name="desc_warning_threshold">Warnstufe bei erhöhter Gaskonzentration</string>
+    <string name="label_danger_threshold">Gefahrenschwelle</string>
+    <string name="desc_danger_threshold">Warnstufe bei gefährlicher Gaskonzentration</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">Schwellenwert gespeichert</string>
+    <string name="toast_threshold_invalid">Warnung muss kleiner als Gefahr sein</string>
+
 </resources>

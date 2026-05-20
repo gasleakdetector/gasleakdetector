@@ -126,4 +126,14 @@
     <string name="welcome_btn_continue">Continuar</string>
     <string name="menu_feedback">Comentarios</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <string name="section_thresholds">Umbrales de gas</string>
+    <string name="label_warning_threshold">Umbral de advertencia</string>
+    <string name="desc_warning_threshold">Nivel de alerta para concentración elevada</string>
+    <string name="label_danger_threshold">Umbral de peligro</string>
+    <string name="desc_danger_threshold">Nivel de alerta para concentración peligrosa</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">Umbral guardado</string>
+    <string name="toast_threshold_invalid">La advertencia debe ser menor que el peligro</string>
+
 </resources>
