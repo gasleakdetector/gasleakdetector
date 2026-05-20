@@ -92,7 +92,7 @@
     <string name="reset_defaults_title">恢复默认</string>
     <string name="reset_defaults_message">这将把所有设置重置为默认值。\n\n继续？</string>
     <string name="about_title">关于</string>
-    <string name="about_version_fmt">Version %s</string>
+    <string name="about_version_fmt">版本 %s</string>
     <string name="about_section_about">关于</string>
     <string name="about_description">Gas Leak Detector 是由 11a9 开发的开源气体泄漏监测应用，使用 ESP8266 和 MQ-6。</string>
     <string name="about_section_features">功能</string>
