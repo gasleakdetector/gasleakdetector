@@ -54,9 +54,9 @@
                 android:paddingBottom="8dp"/>
 
             <TextView
+                android:id="@+id/tvVersion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/about_version"
                 android:textSize="14sp"
                 android:textColor="@color/onBackgroundDark"
                 android:alpha="0.7"
