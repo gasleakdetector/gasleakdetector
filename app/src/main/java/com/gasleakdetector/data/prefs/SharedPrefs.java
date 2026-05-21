@@ -6,12 +6,13 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-20
  */
 package com.gasleakdetector.data.prefs;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.gasleakdetector.data.model.GasStatus;
 import com.gasleakdetector.data.model.RealtimeConfig;
 
 public class SharedPrefs {
@@ -28,6 +29,8 @@ public class SharedPrefs {
     private static final String KEY_LANGUAGE             = "language";
     private static final String KEY_LAST_FETCH_TIME      = "last_fetch_time";
     private static final String KEY_INTRO_SHOWN          = "intro_shown";
+    private static final String KEY_WARNING_THRESHOLD    = "warning_threshold";
+    private static final String KEY_DANGER_THRESHOLD     = "danger_threshold";
 
     /* Re-fetch historical data if the last fetch is older than this. */
     private static final long REFETCH_INTERVAL_MS = 5 * 60 * 1000L;
@@ -94,6 +97,12 @@ public class SharedPrefs {
     public boolean isIntroShown()       { return prefs.getBoolean(KEY_INTRO_SHOWN, false); }
     public void    setIntroShown(boolean v) { prefs.edit().putBoolean(KEY_INTRO_SHOWN, v).apply(); }
 
+    public int  getWarningThreshold()      { return prefs.getInt(KEY_WARNING_THRESHOLD, GasStatus.WARNING_THRESHOLD); }
+    public void setWarningThreshold(int v) { prefs.edit().putInt(KEY_WARNING_THRESHOLD, v).apply(); }
+
+    public int  getDangerThreshold()      { return prefs.getInt(KEY_DANGER_THRESHOLD, GasStatus.DANGER_THRESHOLD); }
+    public void setDangerThreshold(int v) { prefs.edit().putInt(KEY_DANGER_THRESHOLD, v).apply(); }
+
     public void resetToDefaults() {
         prefs.edit()
             .putInt(KEY_THEME, 1)
@@ -101,6 +110,8 @@ public class SharedPrefs {
             .putBoolean(KEY_AUTO_REFRESH, true)
             .putBoolean(KEY_AUTO_STREAM, true)
             .putBoolean(KEY_KEEP_RUNNING, true)
+            .putInt(KEY_WARNING_THRESHOLD, GasStatus.WARNING_THRESHOLD)
+            .putInt(KEY_DANGER_THRESHOLD,  GasStatus.DANGER_THRESHOLD)
             .apply();
     }
 }
