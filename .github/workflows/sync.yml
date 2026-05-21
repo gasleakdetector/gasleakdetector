@@ -5,9 +5,14 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
       - name: Fork Sync
         uses: tgymnich/fork-sync@v2.0.10
@@ -15,3 +20,5 @@ jobs:
           owner: gasleakdetector
           base: main
           head: main
+          token: ${{ secrets.PAT_TOKEN }}
+          auto_merge: true
