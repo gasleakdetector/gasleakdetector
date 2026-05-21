@@ -148,4 +148,15 @@
     <string name="welcome_btn_continue">Continue</string>
     <string name="menu_feedback">Feedback</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- Gas threshold settings -->
+    <string name="section_thresholds">Gas Thresholds</string>
+    <string name="label_warning_threshold">Warning Threshold</string>
+    <string name="desc_warning_threshold">Gas level (ppm) that triggers a warning alert</string>
+    <string name="label_danger_threshold">Danger Threshold</string>
+    <string name="desc_danger_threshold">Gas level (ppm) that triggers a danger alert</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">Threshold saved</string>
+    <string name="toast_warning_must_be_less_than_danger">Warning threshold must be less than danger threshold</string>
+    <string name="toast_danger_must_be_greater_than_warning">Danger threshold must be greater than warning threshold</string>
 </resources>
