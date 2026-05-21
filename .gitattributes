@@ -1,0 +1,34 @@
+* text=auto
+
+# Gradle / Android
+*.gradle text eol=lf
+*.gradle.kts text eol=lf
+*.java text eol=lf
+*.kt text eol=lf
+*.xml text eol=lf
+*.properties text eol=lf
+*.pro text eol=lf
+
+# Scripts
+gradlew text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+
+# Native libraries / binary
+*.so binary
+*.apk binary
+*.aab binary
+*.keystore binary
+*.jks binary
+
+# Assets
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+
+# Archives
+*.zip binary
+*.jar binary
