@@ -126,4 +126,15 @@
     <string name="welcome_btn_continue">Continuer</string>
     <string name="menu_feedback">Commentaires</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- Gas threshold settings -->
+    <string name="section_thresholds">Seuils de gaz</string>
+    <string name="label_warning_threshold">Seuil d'avertissement</string>
+    <string name="desc_warning_threshold">Concentration de gaz (ppm) déclenchant une alerte d'avertissement</string>
+    <string name="label_danger_threshold">Seuil de danger</string>
+    <string name="desc_danger_threshold">Concentration de gaz (ppm) déclenchant une alerte de danger</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">Seuil enregistré</string>
+    <string name="toast_warning_must_be_less_than_danger">Le seuil d'avertissement doit être inférieur au seuil de danger</string>
+    <string name="toast_danger_must_be_greater_than_warning">Le seuil de danger doit être supérieur au seuil d'avertissement</string>
 </resources>
