@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-20
  */
 package com.gasleakdetector.data.model;
 
@@ -16,8 +16,8 @@ public class GasStatus {
     public static final int LEVEL_WARNING = 1;
     public static final int LEVEL_DANGER  = 2;
 
-    /* Concentration thresholds — single source of truth;
-     * referenced by gauge, chart, and notifications. */
+    /* Default concentration thresholds — single source of truth.
+     * Override via SharedPrefs.getWarningThreshold() / getDangerThreshold(). */
     public static final int WARNING_THRESHOLD = 300;
     public static final int DANGER_THRESHOLD  = 800;
 
@@ -34,12 +34,20 @@ public class GasStatus {
     }
 
     /**
-     * Derives a level constant from a raw ppm value.
-     * All code should call this instead of duplicating the threshold comparison.
+     * Derives a level constant using default thresholds.
+     * Prefer {@link #calculateLevel(int, int, int)} when user-configured thresholds are available.
      */
     public static int calculateLevel(int ppm) {
-        if (ppm >= DANGER_THRESHOLD)  return LEVEL_DANGER;
-        if (ppm >= WARNING_THRESHOLD) return LEVEL_WARNING;
+        return calculateLevel(ppm, WARNING_THRESHOLD, DANGER_THRESHOLD);
+    }
+
+    /**
+     * Derives a level constant using caller-supplied thresholds.
+     * Pass values from SharedPrefs.getWarningThreshold() / getDangerThreshold().
+     */
+    public static int calculateLevel(int ppm, int warningThreshold, int dangerThreshold) {
+        if (ppm >= dangerThreshold)  return LEVEL_DANGER;
+        if (ppm >= warningThreshold) return LEVEL_WARNING;
         return LEVEL_NORMAL;
     }
 
