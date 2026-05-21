@@ -126,4 +126,15 @@
     <string name="welcome_btn_continue">계속</string>
     <string name="menu_feedback">피드백</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- Gas threshold settings -->
+    <string name="section_thresholds">가스 임계값</string>
+    <string name="label_warning_threshold">경고 임계값</string>
+    <string name="desc_warning_threshold">경고 알림을 발생시키는 가스 농도(ppm)</string>
+    <string name="label_danger_threshold">위험 임계값</string>
+    <string name="desc_danger_threshold">위험 알림을 발생시키는 가스 농도(ppm)</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">임계값이 저장되었습니다</string>
+    <string name="toast_warning_must_be_less_than_danger">경고 임계값은 위험 임계값보다 낮아야 합니다</string>
+    <string name="toast_danger_must_be_greater_than_warning">위험 임계값은 경고 임계값보다 높아야 합니다</string>
 </resources>
