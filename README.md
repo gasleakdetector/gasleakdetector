@@ -115,7 +115,7 @@ Open **Settings** in the app and fill in:
 
 The app fetches Supabase credentials automatically from `/api/realtime-config` — no Supabase keys need to be entered manually.
 
-## Release
+## Download
 
 Download the latest APK from the [Releases](https://github.com/gasleakdetector/gasleakdetector/releases) page.
 
