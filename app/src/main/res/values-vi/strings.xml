@@ -126,4 +126,15 @@
     <string name="welcome_btn_continue">Tiếp tục</string>
     <string name="menu_feedback">Phản hồi</string>
     <string name="feedback_email">Gas Leak Detector - v%1$s</string>
+
+    <!-- Gas threshold settings -->
+    <string name="section_thresholds">Ngưỡng khí gas</string>
+    <string name="label_warning_threshold">Ngưỡng cảnh báo</string>
+    <string name="desc_warning_threshold">Nồng độ khí (ppm) kích hoạt cảnh báo mức vừa</string>
+    <string name="label_danger_threshold">Ngưỡng nguy hiểm</string>
+    <string name="desc_danger_threshold">Nồng độ khí (ppm) kích hoạt cảnh báo mức nguy hiểm</string>
+    <string name="threshold_value_fmt">%d ppm</string>
+    <string name="toast_threshold_saved">Đã lưu ngưỡng</string>
+    <string name="toast_warning_must_be_less_than_danger">Ngưỡng cảnh báo phải nhỏ hơn ngưỡng nguy hiểm</string>
+    <string name="toast_danger_must_be_greater_than_warning">Ngưỡng nguy hiểm phải lớn hơn ngưỡng cảnh báo</string>
 </resources>
