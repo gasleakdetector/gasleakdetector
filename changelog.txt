@@ -1,0 +1,55 @@
+0f945cb chore(release): bump version to 1.0.3
+aac77b8 Merge pull request #46 from gasleakdetector/feature/gas-status-settings
+953fc38 fix(i18n): escape all apostrophes in French strings.xml
+5551699 fix(i18n): escape apostrophes in French threshold strings
+0ab1df9 feat(threshold): add threshold strings to German 🇩🇪
+7e1f3e8 feat(threshold): add threshold strings to Spanish 🇪🇸
+b86b9a0 feat(threshold): add threshold strings to French 🇫🇷
+2d08684 feat(threshold): add threshold strings to Korean 🇰🇷
+17ce12d feat(threshold): add threshold strings to Japanese 🇯🇵
+04ef81f feat(threshold): add threshold strings to Chinese 🇨🇳
+b7afe12 feat(threshold): add threshold strings to Vietnamese 🇻🇳
+e9fbe0f feat(threshold): add threshold strings to English 🇬🇧
+1370d59 feat(threshold): add warning/danger threshold rows to settings layout
+3d7f35a feat(threshold): add Gas Thresholds section with input dialogs and validation
+579e395 feat(threshold): add getWarningThreshold/getDangerThreshold with SharedPrefs persistence
+3c1d1a2 feat(threshold): add overloaded calculateLevel with configurable thresholds
+d83c7d7 docs: change badge colors
+b0b4f8c ci(sync): add auto fork sync
+f454131 ci(deps): add Dependabot for weekly Gradle dependency updates
+3867d7d docs(tutorial): add FCM push limitation note 🇻🇳
+0dffab4 docs(tutorial): add FCM push limitation note 🇨🇳
+a48c7e3 docs(tutorial): add FCM push limitation note 🇰🇷
+2296eec docs(tutorial): add FCM push limitation note 🇯🇵
+40d2142 docs(tutorial): add FCM push limitation note 🇫🇷
+888547f docs(tutorial): add FCM push limitation note 🇪🇸
+f4b6386 docs(tutorial): add FCM push limitation note 🇩🇪
+93a7f29 docs(tutorial): add FCM push limitation note 🇬🇧
+4999bd5 chore(i18n): translate about_version_fmt to Spanish 🇪🇸
+65ac0dd chore(i18n): translate about_version_fmt to Korean 🇰🇷
+3aa816d chore(i18n): translate about_version_fmt to Japanese 🇯🇵
+c61cbdb chore(i18n): translate about_version_fmt to Chinese 🇨🇳
+f24ef2e chore(i18n): translate about_version_fmt to Vietnamese 🇻🇳
+1b93cf3 fix(i18n): replace hardcoded about_version with about_version_fmt format string
+b7f2903 fix(info): add tvVersion id, remove static about_version text
+e98ebfc fix(info): set version from BuildConfig.VERSION_NAME instead of hardcoded string
+d9a6c0a Ignore this commit 👀
+11ffa68 fix(ci): remove setup-gradle action and use ./gradlew to respect wrapper version
+e4ccc07 fix(gradle): add missing wrapper jar to fix CI GradleWrapperMain error
+1718453 Merge pull request #39 from gasleakdetector/fix/websocket-missing-device-id
+793dab2 Update
+6e45647 fix(ui): ensure device ID never shows empty parentheses
+deeffa5 fix(ui): use deviceId from WebSocket instead of local config
+435b11f fix(websocket): add deviceId to realtime callback
+7f79c40 docs(tutorial): add language nav bar to Vietnamese guide 🇻🇳
+cb971e0 docs(tutorial): add Chinese setup guide 🇨🇳
+ba89f3b docs(tutorial): add Korean setup guide 🇰🇷
+ab1bd1c docs(tutorial): add Japanese setup guide 🇯🇵
+6d7c3a9 docs(tutorial): add French setup guide 🇫🇷
+1ae929f docs(tutorial): add Spanish setup guide 🇪🇸
+533a934 docs(tutorial): add German setup guide 🇩🇪
+075557a docs(tutorial): update language nav bar 🇬🇧
+1c9b619 docs: update version 1.0 -> 1.0.2
+95dc0fa Create SECURITY.md
+5db90cb Create CONTRIBUTING.md
+694017b Create CODE_OF_CONDUCT.md
