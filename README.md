@@ -117,11 +117,11 @@ The app fetches Supabase credentials automatically from `/api/realtime-config` â
 
 ## Download
 
-Download the latest APK from the [Releases](https://github.com/gasleakdetector/gasleakdetector/releases) page.
+- **Latest Alpha Build**: Download from [Actions](https://github.com/gasleakdetector/gasleakdetector/actions/)
+- **Latest Stable Build**: Download
+  from [Releases](https://github.com/gasleakdetector/gasleakdetector/releases)
 
-[<img src="https://img.shields.io/github/v/release/gasleakdetector/gasleakdetector?style=for-the-badge&color=04A8F4&label=Latest+Release" alt="Latest Release"/>](https://github.com/gasleakdetector/gasleakdetector/releases/latest)
-
-Each release includes a signed debug APK and the full source snapshot. CI builds are triggered automatically on every push via [GitHub Actions](https://github.com/gasleakdetector/gasleakdetector/actions).
+[<img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" alt="Get it on GitHub" height="80">](https://github.com/gasleakdetector/gasleakdetector/releases/latest)
 
 ## Related Repositories
 
