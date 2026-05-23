@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment
     public void onConnectedExternal() {
         gasStatusText.post(new Runnable() {
             @Override public void run() {
-                Host host = getHost();
+                Host host = getHostActivity();
                 if (host != null) host.onMonitoringStateChanged(true);
             }
         });
@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment
     public void onDisconnectedExternal() {
         gasStatusText.post(new Runnable() {
             @Override public void run() {
-                Host host = getHost();
+                Host host = getHostActivity();
                 if (host != null) host.onMonitoringStateChanged(false);
             }
         });
@@ -233,7 +233,7 @@ public class HomeFragment extends Fragment
 
     /** Called by MainActivity when an error occurs on the WebSocket. */
     public void onErrorExternal(String error) {
-        Host host = getHost();
+        Host host = getHostActivity();
         if (host != null) host.onMonitoringStateChanged(false);
     }
 
@@ -516,7 +516,7 @@ public class HomeFragment extends Fragment
         return DEFAULT_DEVICE_ID;
     }
 
-    private Host getHost() {
+    private Host getHostActivity() {
         if (getActivity() instanceof Host) return (Host) getActivity();
         return null;
     }
