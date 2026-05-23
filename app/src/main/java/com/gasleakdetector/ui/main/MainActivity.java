@@ -10,12 +10,9 @@
  */
 package com.gasleakdetector.ui.main;
 
-import android.animation.ArgbEvaluator;
-import android.animation.ValueAnimator;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,74 +36,68 @@ import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.gasleakdetector.R;
-import com.gasleakdetector.app.GasLeakApplication;
-import com.gasleakdetector.data.api.HistoricalApiService;
-import com.gasleakdetector.data.local.LocalDataStorage;
-import com.gasleakdetector.data.model.GasStatus;
-import com.gasleakdetector.data.model.HistoricalDataPoint;
 import com.gasleakdetector.data.model.RealtimeConfig;
 import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.data.websocket.WebSocketManager;
-import com.gasleakdetector.notification.GasNotificationHelper;
 import com.gasleakdetector.service.AppForegroundService;
 import com.gasleakdetector.ui.dialog.ConfigDialog;
-import com.gasleakdetector.ui.main.StatisticsFragment;
-import com.gasleakdetector.ui.widget.ChartView;
-import com.gasleakdetector.ui.widget.CircularGaugeView;
 import com.gasleakdetector.util.LocaleHelper;
 import com.gasleakdetector.util.ThemeUtil;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
+/**
+ * MainActivity — shell activity.
+ *
+ * Responsibilities:
+ *  - Toolbar (play/stop button, edit config button, overflow menu)
+ *  - Side drawer navigation (Home ↔ Statistics)
+ *  - WebSocket lifecycle (connect / disconnect)
+ *  - WakeLock and keep-screen-on
+ *  - Foreground service start
+ *
+ * All home-screen UI (gauge, chart, node info) lives in {@link HomeFragment}.
+ * Statistics UI lives in {@link StatisticsFragment}.
+ */
 public class MainActivity extends AppCompatActivity
-        implements WebSocketManager.Callback, ChartView.OnNodeSelectedListener {
+        implements WebSocketManager.Callback, HomeFragment.Host {
 
-    private static final int    TEXT_ANIMATION_DURATION = 500;
-    private static final int    MAX_NODES               = 1000;
-    private static final String FEEDBACK_EMAIL          = "pan2512811@gmail.com";
-    private static final long   NOTIF_COOLDOWN_MS       = 30_000;
-    private static final String STATE_HISTORICAL_LOADED = "historicalLoaded";
-    private static final String DEFAULT_DEVICE_ID       = "ESP_GASLEAK_01";
+    private static final String FEEDBACK_EMAIL = "pan2512811@gmail.com";
 
-    private CircularGaugeView gaugeView;
-    private ChartView         chartView;
-    private TextView          gasLevelText;
-    private TextView          gasStatusText;
-    private TextView          nodeInfoText;
-    private int               currentDisplayValue = 0;
-    private ValueAnimator     textValueAnimator;
+    /* ------------------------------------------------------------------ */
+    /*  Views                                                               */
+    /* ------------------------------------------------------------------ */
 
-    private ImageButton   btnPlay;
-    private SharedPrefs   sharedPrefs;
-    private WebSocketManager webSocketManager;
-    private boolean       isMonitoring  = false;
-    private Handler       mainHandler;
-    private PowerManager.WakeLock wakeLock;
-    private LocalDataStorage localStorage;
-    private List<HistoricalDataPoint> dataPoints;
-    private GasLeakApplication app;
-
-    private boolean isNodeLocked       = false;
-    private int     selectedNodeIndex  = -1;
-    private GasNotificationHelper notificationHelper;
-    private int  lastNotifiedLevel     = GasStatus.LEVEL_NORMAL;
-    private long lastAlertTimestamp    = 0;
-
-    private View         homePanel;
-    private View         statisticsPanel;
-    private View         menuPanel;
-    private View         menuOverlay;
+    private ImageButton btnPlay;
+    private View        homePanel;
+    private View        statisticsPanel;
+    private View        menuPanel;
+    private View        menuOverlay;
     private LinearLayout menuItemHome;
     private LinearLayout menuItemStatistics;
-    private TextView     menuHomeText;
-    private TextView     menuStatisticsText;
-    private ImageView    menuHomeIcon;
-    private ImageView    menuStatisticsIcon;
-    private boolean      isMenuOpen           = false;
-    private boolean      statisticsLoaded     = false;
+    private TextView    menuHomeText;
+    private TextView    menuStatisticsText;
+    private ImageView   menuHomeIcon;
+    private ImageView   menuStatisticsIcon;
+
+    /* ------------------------------------------------------------------ */
+    /*  State                                                               */
+    /* ------------------------------------------------------------------ */
+
+    private boolean isMonitoring      = false;
+    private boolean isMenuOpen        = false;
+    private boolean statisticsLoaded  = false;
+
+    /* ------------------------------------------------------------------ */
+    /*  Dependencies                                                        */
+    /* ------------------------------------------------------------------ */
+
+    private SharedPrefs      sharedPrefs;
+    private WebSocketManager webSocketManager;
+    private Handler          mainHandler;
+    private PowerManager.WakeLock wakeLock;
+
+    /* ------------------------------------------------------------------ */
+    /*  Lifecycle                                                           */
+    /* ------------------------------------------------------------------ */
 
     @Override
     protected void attachBaseContext(android.content.Context base) {
@@ -119,27 +109,16 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.applyTheme(this);
         super.onCreate(savedInstanceState);
-        sharedPrefs       = new SharedPrefs(this);
-        app               = (GasLeakApplication) getApplication();
-        notificationHelper = new GasNotificationHelper(this);
+        sharedPrefs      = new SharedPrefs(this);
+        webSocketManager = new WebSocketManager(this);
+        mainHandler      = new Handler(Looper.getMainLooper());
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        gaugeView     = findViewById(R.id.gaugeView);
-        chartView     = findViewById(R.id.chartView);
-        gasLevelText  = findViewById(R.id.gasLevelText);
-        gasStatusText = findViewById(R.id.gasStatusText);
-        nodeInfoText  = findViewById(R.id.nodeInfoText);
-        chartView.setOnNodeSelectedListener(this);
-
         btnPlay = findViewById(R.id.btn_play);
-        webSocketManager = new WebSocketManager(this);
-        mainHandler      = new Handler(Looper.getMainLooper());
-        localStorage     = new LocalDataStorage(this);
-        dataPoints       = new ArrayList<>();
-
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) { toggleMonitoring(); }
         });
@@ -148,27 +127,19 @@ public class MainActivity extends AppCompatActivity
             @Override public void onClick(View v) { showConfigDialog(); }
         });
 
-        setupKeepAppRunning();
         setupDrawer();
         updatePlayButton();
         requestNotificationPermission();
+        setupKeepAppRunning();
 
         AppForegroundService.start(this);
 
-        if (app.hasInMemoryData()) {
-            dataPoints.clear();
-            dataPoints.addAll(app.getCachedNodes());
-            for (HistoricalDataPoint point : dataPoints) {
-                chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
-            }
-            if (!dataPoints.isEmpty()) {
-                HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
-                updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
-            }
-            nodeInfoText.setText(localStorage.getCacheInfo() + getString(R.string.from_cache));
-        } else {
-            loadCachedData();
-            loadHistoricalData();
+        /* Load HomeFragment on first create only. */
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.homePanel, new HomeFragment())
+                .commit();
         }
 
         if (sharedPrefs.getAutoStreamEnabled() && sharedPrefs.hasRealtimeConfig()) {
@@ -178,18 +149,162 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    1
-                );
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupKeepAppRunning();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (webSocketManager != null) webSocketManager.destroy();
+        if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  HomeFragment.Host                                                   */
+    /* ------------------------------------------------------------------ */
+
+    @Override
+    public void onStartMonitoringRequested() { startMonitoring(); }
+
+    @Override
+    public void onStopMonitoringRequested()  { stopMonitoring(); }
+
+    @Override
+    public void onMonitoringStateChanged(boolean monitoring) {
+        isMonitoring = monitoring;
+        updatePlayButton();
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  WebSocketManager.Callback                                          */
+    /* ------------------------------------------------------------------ */
+
+    @Override
+    public void onConnected() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                boolean was = isMonitoring;
+                isMonitoring = true;
+                updatePlayButton();
+                if (!was) Toast.makeText(MainActivity.this, getString(R.string.connected), Toast.LENGTH_SHORT).show();
+                HomeFragment frag = getHomeFragment();
+                if (frag != null) frag.onConnectedExternal();
             }
+        });
+    }
+
+    @Override
+    public void onDisconnected() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                isMonitoring = false;
+                updatePlayButton();
+                HomeFragment frag = getHomeFragment();
+                if (frag != null) frag.onDisconnectedExternal();
+            }
+        });
+    }
+
+    @Override
+    public void onDataReceived(final int gasPpm, final String status, final String timestamp, final String deviceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                HomeFragment frag = getHomeFragment();
+                if (frag != null) frag.onDataReceivedExternal(gasPpm, status, timestamp, deviceId);
+            }
+        });
+    }
+
+    @Override
+    public void onError(final String error) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, getString(R.string.error_prefix, error), Toast.LENGTH_SHORT).show();
+                isMonitoring = false;
+                updatePlayButton();
+                HomeFragment frag = getHomeFragment();
+                if (frag != null) frag.onErrorExternal(error);
+            }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Menu                                                                */
+    /* ------------------------------------------------------------------ */
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        if (menu instanceof MenuBuilder) ((MenuBuilder) menu).setOptionalIconsVisible(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menuSettings) {
+            startActivity(new Intent(this, SettingActivity.class));
+            overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
+            return true;
+        } else if (id == R.id.menuFeedback) {
+            openFeedbackEmail();
+            return true;
+        } else if (id == R.id.menuReset) {
+            showResetDataDialog();
+            return true;
+        } else if (id == R.id.menuAbout) {
+            startActivity(new Intent(this, InfoActivity.class));
+            overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Private — monitoring                                                */
+    /* ------------------------------------------------------------------ */
+
+    private void toggleMonitoring() {
+        if (isMonitoring) stopMonitoring();
+        else startMonitoring();
+    }
+
+    private void startMonitoring() {
+        RealtimeConfig config = sharedPrefs.getRealtimeConfig();
+        if (config == null || !config.isValid()) {
+            Toast.makeText(this, getString(R.string.config_required), Toast.LENGTH_SHORT).show();
+            showConfigDialog();
+            return;
+        }
+        webSocketManager.connect(config);
+    }
+
+    private void stopMonitoring() {
+        webSocketManager.disconnect();
+        isMonitoring = false;
+        updatePlayButton();
+    }
+
+    private void updatePlayButton() {
+        if (isMonitoring) {
+            btnPlay.setImageResource(R.drawable.ic_stop);
+            btnPlay.setContentDescription(getString(R.string.stop_content_description));
+        } else {
+            btnPlay.setImageResource(R.drawable.ic_play);
+            btnPlay.setContentDescription(getString(R.string.play_content_description));
         }
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Private — drawer                                                    */
+    /* ------------------------------------------------------------------ */
 
     private void setupDrawer() {
         homePanel       = findViewById(R.id.homePanel);
@@ -277,256 +392,46 @@ public class MainActivity extends AppCompatActivity
         menuStatisticsText.setTypeface(null, isHome ? android.graphics.Typeface.NORMAL : android.graphics.Typeface.BOLD);
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Private — misc                                                      */
+    /* ------------------------------------------------------------------ */
+
+    private void requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
+    }
+
     private void setupKeepAppRunning() {
         if (sharedPrefs.getKeepAppRunning()) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            PowerManager powerManager = (PowerManager) getSystemService(POWER_SERVICE);
-            if (powerManager != null) {
-                if (wakeLock != null && wakeLock.isHeld()) {
-                    wakeLock.release();
-                }
-                wakeLock = powerManager.newWakeLock(
-                    PowerManager.PARTIAL_WAKE_LOCK,
-                    getString(R.string.wakelock_tag)
-                );
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (pm != null) {
+                if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
+                wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getString(R.string.wakelock_tag));
                 wakeLock.acquire();
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            if (wakeLock != null && wakeLock.isHeld()) {
-                wakeLock.release();
-                wakeLock = null;
-            }
+            if (wakeLock != null && wakeLock.isHeld()) { wakeLock.release(); wakeLock = null; }
         }
-    }
-
-    private void loadCachedData() {
-        if (!localStorage.hasCache()) {
-            nodeInfoText.setText(getString(R.string.no_cached_data));
-            return;
-        }
-        List<HistoricalDataPoint> cached = localStorage.loadNodes();
-        if (cached.isEmpty()) {
-            nodeInfoText.setText(getString(R.string.cache_empty));
-            return;
-        }
-        // Ensure each cached point has a non-empty deviceId
-        for (HistoricalDataPoint point : cached) {
-            if (point.getDeviceId() == null || point.getDeviceId().isEmpty()) {
-                point.setDeviceId(getDefaultDeviceId());
-            }
-            chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
-        }
-        dataPoints.clear();
-        dataPoints.addAll(cached);
-        if (!dataPoints.isEmpty()) {
-            HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
-            updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
-        }
-        nodeInfoText.setText(localStorage.getCacheInfo() + getString(R.string.from_cache));
-    }
-
-    private void loadHistoricalData() {
-        RealtimeConfig config = sharedPrefs.getRealtimeConfig();
-        if (config == null || !config.isValid()) {
-            nodeInfoText.setText(localStorage.hasCache()
-                ? localStorage.getCacheInfo() + getString(R.string.offline_mode)
-                : getString(R.string.configure_api_prompt));
-            return;
-        }
-        if (app.isHistoricalDataLoaded()) return;
-        Toast.makeText(this, getString(R.string.loading_data), Toast.LENGTH_SHORT).show();
-        nodeInfoText.setText(getString(R.string.loading_historical));
-        HistoricalApiService.fetchHistoricalData(config, new HistoricalApiService.HistoricalDataCallback() {
-            @Override
-            public void onSuccess(final List<HistoricalDataPoint> points) {
-                mainHandler.post(new Runnable() {
-                    @Override public void run() { handleHistoricalDataSuccess(points); }
-                });
-            }
-            @Override
-            public void onError(final String error) {
-                mainHandler.post(new Runnable() {
-                    @Override public void run() { handleHistoricalDataError(error); }
-                });
-            }
-        });
-    }
-
-    private void handleHistoricalDataSuccess(List<HistoricalDataPoint> points) {
-        app.setHistoricalDataLoaded(true);
-        if (points == null || points.isEmpty()) {
-            RealtimeConfig cfg = sharedPrefs.getRealtimeConfig();
-            if (cfg != null && cfg.getDeviceId() != null && !cfg.getDeviceId().isEmpty()) {
-                RealtimeConfig cfgNoDevice = new RealtimeConfig(cfg.getApiUrl(), cfg.getApiKey(), "");
-                HistoricalApiService.fetchHistoricalData(cfgNoDevice,
-                    new HistoricalApiService.HistoricalDataCallback() {
-                        @Override public void onSuccess(final List<HistoricalDataPoint> pts) {
-                            mainHandler.post(new Runnable() {
-                                @Override public void run() { handleHistoricalDataFallback(pts); }
-                            });
-                        }
-                        @Override public void onError(final String err) {
-                            mainHandler.post(new Runnable() {
-                                @Override public void run() {
-                                    nodeInfoText.setText(getString(R.string.no_historical_data));
-                                }
-                            });
-                        }
-                    });
-                return;
-            }
-            chartView.clearData();
-            dataPoints.clear();
-            gaugeView.setValue(0);
-            gasLevelText.setText(getString(R.string.status_placeholder));
-            gasStatusText.setText(getString(R.string.status_full_placeholder));
-            nodeInfoText.setText(getString(R.string.no_historical_data));
-            return;
-        }
-        chartView.clearData();
-        for (HistoricalDataPoint point : points) {
-            if (point.getDeviceId() == null || point.getDeviceId().isEmpty()) {
-                point.setDeviceId(getDefaultDeviceId());
-            }
-            chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
-        }
-        dataPoints.clear();
-        dataPoints.addAll(points);
-        app.setCachedNodes(dataPoints);
-        localStorage.saveNodes(points);
-        sharedPrefs.markFetchTime();
-        updateToLatestNode();
-        nodeInfoText.setText(getString(R.string.loaded_data_points, points.size()));
-    }
-
-    private void handleHistoricalDataFallback(List<HistoricalDataPoint> points) {
-        if (points == null || points.isEmpty()) {
-            nodeInfoText.setText(getString(R.string.no_historical_data));
-            return;
-        }
-        app.setHistoricalDataLoaded(true);
-        chartView.clearData();
-        for (HistoricalDataPoint point : points) {
-            if (point.getDeviceId() == null || point.getDeviceId().isEmpty()) {
-                point.setDeviceId(getDefaultDeviceId());
-            }
-            chartView.addDataPointWithTimestamp(point.getGasPpm(), point.getTimestamp());
-        }
-        dataPoints.clear();
-        dataPoints.addAll(points);
-        app.setCachedNodes(dataPoints);
-        localStorage.saveNodes(points);
-        sharedPrefs.markFetchTime();
-        updateToLatestNode();
-        nodeInfoText.setText(getString(R.string.loaded_data_points, points.size()));
-    }
-
-    private void handleHistoricalDataError(String error) {
-        nodeInfoText.setText(localStorage.hasCache()
-            ? getString(R.string.network_error_cache)
-            : getString(R.string.failed_load_data, error));
-    }
-
-    private void updateToLatestNode() {
-        if (dataPoints.isEmpty()) return;
-        HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
-        updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
-        SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
-        String deviceId = (last.getDeviceId() != null && !last.getDeviceId().isEmpty())
-                ? last.getDeviceId() : getDefaultDeviceId();
-        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), deviceId));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        if (menu instanceof MenuBuilder) ((MenuBuilder) menu).setOptionalIconsVisible(true);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.menuSettings) {
-            startActivity(new Intent(this, SettingActivity.class));
-            overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
-            return true;
-        } else if (id == R.id.menuFeedback) {
-            openFeedbackEmail();
-            return true;
-        } else if (id == R.id.menuReset) {
-            showResetDataDialog();
-            return true;
-        } else if (id == R.id.menuAbout) {
-            startActivity(new Intent(this, InfoActivity.class));
-            overridePendingTransition(R.anim.slide_up_in, R.anim.fade_out);
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void openFeedbackEmail() {
-        String versionName = getAppVersionName();
-        String subject     = getString(R.string.feedback_email, versionName);
-        String mailto      = "mailto:" + FEEDBACK_EMAIL
-                           + "?subject=" + Uri.encode(subject);
-        Intent intent      = new Intent(Intent.ACTION_VIEW, Uri.parse(mailto));
-        try {
-            startActivity(intent);
-        } catch (android.content.ActivityNotFoundException e) {
-            Toast.makeText(this, FEEDBACK_EMAIL, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private String getAppVersionName() {
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
-            return info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            return "";
-        }
-    }
-
-    private void showResetDataDialog() {
-        new AlertDialog.Builder(this)
-            .setTitle(getString(R.string.reset_data_title))
-            .setMessage(getString(R.string.reset_data_message))
-            .setPositiveButton(getString(R.string.btn_reset), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    localStorage.clearCache();
-                    chartView.clearData();
-                    dataPoints.clear();
-                    app.setCachedNodes(null);
-                    app.setHistoricalDataLoaded(false);
-                    sharedPrefs.clearFetchTime();
-                    gaugeView.setValue(0);
-                    gasLevelText.setText(getString(R.string.status_placeholder));
-                    gasStatusText.setText(getString(R.string.status_full_placeholder));
-                    loadHistoricalData();
-                }
-            })
-            .setNegativeButton(getString(R.string.btn_cancel), null)
-            .show();
     }
 
     private void showConfigDialog() {
-        RealtimeConfig currentConfig = sharedPrefs.getRealtimeConfig();
-        new ConfigDialog(this, currentConfig, new ConfigDialog.OnConfigSavedListener() {
+        RealtimeConfig current = sharedPrefs.getRealtimeConfig();
+        new ConfigDialog(this, current, new ConfigDialog.OnConfigSavedListener() {
             @Override
             public void onConfigSaved(RealtimeConfig newConfig) {
-                boolean configChanged = !newConfig.hasSameParams(currentConfig);
+                boolean changed = !newConfig.hasSameParams(current);
                 sharedPrefs.saveRealtimeConfig(newConfig);
                 Toast.makeText(MainActivity.this, getString(R.string.config_saved), Toast.LENGTH_SHORT).show();
-
-                if (!configChanged) return;
-
-                app.setHistoricalDataLoaded(false);
-                app.setCachedNodes(null);
-                chartView.clearData();
-                dataPoints.clear();
-                loadHistoricalData();
+                if (!changed) return;
+                HomeFragment frag = getHomeFragment();
+                if (frag != null) frag.reloadAfterConfigChange();
                 if (isMonitoring) stopMonitoring();
                 if (sharedPrefs.getAutoStreamEnabled()) {
                     mainHandler.postDelayed(new Runnable() {
@@ -537,261 +442,37 @@ public class MainActivity extends AppCompatActivity
         }).show();
     }
 
-    private void toggleMonitoring() {
-        if (isMonitoring) stopMonitoring();
-        else startMonitoring();
-    }
-
-    private void startMonitoring() {
-        RealtimeConfig config = sharedPrefs.getRealtimeConfig();
-        if (config == null || !config.isValid()) {
-            Toast.makeText(this, getString(R.string.config_required), Toast.LENGTH_SHORT).show();
-            showConfigDialog();
-            return;
-        }
-        webSocketManager.connect(config);
-    }
-
-    private void stopMonitoring() {
-        webSocketManager.disconnect();
-        isMonitoring = false;
-        updatePlayButton();
-    }
-
-    private void updatePlayButton() {
-        if (isMonitoring) {
-            btnPlay.setImageResource(R.drawable.ic_stop);
-            btnPlay.setContentDescription(getString(R.string.stop_content_description));
-        } else {
-            btnPlay.setImageResource(R.drawable.ic_play);
-            btnPlay.setContentDescription(getString(R.string.play_content_description));
-        }
-    }
-
-    @Override
-    public void onConnected() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                boolean wasMonitoring = isMonitoring;
-                isMonitoring = true;
-                updatePlayButton();
-                if (!wasMonitoring) {
-                    Toast.makeText(MainActivity.this, getString(R.string.connected), Toast.LENGTH_SHORT).show();
+    private void showResetDataDialog() {
+        new android.app.AlertDialog.Builder(this)
+            .setTitle(getString(R.string.reset_data_title))
+            .setMessage(getString(R.string.reset_data_message))
+            .setPositiveButton(getString(R.string.btn_reset), new android.content.DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(android.content.DialogInterface dialog, int which) {
+                    HomeFragment frag = getHomeFragment();
+                    if (frag != null) frag.reloadAfterConfigChange();
                 }
-            }
-        });
+            })
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show();
     }
 
-    @Override
-    public void onDisconnected() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                updatePlayButton();
-            }
-        });
-    }
-
-    @Override
-    public void onDataReceived(final int gasPpm, final String status, final String timestamp, final String deviceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                HistoricalDataPoint newPoint = new HistoricalDataPoint();
-                newPoint.setGasPpm(gasPpm);
-                newPoint.setStatus(status);
-                if (deviceId != null && !deviceId.isEmpty()) {
-                    newPoint.setDeviceId(deviceId);
-                } else {
-                    RealtimeConfig activeConfig = sharedPrefs.getRealtimeConfig();
-                    String id = (activeConfig != null && activeConfig.getDeviceId() != null && !activeConfig.getDeviceId().isEmpty())
-                            ? activeConfig.getDeviceId() : getDefaultDeviceId();
-                    newPoint.setDeviceId(id);
-                }
-                newPoint.setCreatedAt(timestamp.isEmpty()
-                    ? new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US).format(new Date())
-                    : timestamp);
-                chartView.addDataPointWithTimestamp(gasPpm, newPoint.getTimestamp());
-                dataPoints.add(newPoint);
-                if (dataPoints.size() > MAX_NODES) {
-                    dataPoints.subList(0, dataPoints.size() - MAX_NODES).clear();
-                }
-                app.setCachedNodes(dataPoints);
-
-                if (!isNodeLocked) {
-                    updateUIAnimated(createStatusFromValue(gasPpm, newPoint.getTimestamp()));
-                    SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
-                    String displayDeviceId = (newPoint.getDeviceId() != null) ? newPoint.getDeviceId() : getDefaultDeviceId();
-                    nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), displayDeviceId));
-                }
-
-                GasStatus liveStatus = createStatusFromValue(gasPpm, newPoint.getTimestamp());
-                if (sharedPrefs.getNotificationsEnabled() && !liveStatus.isNormal()) {
-                    long now             = System.currentTimeMillis();
-                    boolean escalated    = liveStatus.getLevel() > lastNotifiedLevel;
-                    boolean cooldownDone = (now - lastAlertTimestamp) >= NOTIF_COOLDOWN_MS;
-                    if (escalated || cooldownDone) {
-                        notificationHelper.showAlert(liveStatus);
-                        lastNotifiedLevel  = liveStatus.getLevel();
-                        lastAlertTimestamp = now;
-                    }
-                } else if (sharedPrefs.getNotificationsEnabled()) {
-                    lastNotifiedLevel = GasStatus.LEVEL_NORMAL;
-                }
-
-                final HistoricalDataPoint pointToSave = newPoint;
-                new Thread(new Runnable() {
-                    @Override public void run() { localStorage.addNode(pointToSave); }
-                }).start();
-            }
-        });
-    }
-
-    @Override
-    public void onError(final String error) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, getString(R.string.error_prefix, error), Toast.LENGTH_SHORT).show();
-                isMonitoring = false;
-                updatePlayButton();
-            }
-        });
-    }
-
-    @Override
-    public void onNodeSelected(int index, int value, long timestamp) {
-        if (isNodeLocked && selectedNodeIndex == index) {
-            isNodeLocked      = false;
-            selectedNodeIndex = -1;
-            chartView.clearSelection();
-            updateToLatestNode();
-        } else {
-            isNodeLocked      = true;
-            selectedNodeIndex = index;
-            SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
-            String selectedDeviceId = getDefaultDeviceId();
-            if (index >= 0 && index < dataPoints.size()) {
-                String id = dataPoints.get(index).getDeviceId();
-                if (id != null && !id.isEmpty()) selectedDeviceId = id;
-            }
-            nodeInfoText.setText(getString(R.string.value_at_time, value, fmt.format(new Date(timestamp)), selectedDeviceId));
-            updateUIAnimated(createStatusFromValue(value, timestamp));
+    private void openFeedbackEmail() {
+        String version = "";
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = info.versionName;
+        } catch (PackageManager.NameNotFoundException ignored) {}
+        String subject = getString(R.string.feedback_email, version);
+        String mailto  = "mailto:" + FEEDBACK_EMAIL + "?subject=" + Uri.encode(subject);
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mailto)));
+        } catch (android.content.ActivityNotFoundException e) {
+            Toast.makeText(this, FEEDBACK_EMAIL, Toast.LENGTH_LONG).show();
         }
     }
 
-    @Override
-    public void onNodeDeselected() {
-        if (isNodeLocked) {
-            isNodeLocked      = false;
-            selectedNodeIndex = -1;
-            updateToLatestNode();
-        }
-    }
-
-    private GasStatus createStatusFromValue(int value, long timestamp) {
-        int level = GasStatus.calculateLevel(value);
-        return new GasStatus(level, value, timestamp, generateMessage(level, value));
-    }
-
-    private String generateMessage(int level, int value) {
-        switch (level) {
-            case GasStatus.LEVEL_NORMAL:  return getString(R.string.msg_normal);
-            case GasStatus.LEVEL_WARNING: return getString(R.string.msg_warning, value);
-            case GasStatus.LEVEL_DANGER:  return getString(R.string.msg_danger, value);
-            default:                      return getString(R.string.msg_unknown);
-        }
-    }
-
-    private void updateUIAnimated(GasStatus status) {
-        animateValueText(status.getConcentration());
-        animateStatusText(status);
-        gaugeView.setValue(status.getConcentration());
-    }
-
-    private void animateValueText(final int targetValue) {
-        if (textValueAnimator != null) textValueAnimator.cancel();
-        textValueAnimator = ValueAnimator.ofInt(currentDisplayValue, targetValue);
-        textValueAnimator.setDuration(TEXT_ANIMATION_DURATION);
-        textValueAnimator.setInterpolator(new DecelerateInterpolator());
-        textValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                currentDisplayValue = (int) animation.getAnimatedValue();
-                gasLevelText.setText(String.valueOf(currentDisplayValue));
-            }
-        });
-        textValueAnimator.start();
-    }
-
-    private void animateStatusText(final GasStatus status) {
-        int currentColorRes = getStatusColorRes(GasStatus.calculateLevel(currentDisplayValue));
-        int targetColorRes  = getStatusColorRes(status.getLevel());
-        int currentColor    = ContextCompat.getColor(this, currentColorRes);
-        int targetColor     = ContextCompat.getColor(this, targetColorRes);
-
-        ValueAnimator colorAnimator = ValueAnimator.ofObject(new ArgbEvaluator(), currentColor, targetColor);
-        colorAnimator.setDuration(TEXT_ANIMATION_DURATION);
-        colorAnimator.setInterpolator(new DecelerateInterpolator());
-        colorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                gasStatusText.setTextColor((int) animation.getAnimatedValue());
-            }
-        });
-        colorAnimator.start();
-
-        int statusResId;
-        switch (status.getLevel()) {
-            case GasStatus.LEVEL_WARNING: statusResId = R.string.status_warning; break;
-            case GasStatus.LEVEL_DANGER:  statusResId = R.string.status_danger;  break;
-            case GasStatus.LEVEL_NORMAL:  statusResId = R.string.status_normal;  break;
-            default:                      statusResId = R.string.status_unknown;  break;
-        }
-        gasStatusText.setText(getString(R.string.status_prefix) + getString(statusResId));
-    }
-
-    private int getStatusColorRes(int level) {
-        switch (level) {
-            case GasStatus.LEVEL_NORMAL:  return R.color.statusNormal;
-            case GasStatus.LEVEL_WARNING: return R.color.statusWarning;
-            case GasStatus.LEVEL_DANGER:  return R.color.statusDanger;
-            default:                      return R.color.statusNormal;
-        }
-    }
-
-    private String getDefaultDeviceId() {
-        RealtimeConfig cfg = sharedPrefs.getRealtimeConfig();
-        if (cfg != null && cfg.getDeviceId() != null && !cfg.getDeviceId().isEmpty()) {
-            return cfg.getDeviceId();
-        }
-        return DEFAULT_DEVICE_ID;
-    }
-
-    @Override
-    protected void onSaveInstanceState(android.os.Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(STATE_HISTORICAL_LOADED, app.isHistoricalDataLoaded());
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setupKeepAppRunning();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (textValueAnimator != null) textValueAnimator.cancel();
-        if (webSocketManager  != null) webSocketManager.destroy();
-        if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
+    private HomeFragment getHomeFragment() {
+        return (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.homePanel);
     }
 }
