@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-19
+ * Modified: 2026-05-23
  */
 package com.gasleakdetector.ui.main;
 
@@ -432,7 +432,7 @@ public class MainActivity extends AppCompatActivity
         if (dataPoints.isEmpty()) return;
         HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
         updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
-        SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
+        SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
         String deviceId = (last.getDeviceId() != null && !last.getDeviceId().isEmpty())
                 ? last.getDeviceId() : getDefaultDeviceId();
         nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), deviceId));
@@ -621,7 +621,7 @@ public class MainActivity extends AppCompatActivity
 
                 if (!isNodeLocked) {
                     updateUIAnimated(createStatusFromValue(gasPpm, newPoint.getTimestamp()));
-                    SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
+                    SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
                     String displayDeviceId = (newPoint.getDeviceId() != null) ? newPoint.getDeviceId() : getDefaultDeviceId();
                     nodeInfoText.setText(getString(R.string.value_at_time, gasPpm, fmt.format(new Date(newPoint.getTimestamp())), displayDeviceId));
                 }
@@ -670,7 +670,7 @@ public class MainActivity extends AppCompatActivity
         } else {
             isNodeLocked      = true;
             selectedNodeIndex = index;
-            SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.ENGLISH);
+            SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
             String selectedDeviceId = getDefaultDeviceId();
             if (index >= 0 && index < dataPoints.size()) {
                 String id = dataPoints.get(index).getDeviceId();
