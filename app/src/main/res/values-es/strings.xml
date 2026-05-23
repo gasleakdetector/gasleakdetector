@@ -36,7 +36,7 @@
     <string name="failed_load_data">Error al cargar datos históricos: %1$s</string>
     <string name="value_at_time">Valor: %1$d ppm en %2$s
 (%3$s)</string>
-    <string name="date_format">dd 'de' MMMM 'de' yyyy, HH:mm:ss</string>
+    <string name="date_format">dd \'de\' MMMM \'de\' yyyy, HH:mm:ss</string>
     <string name="msg_normal">El nivel de gas es normal</string>
     <string name="msg_warning">Nivel de gas elevado: %1$d ppm</string>
     <string name="msg_danger">¡Peligro! Fuga de gas detectada: %1$d ppm</string>
