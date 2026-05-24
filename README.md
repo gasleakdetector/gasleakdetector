@@ -10,8 +10,17 @@
   <img alt="Last commit" src="https://img.shields.io/github/last-commit/gasleakdetector/gasleakdetector?color=04A8F4&style=flat-square"/>
 </p>
 
-<div align="center">    
+<div align="center">
   <h1>Gas Leak Detector — App</h1>
+  <p>English&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-vi.md">Tiếng Việt</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-de.md">Deutsch</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-es.md">Español</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-fr.md">Français</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-ja.md">日本語</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-ko.md">한국어</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a target="_blank" href="README-zh.md">中文</a>
+  </p>
   <p align="center">Real-time gas monitoring for Android — powered by ESP8266, Supabase, and a serverless edge API.</p>
   <img src=".github/assets/intro.png" width="19.2%" alt="intro" />    
   <img src=".github/assets/config.png" width="19.2%" alt="config" />    
@@ -118,8 +127,7 @@ The app fetches Supabase credentials automatically from `/api/realtime-config` �
 ## Download
 
 - **Latest Alpha Build**: Download from [Actions](https://github.com/gasleakdetector/gasleakdetector/actions/)
-- **Latest Stable Build**: Download
-  from [Releases](https://github.com/gasleakdetector/gasleakdetector/releases)
+- **Latest Stable Build**: Download from [Releases](https://github.com/gasleakdetector/gasleakdetector/releases)
 
 [<img src="https://raw.githubusercontent.com/Kunzisoft/Github-badge/main/get-it-on-github.png" alt="Get it on GitHub" height="80">](https://github.com/gasleakdetector/gasleakdetector/releases/latest)
 
