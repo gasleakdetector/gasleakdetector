@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.test'
+    id 'com.android.library'
     id 'androidx.benchmark'
     id 'org.jetbrains.kotlin.android'
 }
@@ -25,13 +25,11 @@ android {
         jvmTarget = '11'
     }
 
-    targetProjectPath ':app'
-    experimentalProperties['android.experimental.self-instrumenting'] = true
+    testBuildType 'release'
 
     buildTypes {
         release {
             isDefault = true
-            signingConfig signingConfigs.debug
         }
         debug {
             isDefault = false
@@ -40,15 +38,19 @@ android {
 }
 
 dependencies {
-    implementation('androidx.benchmark:benchmark-junit4:1.2.4') {
+    androidTestImplementation('androidx.benchmark:benchmark-junit4:1.2.4') {
         exclude group: 'androidx.annotation', module: 'annotation-experimental'
     }
-    implementation 'androidx.test:runner:1.5.2'
-    implementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation project(':app')
 }
 
-androidComponents {
-    beforeVariants(selector().all()) { variantBuilder ->
-        variantBuilder.enable = variantBuilder.buildType == 'release'
-    }
+configurations.all {
+    exclude group: 'androidx.annotation', module: 'annotation-experimental'
+    exclude group: 'androidx.arch.core', module: 'core-runtime'
+    // Exclude UI libs that come transitively through benchmark-junit4 but are
+    // already provided by :app's dex, preventing duplicate class errors at merge
+    exclude group: 'androidx.constraintlayout', module: 'constraintlayout'
+    exclude group: 'androidx.constraintlayout', module: 'constraintlayout-core'
 }
