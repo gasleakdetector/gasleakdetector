@@ -29,7 +29,7 @@ public class HistoricalDataPoint {
 
     private static final String TAG = "HistoricalDataPoint";
 
-    // ── Raw row fields ────────────────────────────────────────────────────────
+    // --- Raw row fields ---
     private long   id;
     private String deviceId;
     private int    gasPpm = -1; // -1 = not set; 0 is a valid clean-air reading
@@ -37,7 +37,7 @@ public class HistoricalDataPoint {
     private String ipAddress;
     private String createdAt;
 
-    // ── Summary/aggregate fields ──────────────────────────────────────────────
+    // --- Summary/aggregate fields ---
     private String bucket;
     private float  avgGas;
     private float  minGas;
@@ -54,7 +54,7 @@ public class HistoricalDataPoint {
         this.maxGas    = gasPpm;
     }
 
-    // ── Getters / Setters ─────────────────────────────────────────────────────
+    // --- Getters / Setters ---
     public long   getId()              { return id; }
     public void   setId(long v)        { id = v; }
 
@@ -88,7 +88,7 @@ public class HistoricalDataPoint {
     public int    getSampleCount()     { return sampleCount; }
     public void   setSampleCount(int v){ sampleCount = v; }
 
-    // ── Timestamp parsing ─────────────────────────────────────────────────────
+    // --- Timestamp parsing ---
 
     /**
      * Returns a Unix timestamp in milliseconds from the ISO 8601 date string.
