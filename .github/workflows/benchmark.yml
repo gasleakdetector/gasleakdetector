@@ -64,9 +64,7 @@ jobs:
             adb shell settings put global window_animation_scale 0
             adb shell settings put global transition_animation_scale 0
             adb shell settings put global animator_duration_scale 0
-            ./gradlew :benchmark:connectedReleaseAndroidTest \
-              -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.suppressErrors=EMULATOR,LOW-BATTERY \
-              --no-daemon 2>&1 | tee benchmark-output.txt
+            ./gradlew :benchmark:connectedReleaseAndroidTest -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.suppressErrors=EMULATOR,LOW-BATTERY --no-daemon 2>&1 | tee benchmark-output.txt
 
       - name: Upload benchmark results JSON
         if: always()
