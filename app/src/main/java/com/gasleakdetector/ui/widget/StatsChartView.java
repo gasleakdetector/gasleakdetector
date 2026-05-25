@@ -67,7 +67,7 @@ public class StatsChartView extends View {
 
     public void setPoints(List<HourlyStatPoint> pts) {
         points = pts != null ? new ArrayList<>(pts) : new ArrayList<HourlyStatPoint>();
-        Collections.reverse(points); // oldest → left, newest → right
+        Collections.reverse(points); // oldest on left, newest on right
         invalidate();
     }
 
