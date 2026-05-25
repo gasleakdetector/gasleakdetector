@@ -1,0 +1,13 @@
+Ngưỡng khí gas có thể cấu hình với kiểm tra hợp lệ, hiển thị phiên bản động, tái cấu trúc màn hình chính thành fragment riêng, định dạng ngày địa phương hóa, và sửa lỗi đa lần.
+
+Tính năng mới:
+• Cài đặt ngưỡng Cảnh báo & Nguy hiểm tùy chỉnh trong màn hình Cài đặt
+• Hiển thị phiên bản ứng dụng động từ BuildConfig
+• HomeFragment để tách biệt kiến trúc tốt hơn
+• Định dạng ngày địa phương hóa (ví dụ: "Ngày 23 tháng 5 năm 2026")
+
+Cải tiến:
+• UI màn hình chính dựa trên Fragment để tổ chức mã sạch
+• Sửa apostrophe chưa escape trong chuỗi tiếng Pháp
+• Sửa lỗi ổn định CI/Gradle với wrapper jar
+• Hỗ trợ 8 ngôn ngữ cho tất cả tính năng mới

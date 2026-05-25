@@ -1,0 +1,13 @@
+Seuils de gaz configurables avec validation, affichage de version dynamique, restructuration de l'écran d'accueil en fragment dédié, formatage de date localisé et plusieurs corrections de bugs.
+
+Nouvelles fonctionnalités:
+• Paramètres de seuils d'Avertissement et de Danger personnalisés dans l'écran Paramètres
+• Affichage de version d'application dynamique depuis BuildConfig
+• HomeFragment pour une meilleure séparation architecturale
+• Format de date localisé
+
+Améliorations:
+• Interface utilisateur de l'écran d'accueil basée sur Fragment pour une organisation du code propre
+• Apostrophes non échappées dans les chaînes françaises corrigées
+• Corrections de stabilité CI/Gradle avec wrapper jar
+• Support de 8 langues pour toutes les nouvelles fonctionnalités

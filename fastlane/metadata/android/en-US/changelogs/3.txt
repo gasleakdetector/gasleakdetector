@@ -1,0 +1,13 @@
+Configurable gas thresholds with validation, dynamic version display, home screen refactoring into dedicated fragment, localized date formatting, and multiple bug fixes.
+
+New Features:
+• Custom Warning & Danger threshold settings in Settings screen
+• Dynamic app version display from BuildConfig
+• HomeFragment for better architecture separation
+• Localized date format (e.g., "Ngày 23 tháng 5 năm 2026" for Vietnamese)
+
+Improvements:
+• Fragment-based home screen UI for cleaner code organization
+• Fixed unescaped apostrophes in French strings
+• CI/Gradle stability fixes with wrapper jar
+• 8-language support for all new features

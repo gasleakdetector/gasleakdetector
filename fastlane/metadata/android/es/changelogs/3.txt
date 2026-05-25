@@ -1,0 +1,13 @@
+Umbrales de gas configurables con validación, visualización de versión dinámica, reestructuración de la pantalla de inicio en fragmento dedicado, formato de fecha localizado y múltiples correcciones de errores.
+
+Nuevas características:
+• Configuración de umbrales de Advertencia y Peligro personalizados en la pantalla de Configuración
+• Visualización de versión de aplicación dinámica desde BuildConfig
+• HomeFragment para una mejor separación de arquitectura
+• Formato de fecha localizado
+
+Mejoras:
+• Interfaz de usuario de pantalla de inicio basada en Fragment para una organización de código limpia
+• Apóstrofes sin escape en cadenas francesas corregidos
+• Correcciones de estabilidad CI/Gradle con wrapper jar
+• Soporte de 8 idiomas para todas las funciones nuevas

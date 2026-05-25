@@ -1,0 +1,13 @@
+Konfigurierbare Gasschwellenwerte mit Validierung, dynamische Versionanzeige, Umstrukturierung des Startbildschirms in dediziertes Fragment, lokalisierte Datumsformatierung und mehrere Fehlerbehebungen.
+
+Neue Funktionen:
+• Benutzerdefinierte Warn- & Gefahrenschwellen-Einstellungen im Einstellungsbildschirm
+• Dynamische App-Versionanzeige aus BuildConfig
+• HomeFragment für bessere Architektur-Trennung
+• Lokalisiertes Datumsformat
+
+Verbesserungen:
+• Fragment-basierte Startbildschirm-UI für saubere Code-Organisation
+• Escape-Apostrophe in französischen Strings behoben
+• CI/Gradle-Stabilitätsverbesserungen mit Wrapper Jar
+• 8-Sprachen-Unterstützung für alle neuen Funktionen

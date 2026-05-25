@@ -1,0 +1,15 @@
+Gas Leak Detector est un système de surveillance du gaz en temps réel pour Android. Il affiche les lectures PPM en direct d'un capteur MQ-6 connecté à un ESP8266, avec des mises à jour basées sur WebSocket, des graphiques historiques et un support multi-appareils.
+
+Caractéristiques:
+• Jauge PPM en direct avec valeurs animées
+• Mises à jour WebSocket en temps réel
+• Classification des états: Normal / Avertissement / Danger
+• Graphique historique avec données agrégées par heure
+• Support multi-appareils avec commutation device_id
+• Résilience hors ligne avec mise en cache ESP locale
+• Écran d'introduction au premier lancement
+• 8 langues: Anglais, Vietnamien, Allemand, Espagnol, Français, Japonais, Coréen, Chinois
+
+Aucune dépendance non libre. Utilise uniquement les bibliothèques FOSS.
+Licence: Apache 2.0
+GitHub: https://github.com/gasleakdetector/gasleakdetector
