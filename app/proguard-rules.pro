@@ -6,3 +6,4 @@
 -keep class com.gasleakdetector.data.local.LocalDataStorage { *; }
 
 -dontwarn androidx.**
+-dontwarn org.slf4j.**

@@ -48,4 +48,5 @@ dependencies {
 
 configurations.all {
     exclude group: 'androidx.annotation', module: 'annotation-experimental'
+    exclude group: 'androidx.arch.core', module: 'core-runtime'
 }
