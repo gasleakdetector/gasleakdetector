@@ -1,0 +1,19 @@
+#!/bin/bash
+set -e
+
+echo "Running Spotless format..."
+
+# format code
+if ! ./gradlew --quiet spotlessApply; then
+    echo "Spotless format failed"
+    exit 1
+fi
+
+staged_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.java$|\.gradle$|\.gradle\.kts$' || true)
+
+if [ -n "$staged_files" ]; then
+    git add $staged_files
+fi
+
+echo "Pre-commit formatting done."
+exit 0
