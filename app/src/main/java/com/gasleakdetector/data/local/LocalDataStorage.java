@@ -108,7 +108,7 @@ public class LocalDataStorage {
                 for (int i = 0; i < nodesArray.length(); i++) {
                     JSONObject node = nodesArray.getJSONObject(i);
                     HistoricalDataPoint point = new HistoricalDataPoint();
-                    point.setId(node.optLong("id")); // #12: use optLong — Supabase IDs are bigint
+                    point.setId(node.optLong("id")); // #12: use optLong, Supabase IDs are bigint
                     point.setDeviceId(node.optString("device_id"));
                     point.setGasPpm(node.optInt("gas_ppm"));
                     point.setStatus(node.optString("status"));

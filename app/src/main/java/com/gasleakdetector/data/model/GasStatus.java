@@ -16,7 +16,7 @@ public class GasStatus {
     public static final int LEVEL_WARNING = 1;
     public static final int LEVEL_DANGER  = 2;
 
-    /* Default concentration thresholds — single source of truth.
+    /* Default concentration thresholds, single source of truth.
      * Override via SharedPrefs.getWarningThreshold() / getDangerThreshold(). */
     public static final int WARNING_THRESHOLD = 300;
     public static final int DANGER_THRESHOLD  = 800;

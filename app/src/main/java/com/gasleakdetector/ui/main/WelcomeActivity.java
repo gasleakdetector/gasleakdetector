@@ -22,9 +22,9 @@ import com.gasleakdetector.data.prefs.SharedPrefs;
  * Full-screen welcome/onboarding screen shown only on the very first launch.
  *
  * Flow:
- *   First launch  → WelcomeActivity (launcher) → user taps Continue
- *                 → sets intro_shown = true → starts MainActivity → finish()
- *   Later launches → MainActivity directly (WelcomeActivity is never started)
+ *   First launch: WelcomeActivity (launcher), user taps Continue
+ *                   sets intro_shown = true, starts MainActivity, finish()
+ *   Later launches: MainActivity directly (WelcomeActivity is never started)
  *
  * The "already seen" check lives in MainActivity.onCreate() so that the
  * Manifest launcher activity never needs to change.
