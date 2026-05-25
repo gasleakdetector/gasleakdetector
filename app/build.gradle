@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.diffplug.spotless'
 
 android {
+    namespace 'com.gasleakdetector'
     compileSdk 33
 
     defaultConfig {
@@ -26,13 +27,17 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile(
                     'proguard-android-optimize.txt'
             ), 'proguard-rules.pro'
 
             signingConfig signingConfigs.release
         }
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 
     compileOptions {
@@ -49,7 +54,9 @@ spotless {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation('androidx.appcompat:appcompat:1.6.1') {
+        exclude group: 'androidx.annotation', module: 'annotation-experimental'
+    }
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'

@@ -1,0 +1,108 @@
+name: Benchmark
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'benchmark/**'
+      - 'app/src/main/**'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'benchmark/**'
+      - 'app/src/main/**'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    name: Run Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '8.4'
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Build benchmark release APK
+        run: ./gradlew :benchmark:assembleRelease --no-daemon
+
+      - name: Run benchmarks on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 33
+          arch: x86_64
+          target: aosp_atd
+          profile: Nexus 6
+          ram-size: 4096M
+          heap-size: 512M
+          disk-size: 6000M
+          cores: 2
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            adb shell settings put global window_animation_scale 0
+            adb shell settings put global transition_animation_scale 0
+            adb shell settings put global animator_duration_scale 0
+            ./gradlew :benchmark:connectedReleaseAndroidTest -Pandroid.testInstrumentationRunnerArguments.androidx.benchmark.suppressErrors=EMULATOR,LOW-BATTERY --no-daemon 2>&1 | tee benchmark-output.txt
+
+      - name: Upload benchmark results JSON
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results-json
+          path: benchmark/build/outputs/connected_android_test_additional_output/**/*.json
+          retention-days: 90
+
+      - name: Upload benchmark full report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results-report
+          path: benchmark/build/reports/androidTests/connected/
+          retention-days: 30
+
+      - name: Upload raw output log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-output-log
+          path: benchmark-output.txt
+          retention-days: 14
+
+      - name: Print benchmark summary
+        if: always()
+        run: |
+          echo "### Benchmark Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          JSON_DIR="benchmark/build/outputs/connected_android_test_additional_output"
+          if find "$JSON_DIR" -name "*.json" | grep -q .; then
+            find "$JSON_DIR" -name "*.json" | while read f; do
+              echo "**$(basename $f)**" >> $GITHUB_STEP_SUMMARY
+              echo '```json' >> $GITHUB_STEP_SUMMARY
+              cat "$f" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+            done
+          else
+            echo "No JSON results found. Check the raw output log artifact." >> $GITHUB_STEP_SUMMARY
+          fi
