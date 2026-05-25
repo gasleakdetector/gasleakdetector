@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * HomeFragment — live gas reading panel.
+ * HomeFragment: live gas reading panel.
  *
  * Owns the circular gauge, real-time chart, and node info label.
  * WebSocket lifecycle (connect / disconnect) is delegated to MainActivity
@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment
         implements WebSocketManager.Callback, ChartView.OnNodeSelectedListener {
 
     /* ------------------------------------------------------------------ */
-    /*  Host interface — implemented by MainActivity                       */
+    /*  Host interface, implemented by MainActivity                        */
     /* ------------------------------------------------------------------ */
 
     /** Callbacks that MainActivity must implement to coordinate with this fragment. */
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Public API — called by MainActivity                                */
+    /*  Public API, called by MainActivity                                 */
     /* ------------------------------------------------------------------ */
 
     /** Called by MainActivity when WebSocket connects successfully. */
@@ -247,7 +247,7 @@ public class HomeFragment extends Fragment
     }
 
     /* ------------------------------------------------------------------ */
-    /*  WebSocketManager.Callback (not used directly — proxied via Host)   */
+    /*  WebSocketManager.Callback (not used directly, proxied via Host)    */
     /* ------------------------------------------------------------------ */
 
     @Override public void onConnected()   { /* proxied via onConnectedExternal()   */ }
