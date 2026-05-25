@@ -28,7 +28,7 @@ import java.util.zip.GZIPInputStream;
 /**
  * Fetches historical gas readings from the backend REST API.
  *
- * Handles cursor-based pagination transparently — callers receive the full
+ * Handles cursor-based pagination transparently, callers receive the full
  * result set via the callback. Supports optional gzip decompression.
  */
 public class HistoricalApiService {
@@ -47,7 +47,7 @@ public class HistoricalApiService {
         void onError(String error);
     }
 
-    // ── Called from MainActivity with a default 1d range ─────────────────────
+    // --- Called from MainActivity with a default 1d range ---
 
     public static void fetchHistoricalData(
             final RealtimeConfig config,
@@ -64,7 +64,7 @@ public class HistoricalApiService {
         });
     }
 
-    // ── Called from StatisticsFragment with an explicit range and progress callback ──
+    // --- Called from StatisticsFragment with an explicit range and progress callback ---
 
     public static void fetchHistoricalData(
             final RealtimeConfig config,
@@ -73,7 +73,7 @@ public class HistoricalApiService {
         fetchAllPages(config, range, callback);
     }
 
-    // ── Fetches all pages until nextCursor is null ────────────────────────────
+    // --- Fetches all pages until nextCursor is null ---
 
     private static void fetchAllPages(
             final RealtimeConfig config,
@@ -154,7 +154,7 @@ public class HistoricalApiService {
                 HistoricalDataPoint pt = new HistoricalDataPoint();
                 pt.setId(o.optLong("id", 0));
                 pt.setGasPpm(o.optInt("gas_ppm", 0));
-                // #11: read correct aggregate fields — were all reading gas_ppm before
+                // #11: read correct aggregate fields, were all reading gas_ppm before
                 pt.setAvgGas((float) o.optDouble("avg_gas", o.optInt("gas_ppm", 0)));
                 pt.setMinGas((float) o.optDouble("min_gas", o.optInt("gas_ppm", 0)));
                 pt.setMaxGas((float) o.optDouble("max_gas", o.optInt("gas_ppm", 0)));
@@ -170,7 +170,7 @@ public class HistoricalApiService {
         return new PageResult(points, nextCursor);
     }
 
-    // ── Reads the response body, inflating gzip if the server compressed it ──
+    // --- Reads the response body, inflating gzip if the server compressed it ---
 
     private static String readResponse(HttpURLConnection conn) throws IOException {
         String encoding = conn.getContentEncoding();
@@ -188,7 +188,7 @@ public class HistoricalApiService {
         return buffer.toString("UTF-8");
     }
 
-    // ── Internal result holder for a single page fetch ────────────────────────
+    // --- Internal result holder for a single page fetch ---
 
     private static class PageResult {
         final List<HistoricalDataPoint> points;
