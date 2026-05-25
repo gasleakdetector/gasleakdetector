@@ -144,7 +144,7 @@ public class ChartView extends View {
         scaleGestureDetector = new ScaleGestureDetector(context, new ChartScaleListener());
     }
 
-    // ── Public API ────────────────────────────────────────────────────────────
+    // --- Public API ---
 
     public void addDataPoint(int value) {
         addDataPointWithTimestamp(value, System.currentTimeMillis());
@@ -188,7 +188,7 @@ public class ChartView extends View {
         this.listener = listener;
     }
 
-    // ── Layout ────────────────────────────────────────────────────────────────
+    // --- Layout ---
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -223,7 +223,7 @@ public class ChartView extends View {
         scrollX = maxScrollX;
     }
 
-    // ── Drawing ───────────────────────────────────────────────────────────────
+    // --- Drawing ---
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -359,7 +359,7 @@ public class ChartView extends View {
         axisTextPaint.setTextAlign(Paint.Align.CENTER);
     }
 
-    // ── Touch handling ────────────────────────────────────────────────────────
+    // --- Touch handling ---
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -414,9 +414,9 @@ public class ChartView extends View {
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // --- Helpers ---
 
-    // ── Min/Max cache ─────────────────────────────────────────────────────────
+    // --- Min/Max cache ---
 
     // Single pass over dataPoints; called once per frame at the start of onDraw.
     private void refreshMinMaxIfNeeded() {
@@ -442,7 +442,7 @@ public class ChartView extends View {
     private int getMinValue() { return cachedMin; }
     private int getMaxValue() { return cachedMax; }
 
-    // ── Inner classes ─────────────────────────────────────────────────────────
+    // --- Inner classes ---
 
     private class ChartScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
         @Override
