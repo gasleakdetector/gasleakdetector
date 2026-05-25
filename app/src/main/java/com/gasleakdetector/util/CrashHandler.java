@@ -31,7 +31,7 @@ import java.util.Locale;
  * on API 30+. Internal filesDir is always writable without extra permissions.
  *
  * Why delegate to DEFAULT_HANDLER: not delegating leaves the main thread
- * blocked inside the handler — Toast won't dispatch, app appears frozen,
+ * blocked inside the handler, Toast won't dispatch, app appears frozen,
  * and Android eventually kills the process silently.
  */
 public final class CrashHandler {
@@ -50,7 +50,7 @@ public final class CrashHandler {
                 } catch (Throwable ignored) {
                     Log.e(TAG, "Failed to write crash log", ignored);
                 } finally {
-                    // Always delegate — this unblocks the main thread and lets
+                    // Always delegate - this unblocks the main thread and lets
                     // Android display its standard crash dialog.
                     if (defaultHandler != null) {
                         defaultHandler.uncaughtException(thread, throwable);
@@ -87,7 +87,7 @@ public final class CrashHandler {
             + "========================================\n\n"
             + sw;
 
-        // Write to internal storage — always writable, no permissions needed
+        // Write to internal storage, always writable, no permissions needed
         File dir = new File(app.getFilesDir(), "crashes");
         if (!dir.exists()) dir.mkdirs();
         File file = new File(dir, "crash_" + time + ".txt");
