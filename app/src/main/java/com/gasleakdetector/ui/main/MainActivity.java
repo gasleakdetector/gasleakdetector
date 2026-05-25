@@ -45,7 +45,7 @@ import com.gasleakdetector.util.LocaleHelper;
 import com.gasleakdetector.util.ThemeUtil;
 
 /**
- * MainActivity — shell activity.
+ * MainActivity: shell activity.
  *
  * Responsibilities:
  *  - Toolbar (play/stop button, edit config button, overflow menu)
@@ -268,7 +268,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Private — monitoring                                                */
+    /*  Private - monitoring                                                */
     /* ------------------------------------------------------------------ */
 
     private void toggleMonitoring() {
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Private — drawer                                                    */
+    /*  Private - drawer                                                    */
     /* ------------------------------------------------------------------ */
 
     private void setupDrawer() {
@@ -393,7 +393,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Private — misc                                                      */
+    /*  Private - misc                                                      */
     /* ------------------------------------------------------------------ */
 
     private void requestNotificationPermission() {
