@@ -38,7 +38,9 @@ android {
 }
 
 dependencies {
-    androidTestImplementation 'androidx.benchmark:benchmark-junit4:1.2.4'
+    androidTestImplementation('androidx.benchmark:benchmark-junit4:1.2.4') {
+        exclude group: 'androidx.annotation', module: 'annotation-experimental'
+    }
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation project(':app')
