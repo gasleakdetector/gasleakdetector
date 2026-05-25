@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.diffplug.spotless'
 
 android {
     compileSdk 33
@@ -15,8 +16,8 @@ android {
         release {
             storeFile     file(System.getenv("KEYSTORE_PATH") ?: "keystore.jks")
             storePassword System.getenv("KEYSTORE_PASSWORD") ?: ""
-            keyAlias      System.getenv("KEY_ALIAS")         ?: ""
-            keyPassword   System.getenv("KEY_PASSWORD")      ?: ""
+            keyAlias      System.getenv("KEY_ALIAS") ?: ""
+            keyPassword   System.getenv("KEY_PASSWORD") ?: ""
             enableV1Signing true
             enableV2Signing true
             enableV3Signing true
@@ -26,7 +27,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'
+            ), 'proguard-rules.pro'
+
             signingConfig signingConfigs.release
         }
     }
@@ -37,11 +41,19 @@ android {
     }
 }
 
+spotless {
+    java {
+        googleJavaFormat()
+        target 'src/**/*.java'
+    }
+}
+
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
     implementation('org.java-websocket:Java-WebSocket:1.6.0') {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
