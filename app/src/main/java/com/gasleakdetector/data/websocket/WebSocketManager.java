@@ -32,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * Key design decisions:
  * - Uses an incrementing AtomicInteger ref so Supabase doesn't discard duplicate messages.
- * - Heartbeat every 10 s — Supabase drops the channel after ~25 s of silence.
+ * - Heartbeat every 10 s, Supabase drops the channel after ~25 s of silence.
  * - Auto-reconnects 2 s after a drop so no data points are missed.
  */
 public class WebSocketManager {
@@ -79,7 +79,7 @@ public class WebSocketManager {
         this.reconnectHandler = new Handler(Looper.getMainLooper());
     }
 
-    // ── Public API ────────────────────────────────────────────────────────────
+    // --- Public API ---
 
     public void connect(final RealtimeConfig config) {
         if (isDestroyed) return;
@@ -117,7 +117,7 @@ public class WebSocketManager {
         if (fetchThread != null) { fetchThread.interrupt(); fetchThread = null; }
     }
 
-    // ── Step 1: Fetch Supabase WS URL and anon key from the backend config endpoint ──
+    // --- Step 1: Fetch Supabase WS URL and anon key from the backend config endpoint ---
 
     private void fetchConfigAndConnect() {
         if (Thread.interrupted() || isDestroyed) return;
@@ -162,7 +162,7 @@ public class WebSocketManager {
         }
     }
 
-    // ── Step 2: Open the WebSocket connection ─────────────────────────────────
+    // --- Step 2: Open the WebSocket connection ---
 
     private void connectWebSocket(final String wsUrl) {
         if (isDestroyed) return;
@@ -210,7 +210,7 @@ public class WebSocketManager {
         }
     }
 
-    // ── Step 3: Subscribe to the Postgres CDC channel after the socket opens ──
+    // --- Step 3: Subscribe to the Postgres CDC channel after the socket opens ---
 
     private void joinChannel() {
         if (client == null || !client.isOpen()) return;
@@ -240,7 +240,7 @@ public class WebSocketManager {
         }
     }
 
-    // ── Heartbeat — keeps the Supabase channel alive ──────────────────────────
+    // --- Heartbeat - keeps the Supabase channel alive ---
 
     private void startHeartbeat() {
         stopHeartbeat();
@@ -268,7 +268,7 @@ public class WebSocketManager {
         heartbeatHandler.removeCallbacksAndMessages(null);
     }
 
-    // ── Auto-reconnect ────────────────────────────────────────────────────────
+    // --- Auto-reconnect ---
 
     private void scheduleReconnect() {
         if (!shouldReconnect || isDestroyed) return;
@@ -294,7 +294,7 @@ public class WebSocketManager {
         reconnectHandler.removeCallbacksAndMessages(null);
     }
 
-    // ── Handle incoming messages ──────────────────────────────────────────────
+    // --- Handle incoming messages ---
 
     private void handleMessage(String message) {
         try {
@@ -350,7 +350,7 @@ public class WebSocketManager {
         }
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    // --- Helpers ---
 
     private void closeClient() {
         if (client != null) {
