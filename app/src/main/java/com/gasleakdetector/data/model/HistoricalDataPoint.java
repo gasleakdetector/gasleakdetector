@@ -92,6 +92,14 @@ public class HistoricalDataPoint {
 
     /**
      * Returns a Unix timestamp in milliseconds from the ISO 8601 date string.
+     * Alias for getTimestamp(), exposed as a Kotlin property (parsedTimestampMs).
+     */
+    public long getParsedTimestampMs() {
+        return getTimestamp();
+    }
+
+    /**
+     * Returns a Unix timestamp in milliseconds from the ISO 8601 date string.
      * Falls back to the current time if parsing fails.
      */
     public long getTimestamp() {
