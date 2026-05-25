@@ -22,8 +22,8 @@ import android.view.animation.DecelerateInterpolator;
 import com.gasleakdetector.data.model.GasStatus;
 
 /**
- * Circular arc gauge that displays a gas concentration value (0–1000 ppm).
- * Color interpolates from green → amber → red as the value crosses the
+ * Circular arc gauge that displays a gas concentration value (0-1000 ppm).
+ * Color interpolates from green to amber to red as the value crosses the
  * warning and danger thresholds defined in {@link GasStatus}.
  */
 public class CircularGaugeView extends View {
@@ -34,7 +34,7 @@ public class CircularGaugeView extends View {
     private static final int   MAX_VALUE         = 1000;
     private static final int   ANIMATION_DURATION = 800;
 
-    /* Gauge arc colors — kept as constants because they drive custom blending logic,
+    /* Gauge arc colors - kept as constants because they drive custom blending logic,
      * not simple theme colors. */
     private static final int COLOR_NORMAL  = 0xFF4CAF50;
     private static final int COLOR_WARNING = 0xFFFFC107;
@@ -83,7 +83,7 @@ public class CircularGaugeView extends View {
         animateToValue(clamped);
     }
 
-    /** Sets the gauge instantly without animation — useful for initial state restoration. */
+    /** Sets the gauge instantly without animation, useful for initial state restoration. */
     public void setValueImmediate(int value) {
         int clamped = Math.max(0, Math.min(value, MAX_VALUE));
         animatedValue = clamped;
@@ -123,8 +123,8 @@ public class CircularGaugeView extends View {
 
     /**
      * Blends between the three status colors based on ppm value.
-     * Below warning → solid green. Warning to danger → green→amber blend.
-     * Above danger → amber→red blend.
+     * Below warning: solid green. Warning to danger: green-to-amber blend.
+     * Above danger: amber-to-red blend.
      */
     private int getColorForValue(int value) {
         if (value < GasStatus.WARNING_THRESHOLD) {
