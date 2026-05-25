@@ -44,7 +44,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Build benchmark release APK
-        run: ./gradlew :benchmark:assembleRelease :benchmark:assembleAndroidTest --no-daemon
+        run: ./gradlew :benchmark:assembleRelease --no-daemon
 
       - name: Run benchmarks on emulator
         uses: reactivecircus/android-emulator-runner@v2

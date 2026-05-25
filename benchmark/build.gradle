@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.library'
+    id 'com.android.test'
     id 'androidx.benchmark'
     id 'org.jetbrains.kotlin.android'
 }
@@ -25,11 +25,13 @@ android {
         jvmTarget = '11'
     }
 
-    testBuildType 'release'
+    targetProjectPath ':app'
+    experimentalProperties['android.experimental.self-instrumenting'] = true
 
     buildTypes {
         release {
             isDefault = true
+            signingConfig signingConfigs.debug
         }
         debug {
             isDefault = false
@@ -38,15 +40,15 @@ android {
 }
 
 dependencies {
-    androidTestImplementation('androidx.benchmark:benchmark-junit4:1.2.4') {
+    implementation('androidx.benchmark:benchmark-junit4:1.2.4') {
         exclude group: 'androidx.annotation', module: 'annotation-experimental'
     }
-    androidTestImplementation 'androidx.test:runner:1.5.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation project(':app')
+    implementation 'androidx.test:runner:1.5.2'
+    implementation 'androidx.test.ext:junit:1.1.5'
 }
 
-configurations.all {
-    exclude group: 'androidx.annotation', module: 'annotation-experimental'
-    exclude group: 'androidx.arch.core', module: 'core-runtime'
+androidComponents {
+    beforeVariants(selector().all()) { variantBuilder ->
+        variantBuilder.enable = variantBuilder.buildType == 'release'
+    }
 }
