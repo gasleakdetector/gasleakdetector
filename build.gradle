@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.2'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.2.1'
     }
 }
 
