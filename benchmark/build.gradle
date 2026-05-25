@@ -45,3 +45,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation project(':app')
 }
+
+configurations.all {
+    exclude group: 'androidx.annotation', module: 'annotation-experimental'
+}
