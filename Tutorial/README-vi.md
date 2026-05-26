@@ -1,6 +1,6 @@
 # Hướng Dẫn Cài Đặt
 
-Hướng dẫn đầy đủ để cài đặt dự án Gas Leak Detector. Tài liệu này bao gồm cả bốn thành phần — server backend, Supabase, firmware ESP8266 và ứng dụng Android — theo đúng thứ tự cần thực hiện.
+Hướng dẫn đầy đủ để cài đặt dự án Gas Leak Detector. Tài liệu này bao gồm cả bốn thành phần - server backend, Supabase, firmware ESP8266 và ứng dụng Android - theo đúng thứ tự cần thực hiện.
 
 <div align="center">
 	<p><a target="_blank" href="README.md">English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -21,14 +21,14 @@ Hướng dẫn đầy đủ để cài đặt dự án Gas Leak Detector. Tài l
 |-----------|---------|
 | ESP8266 | NodeMCU hoặc tương đương |
 | Cảm biến khí MQ-6 | Phát hiện LPG / propane |
-| OLED SSD1306 0.96" | Tùy chọn — hiển thị thông số trên thiết bị |
+| OLED SSD1306 0.96" | Tùy chọn - hiển thị thông số trên thiết bị |
 | Buzzer | Chủ động hoặc bị động |
 
 ### Tài Khoản Cần Có
 
-- [Vercel](https://vercel.com) — triển khai serverless
-- [Supabase](https://supabase.com) — cơ sở dữ liệu và realtime
-- [Resend](https://resend.com) — cảnh báo qua email (tùy chọn)
+- [Vercel](https://vercel.com) - triển khai serverless
+- [Supabase](https://supabase.com) - cơ sở dữ liệu và realtime
+- [Resend](https://resend.com) - cảnh báo qua email (tùy chọn)
 
 ---
 
@@ -59,8 +59,8 @@ Hướng dẫn đầy đủ để cài đặt dự án Gas Leak Detector. Tài l
 | Biến | Mô Tả |
 |------|--------|
 | `SUPABASE_URL` | URL dự án Supabase của bạn |
-| `SUPABASE_ANON_KEY` | Supabase anonymous key — dùng cho WebSocket của ứng dụng Android |
-| `SUPABASE_SERVICE_KEY` | Supabase service role key — dùng cho toàn bộ thao tác ghi phía server |
+| `SUPABASE_ANON_KEY` | Supabase anonymous key - dùng cho WebSocket của ứng dụng Android |
+| `SUPABASE_SERVICE_KEY` | Supabase service role key - dùng cho toàn bộ thao tác ghi phía server |
 | `VALID_API_KEY` | Khóa bí mật chung được gửi qua header `x-api-key` bởi ESP và app |
 | `RESEND_API_KEY` | API key của Resend để gửi cảnh báo qua email |
 | `ALERT_EMAIL` | Địa chỉ email nhận cảnh báo khi mức khí đạt ngưỡng nguy hiểm |
@@ -70,7 +70,7 @@ Hướng dẫn đầy đủ để cài đặt dự án Gas Leak Detector. Tài l
 
 ### API Key
 
-`VALID_API_KEY` là khóa bí mật do bạn tự đặt — được dùng chung giữa server, firmware ESP và ứng dụng Android. Không cần đăng ký hay dịch vụ bên thứ ba nào.
+`VALID_API_KEY` là khóa bí mật do bạn tự đặt - được dùng chung giữa server, firmware ESP và ứng dụng Android. Không cần đăng ký hay dịch vụ bên thứ ba nào.
 
 Khuyến nghị: 8–10 ký tự chữ và số. Ví dụ: `Abc12345`.
 
@@ -148,7 +148,7 @@ Kết nối các thiết bị với ESP8266 theo sơ đồ bên dưới trước
 
 Tải file `.bin` mới nhất tại trang [gasleakdetector-esp releases](https://github.com/gasleakdetector/gasleakdetector-esp/releases) và nạp vào ESP8266 bằng công cụ phù hợp (esptool, Arduino IDE hoặc ESP Flash Download Tool).
 
-Quy trình nạp mã không được trình bày chi tiết ở đây — tham khảo repository firmware để biết thêm.
+Quy trình nạp mã không được trình bày chi tiết ở đây - tham khảo repository firmware để biết thêm.
 
 ### Cấu Hình Lần Đầu
 
@@ -158,8 +158,8 @@ Quy trình nạp mã không được trình bày chi tiết ở đây — tham k
 
 **Bước 2.** Mở trình duyệt và truy cập `http://192.168.4.1`. Captive portal sẽ tự động mở trên hầu hết các thiết bị. Điền thông tin:
 
-- **SSID / Password** — thông tin Wi-Fi nhà bạn
-- **API KEY** — `VALID_API_KEY` đã cài trong Vercel
+- **SSID / Password** - thông tin Wi-Fi nhà bạn
+- **API KEY** - `VALID_API_KEY` đã cài trong Vercel
 
 ![Captive portal của ESP](../images/esp_captive_portal.jpg)
 
@@ -210,13 +210,13 @@ Nhấn **Save**. Ứng dụng sẽ kết nối và hiển thị dữ liệu theo
 
 ## Xử Lý Sự Cố
 
-**ESP không kết nối được Wi-Fi** — kiểm tra lại SSID và mật khẩu trong captive portal. Giữ nút 5 giây để reset về mặc định và cài đặt lại.
+**ESP không kết nối được Wi-Fi** - kiểm tra lại SSID và mật khẩu trong captive portal. Giữ nút 5 giây để reset về mặc định và cài đặt lại.
 
-**Ứng dụng không hiển thị dữ liệu** — kiểm tra API URL và API Key có khớp chính xác với cài đặt trong Vercel không. Xem Vercel function logs để tìm lỗi.
+**Ứng dụng không hiển thị dữ liệu** - kiểm tra API URL và API Key có khớp chính xác với cài đặt trong Vercel không. Xem Vercel function logs để tìm lỗi.
 
-**Không nhận được email cảnh báo** — xác nhận `RESEND_API_KEY` và `ALERT_EMAIL` đã được cài đặt trong Vercel. Cảnh báo chỉ gửi khi trạng thái đạt mức `danger` và đã qua thời gian cooldown.
+**Không nhận được email cảnh báo** - xác nhận `RESEND_API_KEY` và `ALERT_EMAIL` đã được cài đặt trong Vercel. Cảnh báo chỉ gửi khi trạng thái đạt mức `danger` và đã qua thời gian cooldown.
 
-**Lỗi khi chạy Supabase schema** — đảm bảo SQL được chạy đúng project và extension `pg_cron` đã được kích hoạt (Supabase bật mặc định trên gói trả phí; gói miễn phí có thể cần kích hoạt thủ công).
+**Lỗi khi chạy Supabase schema** - đảm bảo SQL được chạy đúng project và extension `pg_cron` đã được kích hoạt (Supabase bật mặc định trên gói trả phí; gói miễn phí có thể cần kích hoạt thủ công).
 
 ---
 
