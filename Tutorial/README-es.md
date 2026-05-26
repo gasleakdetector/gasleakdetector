@@ -1,6 +1,6 @@
 # Guía de Configuración
 
-Guía completa de configuración para el proyecto Gas Leak Detector. Este documento cubre los cuatro componentes — backend del servidor, Supabase, firmware ESP8266 y la app de Android — en el orden en que deben configurarse.
+Guía completa de configuración para el proyecto Gas Leak Detector. Este documento cubre los cuatro componentes - backend del servidor, Supabase, firmware ESP8266 y la app de Android - en el orden en que deben configurarse.
 
 <div align="center">
 	<p><a target="_blank" href="README.md">English</a>&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -21,14 +21,14 @@ Guía completa de configuración para el proyecto Gas Leak Detector. Este docume
 |-----------|-------|
 | ESP8266 | NodeMCU o equivalente |
 | Sensor de gas MQ-6 | Detección de LPG / propano |
-| OLED SSD1306 0.96" | Opcional — para visualización en el dispositivo |
+| OLED SSD1306 0.96" | Opcional - para visualización en el dispositivo |
 | Zumbador | Activo o pasivo |
 
 ### Cuentas
 
-- [Vercel](https://vercel.com) — despliegue serverless
-- [Supabase](https://supabase.com) — base de datos y tiempo real
-- [Resend](https://resend.com) — alertas por correo electrónico (opcional)
+- [Vercel](https://vercel.com) - despliegue serverless
+- [Supabase](https://supabase.com) - base de datos y tiempo real
+- [Resend](https://resend.com) - alertas por correo electrónico (opcional)
 
 ---
 
@@ -59,8 +59,8 @@ Guía completa de configuración para el proyecto Gas Leak Detector. Este docume
 | Variable | Descripción |
 |----------|-------------|
 | `SUPABASE_URL` | URL de tu proyecto Supabase |
-| `SUPABASE_ANON_KEY` | Supabase anonymous key — usado por el WebSocket de la app Android |
-| `SUPABASE_SERVICE_KEY` | Supabase service role key — usado para todas las escrituras del lado del servidor |
+| `SUPABASE_ANON_KEY` | Supabase anonymous key - usado por el WebSocket de la app Android |
+| `SUPABASE_SERVICE_KEY` | Supabase service role key - usado para todas las escrituras del lado del servidor |
 | `VALID_API_KEY` | Secreto compartido enviado en el header `x-api-key` por el ESP y la app |
 | `RESEND_API_KEY` | API key de Resend para alertas por correo electrónico |
 | `ALERT_EMAIL` | Dirección de correo para las alertas de nivel de peligro |
@@ -70,7 +70,7 @@ Guía completa de configuración para el proyecto Gas Leak Detector. Este docume
 
 ### API Key
 
-`VALID_API_KEY` es un secreto que defines tú mismo — se comparte entre el servidor, el firmware ESP y la app Android. No se requiere registro ni servicio de terceros.
+`VALID_API_KEY` es un secreto que defines tú mismo - se comparte entre el servidor, el firmware ESP y la app Android. No se requiere registro ni servicio de terceros.
 
 Recomendado: 8–10 caracteres alfanuméricos. Ejemplo: `Abc12345`.
 
@@ -148,7 +148,7 @@ Conecta todos los componentes al ESP8266 según las tablas siguientes antes de e
 
 Descarga el archivo `.bin` más reciente desde la página de [gasleakdetector-esp releases](https://github.com/gasleakdetector/gasleakdetector-esp/releases) y flashéalo al ESP8266 usando tu herramienta preferida (esptool, Arduino IDE o ESP Flash Download Tool).
 
-El procedimiento de flasheo no se cubre en detalle aquí — consulta el repositorio del firmware para instrucciones.
+El procedimiento de flasheo no se cubre en detalle aquí - consulta el repositorio del firmware para instrucciones.
 
 ### Configuración Inicial
 
@@ -158,8 +158,8 @@ El procedimiento de flasheo no se cubre en detalle aquí — consulta el reposit
 
 **Paso 2.** Abre un navegador y navega a `http://192.168.4.1`. El portal cautivo se abrirá automáticamente en la mayoría de los dispositivos. Ingresa tus credenciales:
 
-- **SSID / Contraseña** — credenciales de tu Wi-Fi doméstico
-- **API KEY** — el `VALID_API_KEY` configurado en Vercel
+- **SSID / Contraseña** - credenciales de tu Wi-Fi doméstico
+- **API KEY** - el `VALID_API_KEY` configurado en Vercel
 
 ![Portal cautivo del ESP](../images/esp_captive_portal.jpg)
 
@@ -210,13 +210,13 @@ Toca **Save**. La app se conectará y comenzará a mostrar lecturas en vivo.
 
 ## Solución de Problemas
 
-**El ESP no se conecta a Wi-Fi** — verifica el SSID y la contraseña en el portal cautivo. Mantén presionado el botón durante 5 segundos para restablecer de fábrica y reconfigurar.
+**El ESP no se conecta a Wi-Fi** - verifica el SSID y la contraseña en el portal cautivo. Mantén presionado el botón durante 5 segundos para restablecer de fábrica y reconfigurar.
 
-**La app no muestra datos** — verifica que la API URL y el API Key coincidan exactamente con lo configurado en Vercel. Revisa los logs de funciones de Vercel para ver errores.
+**La app no muestra datos** - verifica que la API URL y el API Key coincidan exactamente con lo configurado en Vercel. Revisa los logs de funciones de Vercel para ver errores.
 
-**Sin alertas por correo electrónico** — confirma que `RESEND_API_KEY` y `ALERT_EMAIL` estén configurados en Vercel. Las alertas solo se envían cuando el estado alcanza `danger` y ha pasado la ventana de cooldown.
+**Sin alertas por correo electrónico** - confirma que `RESEND_API_KEY` y `ALERT_EMAIL` estén configurados en Vercel. Las alertas solo se envían cuando el estado alcanza `danger` y ha pasado la ventana de cooldown.
 
-**Errores de esquema de Supabase** — asegúrate de que el SQL se ejecutó en el proyecto correcto y que la extensión `pg_cron` esté habilitada (Supabase la habilita por defecto en planes de pago; los planes gratuitos pueden requerir activación manual).
+**Errores de esquema de Supabase** - asegúrate de que el SQL se ejecutó en el proyecto correcto y que la extensión `pg_cron` esté habilitada (Supabase la habilita por defecto en planes de pago; los planes gratuitos pueden requerir activación manual).
 
 ---
 

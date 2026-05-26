@@ -1,6 +1,6 @@
 # Setup Guide
 
-Complete setup guide for the Gas Leak Detector project. This document covers all four components — server backend, Supabase, ESP8266 firmware, and Android app — in the order they should be configured.
+Complete setup guide for the Gas Leak Detector project. This document covers all four components - server backend, Supabase, ESP8266 firmware, and Android app - in the order they should be configured.
 
 <div align="center">
 	<p>English&nbsp;&nbsp;|&nbsp;&nbsp;
@@ -21,14 +21,14 @@ Complete setup guide for the Gas Leak Detector project. This document covers all
 |-----------|-------|
 | ESP8266 | NodeMCU or equivalent |
 | MQ-6 Gas Sensor | LPG / propane detection |
-| OLED SSD1306 0.96" | Optional — for on-device display |
+| OLED SSD1306 0.96" | Optional - for on-device display |
 | Buzzer | Active or passive |
 
 ### Accounts
 
-- [Vercel](https://vercel.com) — serverless deployment
-- [Supabase](https://supabase.com) — database and realtime
-- [Resend](https://resend.com) — email alerts (optional)
+- [Vercel](https://vercel.com) - serverless deployment
+- [Supabase](https://supabase.com) - database and realtime
+- [Resend](https://resend.com) - email alerts (optional)
 
 ---
 
@@ -59,8 +59,8 @@ Complete setup guide for the Gas Leak Detector project. This document covers all
 | Variable | Description |
 |----------|-------------|
 | `SUPABASE_URL` | Your Supabase project URL |
-| `SUPABASE_ANON_KEY` | Supabase anonymous key — used by the Android app WebSocket |
-| `SUPABASE_SERVICE_KEY` | Supabase service role key — used for all server-side writes |
+| `SUPABASE_ANON_KEY` | Supabase anonymous key - used by the Android app WebSocket |
+| `SUPABASE_SERVICE_KEY` | Supabase service role key - used for all server-side writes |
 | `VALID_API_KEY` | Shared secret sent in `x-api-key` by the ESP and app |
 | `RESEND_API_KEY` | Resend API key for email alerts |
 | `ALERT_EMAIL` | Recipient address for danger-level alerts |
@@ -70,7 +70,7 @@ Complete setup guide for the Gas Leak Detector project. This document covers all
 
 ### API Key
 
-`VALID_API_KEY` is a secret you define yourself — it is shared between the server, ESP firmware, and Android app. There is no registration or third-party service involved.
+`VALID_API_KEY` is a secret you define yourself - it is shared between the server, ESP firmware, and Android app. There is no registration or third-party service involved.
 
 Recommended: 8–10 alphanumeric characters. Example: `Abc12345`.
 
@@ -148,7 +148,7 @@ Connect all components to the ESP8266 according to the tables below before power
 
 Download the latest `.bin` file from the [gasleakdetector-esp releases](https://github.com/gasleakdetector/gasleakdetector-esp/releases) page and flash it to the ESP8266 using your preferred tool (esptool, Arduino IDE, or ESP Flash Download Tool).
 
-Flashing procedure is not covered in detail here — refer to the firmware repository for instructions.
+Flashing procedure is not covered in detail here - refer to the firmware repository for instructions.
 
 ### First-time Configuration
 
@@ -158,8 +158,8 @@ Flashing procedure is not covered in detail here — refer to the firmware repos
 
 **Step 2.** Open a browser and navigate to `http://192.168.4.1`. The captive portal will open automatically on most devices. Enter your credentials:
 
-- **SSID / Password** — your home Wi-Fi credentials
-- **API KEY** — the `VALID_API_KEY` you configured in Vercel
+- **SSID / Password** - your home Wi-Fi credentials
+- **API KEY** - the `VALID_API_KEY` you configured in Vercel
 
 ![ESP captive portal home](../images/esp_captive_portal.jpg)
 
@@ -210,13 +210,13 @@ Tap **Save**. The app will connect and begin displaying live readings.
 
 ## Troubleshooting
 
-**ESP not connecting to Wi-Fi** — double-check SSID and password in the captive portal. Hold the button for 5 seconds to factory reset and reconfigure.
+**ESP not connecting to Wi-Fi** - double-check SSID and password in the captive portal. Hold the button for 5 seconds to factory reset and reconfigure.
 
-**App shows no data** — verify that API URL and API Key match exactly what is set in Vercel. Check the Vercel function logs for errors.
+**App shows no data** - verify that API URL and API Key match exactly what is set in Vercel. Check the Vercel function logs for errors.
 
-**No email alerts** — confirm `RESEND_API_KEY` and `ALERT_EMAIL` are set in Vercel. Alerts only fire when status reaches `danger` and the cooldown window has passed.
+**No email alerts** - confirm `RESEND_API_KEY` and `ALERT_EMAIL` are set in Vercel. Alerts only fire when status reaches `danger` and the cooldown window has passed.
 
-**Supabase schema errors** — ensure the SQL was run in the correct project and that `pg_cron` extension is enabled (Supabase enables it by default on paid plans; free plans may require manual activation).
+**Supabase schema errors** - ensure the SQL was run in the correct project and that `pg_cron` extension is enabled (Supabase enables it by default on paid plans; free plans may require manual activation).
 
 ---
 
