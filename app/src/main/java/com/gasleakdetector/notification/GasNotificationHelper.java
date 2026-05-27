@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.notification;
 
@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.os.Build;
 import com.gasleakdetector.R;
 import com.gasleakdetector.data.model.GasStatus;
+import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.ui.main.MainActivity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,18 +34,42 @@ public class GasNotificationHelper {
     /* Each alert gets a unique ID so they stack in the shade instead of replacing each other. */
     private static final AtomicInteger nextAlertId = new AtomicInteger(2000);
 
+    /* Last time (ms) a warning or danger alert was posted - used for delay check. */
+    private static volatile long lastWarningAlertMs = 0;
+    private static volatile long lastDangerAlertMs  = 0;
+
     private final Context             context;
     private final NotificationManager notificationManager;
+    private final SharedPrefs         sharedPrefs;
 
     public GasNotificationHelper(Context context) {
         this.context             = context.getApplicationContext();
         this.notificationManager =
             (NotificationManager) this.context.getSystemService(Context.NOTIFICATION_SERVICE);
+        this.sharedPrefs = new SharedPrefs(this.context);
     }
 
     public void showAlert(GasStatus status) {
-        if (status.isDanger())       showDangerNotification(status);
-        else if (status.isWarning()) showWarningNotification(status);
+        int minLevel = sharedPrefs.getAlertMinLevel();
+        if (status.isDanger()) {
+            /* Danger always shows unless user set delay and cooldown not yet passed. */
+            if (isWithinDelay(lastDangerAlertMs)) return;
+            lastDangerAlertMs = System.currentTimeMillis();
+            showDangerNotification(status);
+        } else if (status.isWarning()) {
+            /* Warning skipped if user chose danger-only mode. */
+            if (minLevel == SharedPrefs.ALERT_LEVEL_DANGER) return;
+            if (isWithinDelay(lastWarningAlertMs)) return;
+            lastWarningAlertMs = System.currentTimeMillis();
+            showWarningNotification(status);
+        }
+    }
+
+    /* Returns true if the delay window since lastPostMs has not yet elapsed. */
+    private boolean isWithinDelay(long lastPostMs) {
+        if (lastPostMs == 0) return false;
+        long delayMs = (long) sharedPrefs.getAlertDelayMinutes() * 60 * 1000L;
+        return (System.currentTimeMillis() - lastPostMs) < delayMs;
     }
 
     private void showDangerNotification(GasStatus status) {
