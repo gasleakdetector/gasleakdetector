@@ -159,4 +159,19 @@
     <string name="toast_threshold_saved">Threshold saved</string>
     <string name="toast_warning_must_be_less_than_danger">Warning threshold must be less than danger threshold</string>
     <string name="toast_danger_must_be_greater_than_warning">Danger threshold must be greater than warning threshold</string>
+
+    <!-- Alert delay and min level settings -->
+    <string name="label_alert_min_level">Alert from level</string>
+    <string name="desc_alert_min_level">Minimum level that triggers a notification</string>
+    <string name="label_alert_delay">Alert delay</string>
+    <string name="desc_alert_delay">Minimum time between repeated alerts of the same level</string>
+    <string name="desc_alert_delay_hint">Escalation (Warning to Danger) always bypasses this delay</string>
+    <string name="alert_level_warning">Warning and above</string>
+    <string name="alert_level_danger">Danger only</string>
+    <string name="alert_delay_fmt">%d min</string>
+    <string name="toast_alert_min_level_saved">Alert level saved</string>
+    <string name="toast_alert_delay_saved">Alert delay saved</string>
+    <string name="dialog_alert_delay_title">Alert delay (minutes)</string>
+    <string name="dialog_alert_delay_message">Enter delay in minutes (1 to 60)</string>
+    <string name="toast_alert_delay_invalid">Please enter a number between 1 and 60</string>
 </resources>
