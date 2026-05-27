@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-23
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.ui.main;
 
@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment
 
     private static final int    TEXT_ANIMATION_DURATION = 500;
     private static final int    MAX_NODES               = 1000;
-    private static final long   NOTIF_COOLDOWN_MS       = 30_000;
+    /* Cooldown is now read from SharedPrefs (alert_delay_minutes). */
     private static final String DEFAULT_DEVICE_ID       = "ESP_GASLEAK_01";
 
     /* ------------------------------------------------------------------ */
@@ -213,10 +213,13 @@ public class HomeFragment extends Fragment
 
         GasStatus liveStatus = createStatusFromValue(gasPpm, newPoint.getTimestamp());
         if (sharedPrefs.getNotificationsEnabled() && !liveStatus.isNormal()) {
-            long now          = System.currentTimeMillis();
-            boolean escalated = liveStatus.getLevel() > lastNotifiedLevel;
-            boolean cooldown  = (now - lastAlertTimestamp) >= NOTIF_COOLDOWN_MS;
-            if (escalated || cooldown) {
+            int  minLevel       = sharedPrefs.getAlertMinLevel();
+            long cooldownMs     = sharedPrefs.getAlertDelayMinutes() * 60_000L;
+            long now            = System.currentTimeMillis();
+            boolean meetsLevel  = liveStatus.getLevel() >= minLevel;
+            boolean escalated   = liveStatus.getLevel() > lastNotifiedLevel;
+            boolean cooldown    = (now - lastAlertTimestamp) >= cooldownMs;
+            if (meetsLevel && (escalated || cooldown)) {
                 notificationHelper.showAlert(liveStatus);
                 lastNotifiedLevel  = liveStatus.getLevel();
                 lastAlertTimestamp = now;
