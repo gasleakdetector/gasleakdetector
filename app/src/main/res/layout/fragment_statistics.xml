@@ -41,7 +41,7 @@
         android:layout_height="1dp"
         android:background="#44FFFFFF"/>
 
-    <!-- Header cố định — không nằm trong ScrollView -->
+    <!-- Header cố định - không nằm trong ScrollView -->
     <LinearLayout
         android:id="@+id/table_header"
         android:layout_width="match_parent"
