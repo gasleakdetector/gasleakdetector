@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-26
+ * Modified: 2026-05-27
  */
 package com.gasleakdetector.ui.main;
 
@@ -98,12 +98,12 @@ public class HomeFragment extends Fragment
     /*  Dependencies                                                        */
     /* ------------------------------------------------------------------ */
 
-    private SharedPrefs              sharedPrefs;
-    private GasLeakApplication       app;
-    private LocalDataStorage         localStorage;
-    private GasNotificationHelper    notificationHelper;
+    private SharedPrefs               sharedPrefs;
+    private GasLeakApplication        app;
+    private LocalDataStorage          localStorage;
+    private GasNotificationHelper     notificationHelper;
     private List<HistoricalDataPoint> dataPoints;
-    private Handler                  mainHandler;
+    private Handler                   mainHandler;
 
     /* ------------------------------------------------------------------ */
     /*  Lifecycle                                                           */
@@ -154,6 +154,12 @@ public class HomeFragment extends Fragment
     public void onDestroyView() {
         super.onDestroyView();
         if (textValueAnimator != null) textValueAnimator.cancel();
+        /* Null out views so stale async callbacks skip silently via isSafe(). */
+        gaugeView     = null;
+        chartView     = null;
+        gasLevelText  = null;
+        gasStatusText = null;
+        nodeInfoText  = null;
     }
 
     /* ------------------------------------------------------------------ */
@@ -162,6 +168,7 @@ public class HomeFragment extends Fragment
 
     /** Called by MainActivity when WebSocket connects successfully. */
     public void onConnectedExternal() {
+        if (!isSafe()) return;
         gasStatusText.post(new Runnable() {
             @Override public void run() {
                 Host host = getHostActivity();
@@ -172,6 +179,7 @@ public class HomeFragment extends Fragment
 
     /** Called by MainActivity when WebSocket disconnects. */
     public void onDisconnectedExternal() {
+        if (!isSafe()) return;
         gasStatusText.post(new Runnable() {
             @Override public void run() {
                 Host host = getHostActivity();
@@ -182,6 +190,8 @@ public class HomeFragment extends Fragment
 
     /** Called by MainActivity to push a live WebSocket reading into the fragment. */
     public void onDataReceivedExternal(int gasPpm, String status, String timestamp, String deviceId) {
+        if (!isSafe()) return;
+
         HistoricalDataPoint newPoint = new HistoricalDataPoint();
         newPoint.setGasPpm(gasPpm);
         newPoint.setStatus(status);
@@ -213,12 +223,12 @@ public class HomeFragment extends Fragment
 
         GasStatus liveStatus = createStatusFromValue(gasPpm, newPoint.getTimestamp());
         if (sharedPrefs.getNotificationsEnabled() && !liveStatus.isNormal()) {
-            int  minLevel       = sharedPrefs.getAlertMinLevel();
-            long cooldownMs     = sharedPrefs.getAlertDelayMinutes() * 60_000L;
-            long now            = System.currentTimeMillis();
-            boolean meetsLevel  = liveStatus.getLevel() >= minLevel;
-            boolean escalated   = liveStatus.getLevel() > lastNotifiedLevel;
-            boolean cooldown    = (now - lastAlertTimestamp) >= cooldownMs;
+            int  minLevel      = sharedPrefs.getAlertMinLevel();
+            long cooldownMs    = sharedPrefs.getAlertDelayMinutes() * 60_000L;
+            long now           = System.currentTimeMillis();
+            boolean meetsLevel = liveStatus.getLevel() >= minLevel;
+            boolean escalated  = liveStatus.getLevel() > lastNotifiedLevel;
+            boolean cooldown   = (now - lastAlertTimestamp) >= cooldownMs;
             if (meetsLevel && (escalated || cooldown)) {
                 notificationHelper.showAlert(liveStatus);
                 lastNotifiedLevel  = liveStatus.getLevel();
@@ -242,6 +252,7 @@ public class HomeFragment extends Fragment
 
     /** Reload data after config change. */
     public void reloadAfterConfigChange() {
+        if (!isSafe()) return;
         app.setHistoricalDataLoaded(false);
         app.setCachedNodes(null);
         chartView.clearData();
@@ -253,8 +264,8 @@ public class HomeFragment extends Fragment
     /*  WebSocketManager.Callback (not used directly, proxied via Host)    */
     /* ------------------------------------------------------------------ */
 
-    @Override public void onConnected()   { /* proxied via onConnectedExternal()   */ }
-    @Override public void onDisconnected(){ /* proxied via onDisconnectedExternal() */ }
+    @Override public void onConnected()    { /* proxied via onConnectedExternal()    */ }
+    @Override public void onDisconnected() { /* proxied via onDisconnectedExternal() */ }
 
     @Override
     public void onDataReceived(int gasPpm, String status, String timestamp, String deviceId) {
@@ -270,6 +281,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onNodeSelected(int index, int value, long timestamp) {
+        if (!isSafe()) return;
         if (isNodeLocked && selectedNodeIndex == index) {
             isNodeLocked      = false;
             selectedNodeIndex = -1;
@@ -291,6 +303,7 @@ public class HomeFragment extends Fragment
 
     @Override
     public void onNodeDeselected() {
+        if (!isSafe()) return;
         if (isNodeLocked) {
             isNodeLocked      = false;
             selectedNodeIndex = -1;
@@ -299,7 +312,7 @@ public class HomeFragment extends Fragment
     }
 
     /* ------------------------------------------------------------------ */
-    /*  Private helpers                                                     */
+    /*  Private - data loading                                              */
     /* ------------------------------------------------------------------ */
 
     private void loadCachedData() {
@@ -354,6 +367,7 @@ public class HomeFragment extends Fragment
     }
 
     private void handleHistoricalDataSuccess(List<HistoricalDataPoint> points) {
+        if (!isSafe()) return;
         app.setHistoricalDataLoaded(true);
         if (points == null || points.isEmpty()) {
             RealtimeConfig cfg = sharedPrefs.getRealtimeConfig();
@@ -369,8 +383,8 @@ public class HomeFragment extends Fragment
                         @Override public void onError(final String err) {
                             mainHandler.post(new Runnable() {
                                 @Override public void run() {
-                                    if (nodeInfoText != null)
-                                        nodeInfoText.setText(getString(R.string.no_historical_data));
+                                    if (!isSafe()) return;
+                                    nodeInfoText.setText(getString(R.string.no_historical_data));
                                 }
                             });
                         }
@@ -402,6 +416,7 @@ public class HomeFragment extends Fragment
     }
 
     private void handleHistoricalDataFallback(List<HistoricalDataPoint> points) {
+        if (!isSafe()) return;
         if (points == null || points.isEmpty()) {
             nodeInfoText.setText(getString(R.string.no_historical_data));
             return;
@@ -424,20 +439,25 @@ public class HomeFragment extends Fragment
     }
 
     private void handleHistoricalDataError(String error) {
-        if (nodeInfoText == null) return;
+        if (!isSafe()) return;
         nodeInfoText.setText(localStorage.hasCache()
             ? getString(R.string.network_error_cache)
             : getString(R.string.failed_load_data, error));
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Private - UI helpers                                                */
+    /* ------------------------------------------------------------------ */
+
     private void updateToLatestNode() {
-        if (dataPoints.isEmpty()) return;
+        if (!isSafe() || dataPoints.isEmpty()) return;
         HistoricalDataPoint last = dataPoints.get(dataPoints.size() - 1);
         updateUIAnimated(createStatusFromValue(last.getGasPpm(), last.getTimestamp()));
-        SimpleDateFormat fmt    = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
-        String deviceId         = (last.getDeviceId() != null && !last.getDeviceId().isEmpty())
+        SimpleDateFormat fmt = new SimpleDateFormat(getString(R.string.date_format), Locale.getDefault());
+        String deviceId = (last.getDeviceId() != null && !last.getDeviceId().isEmpty())
                 ? last.getDeviceId() : getDefaultDeviceId();
-        nodeInfoText.setText(getString(R.string.value_at_time, last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), deviceId));
+        nodeInfoText.setText(getString(R.string.value_at_time,
+            last.getGasPpm(), fmt.format(new Date(last.getTimestamp())), deviceId));
     }
 
     private GasStatus createStatusFromValue(int value, long timestamp) {
@@ -448,6 +468,7 @@ public class HomeFragment extends Fragment
     }
 
     private String generateMessage(int level, int value) {
+        if (!isAdded()) return "";
         switch (level) {
             case GasStatus.LEVEL_NORMAL:  return getString(R.string.msg_normal);
             case GasStatus.LEVEL_WARNING: return getString(R.string.msg_warning, value);
@@ -457,7 +478,7 @@ public class HomeFragment extends Fragment
     }
 
     private void updateUIAnimated(GasStatus status) {
-        if (gaugeView == null || gasLevelText == null || gasStatusText == null) return;
+        if (!isSafe()) return;
         animateValueText(status.getConcentration());
         animateStatusText(status);
         gaugeView.setValue(status.getConcentration());
@@ -471,6 +492,7 @@ public class HomeFragment extends Fragment
         textValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                if (gasLevelText == null) return;
                 currentDisplayValue = (int) animation.getAnimatedValue();
                 gasLevelText.setText(String.valueOf(currentDisplayValue));
             }
@@ -479,7 +501,7 @@ public class HomeFragment extends Fragment
     }
 
     private void animateStatusText(final GasStatus status) {
-        if (!isAdded() || getContext() == null) return;
+        if (!isSafe()) return;
         int currentColor = ContextCompat.getColor(requireContext(), getStatusColorRes(GasStatus.calculateLevel(currentDisplayValue)));
         int targetColor  = ContextCompat.getColor(requireContext(), getStatusColorRes(status.getLevel()));
 
@@ -489,6 +511,7 @@ public class HomeFragment extends Fragment
         colorAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
+                if (gasStatusText == null) return;
                 gasStatusText.setTextColor((int) animation.getAnimatedValue());
             }
         });
@@ -511,6 +534,16 @@ public class HomeFragment extends Fragment
             case GasStatus.LEVEL_DANGER:  return R.color.statusDanger;
             default:                      return R.color.statusNormal;
         }
+    }
+
+    /**
+     * Returns true only when the fragment is safe to access views and getString.
+     * Call this at the top of every method that may be reached from an async callback.
+     */
+    private boolean isSafe() {
+        return isAdded() && getContext() != null
+            && gaugeView != null && gasLevelText != null
+            && gasStatusText != null && nodeInfoText != null;
     }
 
     private String getDefaultDeviceId() {
