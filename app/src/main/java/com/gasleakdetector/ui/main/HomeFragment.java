@@ -457,6 +457,7 @@ public class HomeFragment extends Fragment
     }
 
     private void updateUIAnimated(GasStatus status) {
+        if (gaugeView == null || gasLevelText == null || gasStatusText == null) return;
         animateValueText(status.getConcentration());
         animateStatusText(status);
         gaugeView.setValue(status.getConcentration());
@@ -478,6 +479,7 @@ public class HomeFragment extends Fragment
     }
 
     private void animateStatusText(final GasStatus status) {
+        if (!isAdded() || getContext() == null) return;
         int currentColor = ContextCompat.getColor(requireContext(), getStatusColorRes(GasStatus.calculateLevel(currentDisplayValue)));
         int targetColor  = ContextCompat.getColor(requireContext(), getStatusColorRes(status.getLevel()));
 
