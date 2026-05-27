@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-20
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.ui.main;
 
@@ -44,6 +44,10 @@ public class SettingActivity extends AppCompatActivity {
     private View     dangerThresholdButton;
     private TextView warningThresholdValue;
     private TextView dangerThresholdValue;
+    private View     alertMinLevelButton;
+    private TextView alertMinLevelValue;
+    private View     alertDelayButton;
+    private TextView alertDelayValue;
 
     private SharedPrefs      sharedPrefs;
     private LocalDataStorage localStorage;
@@ -87,6 +91,10 @@ public class SettingActivity extends AppCompatActivity {
         dangerThresholdButton   = findViewById(R.id.dangerThresholdButton);
         warningThresholdValue   = findViewById(R.id.warningThresholdValue);
         dangerThresholdValue    = findViewById(R.id.dangerThresholdValue);
+        alertMinLevelButton     = findViewById(R.id.alertMinLevelButton);
+        alertMinLevelValue      = findViewById(R.id.alertMinLevelValue);
+        alertDelayButton        = findViewById(R.id.alertDelayButton);
+        alertDelayValue         = findViewById(R.id.alertDelayValue);
     }
 
     private void loadSettings() {
@@ -96,6 +104,8 @@ public class SettingActivity extends AppCompatActivity {
         keepAppRunningSwitch.setChecked(sharedPrefs.getKeepAppRunning());
         updateLanguageLabel();
         updateThresholdLabels();
+        updateAlertMinLevelLabel();
+        updateAlertDelayLabel();
     }
 
     private void updateLanguageLabel() {
@@ -109,6 +119,18 @@ public class SettingActivity extends AppCompatActivity {
     private void updateThresholdLabels() {
         warningThresholdValue.setText(getString(R.string.threshold_value_fmt, sharedPrefs.getWarningThreshold()));
         dangerThresholdValue.setText(getString(R.string.threshold_value_fmt, sharedPrefs.getDangerThreshold()));
+    }
+
+    private void updateAlertMinLevelLabel() {
+        int level = sharedPrefs.getAlertMinLevel();
+        alertMinLevelValue.setText(level == 2
+            ? getString(R.string.alert_level_danger_only)
+            : getString(R.string.alert_level_warning_and_above));
+    }
+
+    private void updateAlertDelayLabel() {
+        int minutes = sharedPrefs.getAlertDelayMinutes();
+        alertDelayValue.setText(getString(R.string.alert_delay_value_fmt, minutes));
     }
 
     private void setupListeners() {
@@ -167,6 +189,14 @@ public class SettingActivity extends AppCompatActivity {
         dangerThresholdButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) { showThresholdDialog(true); }
         });
+
+        alertMinLevelButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { showAlertMinLevelDialog(); }
+        });
+
+        alertDelayButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { showAlertDelayDialog(); }
+        });
     }
 
     private void showThresholdDialog(final boolean isDanger) {
@@ -211,6 +241,61 @@ public class SettingActivity extends AppCompatActivity {
                     Toast.makeText(SettingActivity.this,
                         getString(R.string.toast_threshold_saved),
                         Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show();
+    }
+
+    private void showAlertMinLevelDialog() {
+        final String[] options = {
+            getString(R.string.alert_level_warning_and_above),
+            getString(R.string.alert_level_danger_only)
+        };
+        final int current = sharedPrefs.getAlertMinLevel();
+        final int[] selected = { current - 1 };
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.label_alert_min_level))
+            .setSingleChoiceItems(options, selected[0], new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) { selected[0] = which; }
+            })
+            .setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sharedPrefs.setAlertMinLevel(selected[0] + 1);
+                    updateAlertMinLevelLabel();
+                    Toast.makeText(SettingActivity.this,
+                        getString(R.string.toast_alert_min_level_saved), Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show();
+    }
+
+    private void showAlertDelayDialog() {
+        final int current = sharedPrefs.getAlertDelayMinutes();
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setText(String.valueOf(current));
+        input.selectAll();
+        int pad = (int) (16 * getResources().getDisplayMetrics().density);
+        input.setPadding(pad, pad, pad, pad);
+
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.label_alert_delay))
+            .setMessage(getString(R.string.desc_alert_delay))
+            .setView(input)
+            .setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String raw = input.getText().toString().trim();
+                    if (raw.isEmpty()) return;
+                    int value = Integer.parseInt(raw);
+                    if (value < 1) value = 1;
+                    sharedPrefs.setAlertDelayMinutes(value);
+                    updateAlertDelayLabel();
+                    Toast.makeText(SettingActivity.this,
+                        getString(R.string.toast_alert_delay_saved), Toast.LENGTH_SHORT).show();
                 }
             })
             .setNegativeButton(getString(R.string.btn_cancel), null)
