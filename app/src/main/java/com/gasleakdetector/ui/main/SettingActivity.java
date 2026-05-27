@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-20
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.ui.main;
 
@@ -32,6 +32,10 @@ import com.gasleakdetector.util.ThemeUtil;
 
 public class SettingActivity extends AppCompatActivity {
 
+    /* ------------------------------------------------------------------ */
+    /*  Views                                                               */
+    /* ------------------------------------------------------------------ */
+
     private Switch   notificationSwitch;
     private Switch   autoRefreshSwitch;
     private Switch   autoStreamSwitch;
@@ -44,12 +48,24 @@ public class SettingActivity extends AppCompatActivity {
     private View     dangerThresholdButton;
     private TextView warningThresholdValue;
     private TextView dangerThresholdValue;
+    private View     alertMinLevelButton;
+    private View     alertDelayButton;
+    private TextView alertMinLevelValue;
+    private TextView alertDelayValue;
+
+    /* ------------------------------------------------------------------ */
+    /*  Dependencies                                                        */
+    /* ------------------------------------------------------------------ */
 
     private SharedPrefs      sharedPrefs;
     private LocalDataStorage localStorage;
 
     private static final String[] LANG_CODES  = {"en", "vi", "zh", "ja", "ko", "fr", "es", "de"};
-    private static final String[] LANG_LABELS = {"English", "Tiếng Việt", "中文", "日本語", "한국어", "Français", "Español", "Deutsch"};
+    private static final String[] LANG_LABELS = {"English", "Tieng Viet", "Zhongwen", "Nihongo", "Hangugeo", "Francais", "Espanol", "Deutsch"};
+
+    /* ------------------------------------------------------------------ */
+    /*  Lifecycle                                                           */
+    /* ------------------------------------------------------------------ */
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -74,19 +90,27 @@ public class SettingActivity extends AppCompatActivity {
         setupListeners();
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Private - init                                                      */
+    /* ------------------------------------------------------------------ */
+
     private void initViews() {
         notificationSwitch   = findViewById(R.id.notificationSwitch);
         autoRefreshSwitch    = findViewById(R.id.autoRefreshSwitch);
         autoStreamSwitch     = findViewById(R.id.autoStreamSwitch);
         keepAppRunningSwitch = findViewById(R.id.keepAppRunningSwitch);
-        clearCacheButton        = findViewById(R.id.clearCacheButton);
-        resetDefaultsButton     = findViewById(R.id.resetDefaultsButton);
-        languageButton          = findViewById(R.id.languageButton);
-        languageValueText       = findViewById(R.id.languageValueText);
-        warningThresholdButton  = findViewById(R.id.warningThresholdButton);
-        dangerThresholdButton   = findViewById(R.id.dangerThresholdButton);
-        warningThresholdValue   = findViewById(R.id.warningThresholdValue);
-        dangerThresholdValue    = findViewById(R.id.dangerThresholdValue);
+        clearCacheButton     = findViewById(R.id.clearCacheButton);
+        resetDefaultsButton  = findViewById(R.id.resetDefaultsButton);
+        languageButton       = findViewById(R.id.languageButton);
+        languageValueText    = findViewById(R.id.languageValueText);
+        warningThresholdButton = findViewById(R.id.warningThresholdButton);
+        dangerThresholdButton  = findViewById(R.id.dangerThresholdButton);
+        warningThresholdValue  = findViewById(R.id.warningThresholdValue);
+        dangerThresholdValue   = findViewById(R.id.dangerThresholdValue);
+        alertMinLevelButton  = findViewById(R.id.alertMinLevelButton);
+        alertDelayButton     = findViewById(R.id.alertDelayButton);
+        alertMinLevelValue   = findViewById(R.id.alertMinLevelValue);
+        alertDelayValue      = findViewById(R.id.alertDelayValue);
     }
 
     private void loadSettings() {
@@ -96,7 +120,13 @@ public class SettingActivity extends AppCompatActivity {
         keepAppRunningSwitch.setChecked(sharedPrefs.getKeepAppRunning());
         updateLanguageLabel();
         updateThresholdLabels();
+        updateAlertMinLevelLabel();
+        updateAlertDelayLabel();
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Private - label updaters                                            */
+    /* ------------------------------------------------------------------ */
 
     private void updateLanguageLabel() {
         String current = sharedPrefs.getLanguage();
@@ -110,6 +140,23 @@ public class SettingActivity extends AppCompatActivity {
         warningThresholdValue.setText(getString(R.string.threshold_value_fmt, sharedPrefs.getWarningThreshold()));
         dangerThresholdValue.setText(getString(R.string.threshold_value_fmt, sharedPrefs.getDangerThreshold()));
     }
+
+    private void updateAlertMinLevelLabel() {
+        int level = sharedPrefs.getAlertMinLevel();
+        if (level == SharedPrefs.ALERT_LEVEL_DANGER) {
+            alertMinLevelValue.setText(getString(R.string.alert_level_danger));
+        } else {
+            alertMinLevelValue.setText(getString(R.string.alert_level_warning));
+        }
+    }
+
+    private void updateAlertDelayLabel() {
+        alertDelayValue.setText(getString(R.string.alert_delay_fmt, sharedPrefs.getAlertDelayMinutes()));
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Private - listeners                                                 */
+    /* ------------------------------------------------------------------ */
 
     private void setupListeners() {
         notificationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -167,6 +214,84 @@ public class SettingActivity extends AppCompatActivity {
         dangerThresholdButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) { showThresholdDialog(true); }
         });
+
+        alertMinLevelButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { showAlertMinLevelDialog(); }
+        });
+
+        alertDelayButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { showAlertDelayDialog(); }
+        });
+    }
+
+    /* ------------------------------------------------------------------ */
+    /*  Private - dialogs                                                   */
+    /* ------------------------------------------------------------------ */
+
+    private void showAlertMinLevelDialog() {
+        final String[] labels = {
+            getString(R.string.alert_level_warning),
+            getString(R.string.alert_level_danger)
+        };
+        final int[] levels = {
+            SharedPrefs.ALERT_LEVEL_WARNING,
+            SharedPrefs.ALERT_LEVEL_DANGER
+        };
+
+        int current = sharedPrefs.getAlertMinLevel();
+        final int[] selected = {0};
+        for (int i = 0; i < levels.length; i++) {
+            if (levels[i] == current) { selected[0] = i; break; }
+        }
+
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.label_alert_min_level))
+            .setSingleChoiceItems(labels, selected[0], new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) { selected[0] = which; }
+            })
+            .setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) {
+                    sharedPrefs.setAlertMinLevel(levels[selected[0]]);
+                    updateAlertMinLevelLabel();
+                    Toast.makeText(SettingActivity.this,
+                        getString(R.string.toast_alert_min_level_saved), Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show();
+    }
+
+    private void showAlertDelayDialog() {
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setText(String.valueOf(sharedPrefs.getAlertDelayMinutes()));
+        input.selectAll();
+        int pad = (int) (16 * getResources().getDisplayMetrics().density);
+        input.setPadding(pad, pad, pad, pad);
+
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.dialog_alert_delay_title))
+            .setMessage(getString(R.string.dialog_alert_delay_message))
+            .setView(input)
+            .setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) {
+                    String raw = input.getText().toString().trim();
+                    if (raw.isEmpty()) return;
+                    int value;
+                    try { value = Integer.parseInt(raw); } catch (NumberFormatException e) { value = -1; }
+                    if (value < 1 || value > 60) {
+                        Toast.makeText(SettingActivity.this,
+                            getString(R.string.toast_alert_delay_invalid), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    sharedPrefs.setAlertDelayMinutes(value);
+                    updateAlertDelayLabel();
+                    Toast.makeText(SettingActivity.this,
+                        getString(R.string.toast_alert_delay_saved), Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show();
     }
 
     private void showThresholdDialog(final boolean isDanger) {
