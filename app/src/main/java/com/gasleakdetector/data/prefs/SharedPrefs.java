@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-20
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.data.prefs;
 
@@ -31,6 +31,15 @@ public class SharedPrefs {
     private static final String KEY_INTRO_SHOWN          = "intro_shown";
     private static final String KEY_WARNING_THRESHOLD    = "warning_threshold";
     private static final String KEY_DANGER_THRESHOLD     = "danger_threshold";
+    private static final String KEY_ALERT_MIN_LEVEL      = "alert_min_level";
+    private static final String KEY_ALERT_DELAY_MINUTES  = "alert_delay_minutes";
+
+    /* Alert level constants: 1 = Warning and above, 2 = Danger only. */
+    public static final int ALERT_LEVEL_WARNING = 1;
+    public static final int ALERT_LEVEL_DANGER  = 2;
+
+    /* Default delay between repeated alerts of the same level, in minutes. */
+    public static final int DEFAULT_ALERT_DELAY_MINUTES = 1;
 
     /* Re-fetch historical data if the last fetch is older than this. */
     private static final long REFETCH_INTERVAL_MS = 5 * 60 * 1000L;
@@ -94,7 +103,7 @@ public class SharedPrefs {
         return (System.currentTimeMillis() - last) > REFETCH_INTERVAL_MS;
     }
 
-    public boolean isIntroShown()       { return prefs.getBoolean(KEY_INTRO_SHOWN, false); }
+    public boolean isIntroShown()           { return prefs.getBoolean(KEY_INTRO_SHOWN, false); }
     public void    setIntroShown(boolean v) { prefs.edit().putBoolean(KEY_INTRO_SHOWN, v).apply(); }
 
     public int  getWarningThreshold()      { return prefs.getInt(KEY_WARNING_THRESHOLD, GasStatus.WARNING_THRESHOLD); }
@@ -102,6 +111,14 @@ public class SharedPrefs {
 
     public int  getDangerThreshold()      { return prefs.getInt(KEY_DANGER_THRESHOLD, GasStatus.DANGER_THRESHOLD); }
     public void setDangerThreshold(int v) { prefs.edit().putInt(KEY_DANGER_THRESHOLD, v).apply(); }
+
+    /* Minimum alert level to show: ALERT_LEVEL_WARNING (1) or ALERT_LEVEL_DANGER (2). */
+    public int  getAlertMinLevel()      { return prefs.getInt(KEY_ALERT_MIN_LEVEL, ALERT_LEVEL_WARNING); }
+    public void setAlertMinLevel(int v) { prefs.edit().putInt(KEY_ALERT_MIN_LEVEL, v).apply(); }
+
+    /* Delay between repeated alerts of the same level, in minutes (min 1, max 60). */
+    public int  getAlertDelayMinutes()      { return prefs.getInt(KEY_ALERT_DELAY_MINUTES, DEFAULT_ALERT_DELAY_MINUTES); }
+    public void setAlertDelayMinutes(int v) { prefs.edit().putInt(KEY_ALERT_DELAY_MINUTES, v).apply(); }
 
     public void resetToDefaults() {
         prefs.edit()
@@ -112,6 +129,8 @@ public class SharedPrefs {
             .putBoolean(KEY_KEEP_RUNNING, true)
             .putInt(KEY_WARNING_THRESHOLD, GasStatus.WARNING_THRESHOLD)
             .putInt(KEY_DANGER_THRESHOLD,  GasStatus.DANGER_THRESHOLD)
+            .putInt(KEY_ALERT_MIN_LEVEL,   ALERT_LEVEL_WARNING)
+            .putInt(KEY_ALERT_DELAY_MINUTES, DEFAULT_ALERT_DELAY_MINUTES)
             .apply();
     }
 }
