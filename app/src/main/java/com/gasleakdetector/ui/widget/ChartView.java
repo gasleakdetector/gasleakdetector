@@ -414,8 +414,6 @@ public class ChartView extends View {
         }
     }
 
-    // --- Helpers ---
-
     // --- Min/Max cache ---
 
     // Single pass over dataPoints; called once per frame at the start of onDraw.
