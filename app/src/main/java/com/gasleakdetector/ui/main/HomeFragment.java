@@ -250,7 +250,7 @@ public class HomeFragment extends Fragment
     /*  WebSocketManager.Callback (not used directly, proxied via Host)    */
     /* ------------------------------------------------------------------ */
 
-    @Override public void onConnected()   { /* proxied via onConnectedExternal()   */ }
+    @Override public void onConnected()   { /* proxied via onConnectedExternal()    */ }
     @Override public void onDisconnected(){ /* proxied via onDisconnectedExternal() */ }
 
     @Override
