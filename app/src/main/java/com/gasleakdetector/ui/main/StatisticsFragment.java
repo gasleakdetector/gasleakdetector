@@ -106,7 +106,7 @@ public class StatisticsFragment extends Fragment {
         if (tableContainer == null) return;
         tableContainer.removeAllViews();
         List<HourlyStatPoint> sorted = new ArrayList<>(points);
-        Collections.reverse(sorted); // newest at top, matches chart right-side
+        Collections.reverse(sorted); // newest on the right, matches chart order
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         for (HourlyStatPoint p : sorted) {
