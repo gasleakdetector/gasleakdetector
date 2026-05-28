@@ -50,8 +50,7 @@ public final class CrashHandler {
                 } catch (Throwable ignored) {
                     Log.e(TAG, "Failed to write crash log", ignored);
                 } finally {
-                    // Always delegate - this unblocks the main thread and lets
-                    // Android display its standard crash dialog.
+                    // Always delegate so Android can display its crash dialog.
                     if (defaultHandler != null) {
                         defaultHandler.uncaughtException(thread, throwable);
                     } else {
