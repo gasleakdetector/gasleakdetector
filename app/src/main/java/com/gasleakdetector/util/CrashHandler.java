@@ -4,29 +4,18 @@
  *
  * Project : Gas Leak Detector
  * Author  : Phuc An <pan2512811@gmail.com>
- * Email   : pan2512811@gmail.com
- * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-28
+ * Modified: 2026-05-29
  */
 package com.gasleakdetector.util;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
@@ -34,24 +23,34 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Catches uncaught exceptions and shows a copyable crash report dialog
- * instead of writing to disk.
+ * Catches uncaught exceptions, writes the crash report to a temp file in
+ * internal cache, then launches {@link CrashReportActivity} via a
+ * FLAG_ACTIVITY_NEW_TASK intent so the user can read, copy, or open a
+ * GitHub issue before the process exits.
  *
- * The report format mirrors the Termux issue report style so it can be
- * pasted directly into a GitHub issue without reformatting.
+ * Why a separate Activity instead of AlertDialog:
+ * At the point uncaughtException() is called the main thread's Looper is
+ * either dead or about to be killed. Posting a dialog via Handler.post()
+ * onto a dying Looper is not reliable -- the dialog may never appear or
+ * the app may freeze. Starting a fresh Activity with NEW_TASK bypasses
+ * the broken Looper entirely and gives us a clean window to work in.
  *
- * Why no file write: internal storage writes can silently fail on
- * low-storage devices and the file is inaccessible without root or
- * developer options. A dialog lets the user copy and share immediately.
+ * Why write to a file instead of passing the report through the Intent:
+ * Large crash reports (deep stack traces, many causes) can exceed the
+ * 1 MB Binder transaction limit and trigger TransactionTooLargeException.
+ * Writing to getCacheDir() avoids that, requires no permissions, and the
+ * file is cleaned up by CrashReportActivity after it is read.
  *
- * Why delegate to DEFAULT_HANDLER after showing the dialog: skipping it
- * leaves the main thread stuck, suppresses Android's own crash signal,
- * and prevents the system from cleaning up the process correctly.
+ * Why delegate to the default handler after starting the Activity:
+ * Skipping delegation suppresses the system's own crash bookkeeping,
+ * leaves the process in an undefined state, and prevents Android from
+ * showing the "App stopped" dialog if our Activity fails to start.
  */
 public final class CrashHandler {
 
-    private static final String TAG            = "CrashHandler";
-    private static final String GITHUB_ISSUES  = "https://github.com/gasleakdetector/gasleakdetector/issues/new";
+    private static final String TAG             = "CrashHandler";
+    static final         String REPORT_FILE_KEY = "crash_report_path";
+    static final         String REPORT_FILE_NAME = "crash_report_pending.txt";
 
     public static void init(final Context app) {
         final Thread.UncaughtExceptionHandler defaultHandler =
@@ -59,21 +58,21 @@ public final class CrashHandler {
 
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
-            public void uncaughtException(final Thread thread, final Throwable throwable) {
+            public void uncaughtException(Thread thread, Throwable throwable) {
                 try {
-                    final String report = buildReport(app, throwable);
+                    String report = buildReport(app, throwable);
                     Log.e(TAG, report);
-
-                    new Handler(Looper.getMainLooper()).post(new Runnable() {
-                        @Override
-                        public void run() {
-                            showCrashDialog(app, report, thread, throwable, defaultHandler);
-                        }
-                    });
-
+                    writeReportToCache(app, report);
+                    launchReportActivity(app);
                 } catch (Throwable secondary) {
-                    Log.e(TAG, "CrashHandler failed to build report", secondary);
-                    delegateToDefault(defaultHandler, thread, throwable);
+                    Log.e(TAG, "CrashHandler failed", secondary);
+                } finally {
+                    // Let Android clean up the process normally.
+                    if (defaultHandler != null) {
+                        defaultHandler.uncaughtException(thread, throwable);
+                    } else {
+                        System.exit(1);
+                    }
                 }
             }
         });
@@ -89,12 +88,9 @@ public final class CrashHandler {
         throwable.printStackTrace(new PrintWriter(sw));
         String stackTrace = sw.toString().trim();
 
-        String appName     = "Gas Leak Detector";
         String pkgName     = app.getPackageName();
         String versionName = "unknown";
         long   versionCode = 0;
-        String targetSdk   = String.valueOf(Build.VERSION.SDK_INT);
-        String isDebug     = "false";
 
         try {
             PackageInfo info = app.getPackageManager()
@@ -119,12 +115,12 @@ public final class CrashHandler {
         sb.append("```\n\n\n\n");
 
         sb.append("## App Info\n\n");
-        sb.append("**APP_NAME**: `").append(appName).append("`  \n");
+        sb.append("**APP_NAME**: `Gas Leak Detector`  \n");
         sb.append("**PACKAGE_NAME**: `").append(pkgName).append("`  \n");
         sb.append("**VERSION_NAME**: `").append(versionName).append("`  \n");
         sb.append("**VERSION_CODE**: `").append(versionCode).append("`  \n");
-        sb.append("**TARGET_SDK**: `").append(targetSdk).append("`  \n");
-        sb.append("**IS_DEBUGGABLE_BUILD**: `").append(isDebug).append("`  \n");
+        sb.append("**TARGET_SDK**: `").append(Build.VERSION.SDK_INT).append("`  \n");
+        sb.append("**IS_DEBUGGABLE_BUILD**: `false`  \n");
         sb.append("##\n\n\n");
 
         sb.append("## Device Info\n\n");
@@ -158,87 +154,23 @@ public final class CrashHandler {
         return sb.toString();
     }
 
-    // --- Dialog ---
+    // --- File + Activity launch ---
 
-    private static void showCrashDialog(
-            final Context app,
-            final String report,
-            final Thread thread,
-            final Throwable throwable,
-            final Thread.UncaughtExceptionHandler defaultHandler) {
+    private static void writeReportToCache(Context app, String report) throws Exception {
+        File file = new File(app.getCacheDir(), REPORT_FILE_NAME);
+        FileOutputStream fos = new FileOutputStream(file, false);
+        fos.write(report.getBytes("UTF-8"));
+        fos.close();
+    }
 
-        // Find a live Activity context for the dialog; fall back to app context.
-        Context dialogCtx = app;
-        if (app instanceof Activity && !((Activity) app).isFinishing()) {
-            dialogCtx = app;
-        }
-
-        TextView tv = new TextView(dialogCtx);
-        tv.setText(report);
-        tv.setTextSize(11f);
-        tv.setPadding(32, 24, 32, 24);
-        tv.setTextIsSelectable(true);
-        tv.setTypeface(android.graphics.Typeface.MONOSPACE);
-
-        ScrollView scroll = new ScrollView(dialogCtx);
-        scroll.addView(tv);
-
-        final Context ctx = dialogCtx;
-        new AlertDialog.Builder(ctx)
-            .setTitle("App Crash Report")
-            .setView(scroll)
-            .setCancelable(false)
-            .setPositiveButton("Copy & Open Issue", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    copyToClipboard(ctx, report);
-                    openGithubIssue(ctx);
-                    delegateToDefault(defaultHandler, thread, throwable);
-                }
-            })
-            .setNegativeButton("Copy", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    copyToClipboard(ctx, report);
-                    Toast.makeText(ctx, "Copied to clipboard", Toast.LENGTH_SHORT).show();
-                    delegateToDefault(defaultHandler, thread, throwable);
-                }
-            })
-            .setNeutralButton("Close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    delegateToDefault(defaultHandler, thread, throwable);
-                }
-            })
-            .show();
+    private static void launchReportActivity(Context app) {
+        Intent intent = new Intent(app, CrashReportActivity.class);
+        intent.putExtra(REPORT_FILE_KEY, new File(app.getCacheDir(), REPORT_FILE_NAME).getAbsolutePath());
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        app.startActivity(intent);
     }
 
     // --- Helpers ---
-
-    private static void copyToClipboard(Context ctx, String text) {
-        try {
-            ClipboardManager cm = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
-            if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("Crash Report", text));
-        } catch (Throwable ignored) {}
-    }
-
-    private static void openGithubIssue(Context ctx) {
-        try {
-            ctx.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_ISSUES))
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-        } catch (Throwable ignored) {}
-    }
-
-    private static void delegateToDefault(
-            Thread.UncaughtExceptionHandler handler,
-            Thread thread,
-            Throwable throwable) {
-        if (handler != null) {
-            handler.uncaughtException(thread, throwable);
-        } else {
-            System.exit(1);
-        }
-    }
 
     private static String join(String sep, String[] arr) {
         if (arr == null || arr.length == 0) return "-";
