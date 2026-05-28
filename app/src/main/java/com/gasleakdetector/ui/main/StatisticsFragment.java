@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-05-28
  */
 package com.gasleakdetector.ui.main;
 
@@ -118,29 +118,11 @@ public class StatisticsFragment extends Fragment {
         }
     }
 
-    private View buildHeaderRow() {
-        LinearLayout row = newRow();
-        row.setBackgroundColor(0x1A4CAF50);
-        TextView tvTime = newCell(getString(R.string.stat_col_time), true);
-        TextView tvAvg  = newCell(getString(R.string.stat_col_avg),  true);
-        row.addView(tvTime);
-        row.addView(tvAvg);
-        return row;
-    }
-
     private View buildDataRow(String time, String avg) {
         LinearLayout row = newRow();
         row.addView(newCell(time, false));
         row.addView(newCell(avg, false));
         return row;
-    }
-
-    private View buildDivider() {
-        View v = new View(requireContext());
-        v.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 2));
-        v.setBackgroundColor(0x33FFFFFF);
-        return v;
     }
 
     private View buildRowDivider() {
