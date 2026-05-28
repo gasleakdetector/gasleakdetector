@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-28
  */
 package com.gasleakdetector.ui.widget;
 
@@ -81,15 +81,6 @@ public class CircularGaugeView extends View {
     public void setValue(int value) {
         int clamped = Math.max(0, Math.min(value, MAX_VALUE));
         animateToValue(clamped);
-    }
-
-    /** Sets the gauge instantly without animation, useful for initial state restoration. */
-    public void setValueImmediate(int value) {
-        int clamped = Math.max(0, Math.min(value, MAX_VALUE));
-        animatedValue = clamped;
-        animatedColor = getColorForValue(clamped);
-        progressPaint.setColor(animatedColor);
-        invalidate();
     }
 
     private void animateToValue(int target) {
