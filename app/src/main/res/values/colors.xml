@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#4CAF50</color>
 
-    <!-- Gas level status colors — used by text, gauge, and notifications -->
+    <!-- Gas level status colors - used by text, gauge, and notifications -->
     <color name="statusNormal">#4CAF50</color>
     <color name="statusWarning">#FFC107</color>
     <color name="statusDanger">#F44336</color>

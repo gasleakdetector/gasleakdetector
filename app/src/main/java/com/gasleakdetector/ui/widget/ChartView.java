@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-05-28
  */
 package com.gasleakdetector.ui.widget;
 
@@ -145,10 +145,6 @@ public class ChartView extends View {
     }
 
     // --- Public API ---
-
-    public void addDataPoint(int value) {
-        addDataPointWithTimestamp(value, System.currentTimeMillis());
-    }
 
     public void addDataPointWithTimestamp(int value, long timestamp) {
         dataPoints.add(new DataPoint(value, timestamp));
@@ -413,8 +409,6 @@ public class ChartView extends View {
             invalidate();
         }
     }
-
-    // --- Helpers ---
 
     // --- Min/Max cache ---
 
