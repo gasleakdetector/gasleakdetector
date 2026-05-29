@@ -4,7 +4,7 @@
  *
  * Project : Gas Leak Detector
  * Author  : Phuc An <pan2512811@gmail.com>
- * Modified: 2026-05-29
+ * Modified: 2026-05-28
  */
 package com.gasleakdetector.util;
 
@@ -62,8 +62,15 @@ public final class CrashHandler {
                 try {
                     String report = buildReport(app, throwable);
                     Log.e(TAG, report);
-                    writeReportToCache(app, report);
-                    launchReportActivity(app);
+
+                    // Guard against a crash loop: if CrashReportActivity itself
+                    // crashed (e.g. BadTokenException during resume), launching it
+                    // again would crash infinitely. Write a new report only when
+                    // the crash did not originate from CrashReportActivity.
+                    if (!isCrashFromReportActivity(throwable)) {
+                        writeReportToCache(app, report);
+                        launchReportActivity(app);
+                    }
                 } catch (Throwable secondary) {
                     Log.e(TAG, "CrashHandler failed", secondary);
                 } finally {
@@ -156,8 +163,24 @@ public final class CrashHandler {
 
     // --- File + Activity launch ---
 
+    private static boolean isCrashFromReportActivity(Throwable throwable) {
+        String reportActivityName = CrashReportActivity.class.getName();
+        for (Throwable t = throwable; t != null; t = t.getCause()) {
+            for (StackTraceElement frame : t.getStackTrace()) {
+                if (frame.getClassName().startsWith(reportActivityName)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     private static void writeReportToCache(Context app, String report) throws Exception {
+        // If a previous report was never read (i.e. CrashReportActivity was
+        // killed before the user could copy it), keep the original file so the
+        // user still sees the first crash rather than the secondary one.
         File file = new File(app.getCacheDir(), REPORT_FILE_NAME);
+        if (file.exists()) file.delete();
         FileOutputStream fos = new FileOutputStream(file, false);
         fos.write(report.getBytes("UTF-8"));
         fos.close();
