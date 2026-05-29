@@ -53,9 +53,6 @@ public final class CrashHandler {
     static final         String REPORT_FILE_NAME = "crash_report_pending.txt";
 
     public static void init(final Context app) {
-        final Thread.UncaughtExceptionHandler defaultHandler =
-            Thread.getDefaultUncaughtExceptionHandler();
-
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable throwable) {
@@ -63,30 +60,24 @@ public final class CrashHandler {
                     String report = buildReport(app, throwable);
                     Log.e(TAG, report);
 
-                    // Guard against a crash loop: if CrashReportActivity itself
-                    // crashed (e.g. BadTokenException during resume), launching it
-                    // again would crash infinitely.
                     if (!isCrashFromReportActivity(throwable)) {
                         writeReportToCache(app, report);
                         launchReportActivity(app);
 
-                        // startActivity() only enqueues an intent -- it returns
-                        // immediately while the Activity is still being created.
-                        // Delegating to defaultHandler right away kills the process
-                        // before CrashReportActivity gets a chance to render.
-                        // Sleeping here gives the system enough time to bring the
-                        // Activity to the foreground before we exit.
+                        // startActivity() only enqueues an intent; sleep so the
+                        // system has time to bring CrashReportActivity to the
+                        // foreground before we terminate the process.
                         Thread.sleep(3000);
                     }
                 } catch (Throwable secondary) {
                     Log.e(TAG, "CrashHandler failed", secondary);
                 } finally {
-                    // Let Android clean up the process normally.
-                    if (defaultHandler != null) {
-                        defaultHandler.uncaughtException(thread, throwable);
-                    } else {
-                        System.exit(1);
-                    }
+                    // Hard-kill the process so Android does not restart the app.
+                    // Delegating to defaultHandler triggers the system's restart
+                    // logic, which would reopen the crashed app on top of the
+                    // crash report screen.
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(1);
                 }
             }
         });
