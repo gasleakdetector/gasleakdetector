@@ -4,7 +4,7 @@
  *
  * Project : Gas Leak Detector
  * Author  : Phuc An <pan2512811@gmail.com>
- * Modified: 2026-05-28
+ * Modified: 2026-05-29
  */
 package com.gasleakdetector.util;
 
@@ -65,11 +65,18 @@ public final class CrashHandler {
 
                     // Guard against a crash loop: if CrashReportActivity itself
                     // crashed (e.g. BadTokenException during resume), launching it
-                    // again would crash infinitely. Write a new report only when
-                    // the crash did not originate from CrashReportActivity.
+                    // again would crash infinitely.
                     if (!isCrashFromReportActivity(throwable)) {
                         writeReportToCache(app, report);
                         launchReportActivity(app);
+
+                        // startActivity() only enqueues an intent -- it returns
+                        // immediately while the Activity is still being created.
+                        // Delegating to defaultHandler right away kills the process
+                        // before CrashReportActivity gets a chance to render.
+                        // Sleeping here gives the system enough time to bring the
+                        // Activity to the foreground before we exit.
+                        Thread.sleep(3000);
                     }
                 } catch (Throwable secondary) {
                     Log.e(TAG, "CrashHandler failed", secondary);
@@ -167,7 +174,16 @@ public final class CrashHandler {
         String reportActivityName = CrashReportActivity.class.getName();
         for (Throwable t = throwable; t != null; t = t.getCause()) {
             for (StackTraceElement frame : t.getStackTrace()) {
+                // Direct frame match: crash originated inside CrashReportActivity.
                 if (frame.getClassName().startsWith(reportActivityName)) {
+                    return true;
+                }
+                // BadTokenException from ActivityThread means a window from our
+                // Activity was being attached when the token was already invalid.
+                // CrashReportActivity has no frames in this trace, but the symptom
+                // is still a crash loop so we must not re-launch.
+                if (throwable instanceof android.view.WindowManager.BadTokenException
+                        && frame.getClassName().contains("ActivityThread")) {
                     return true;
                 }
             }
