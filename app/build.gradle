@@ -64,6 +64,9 @@ dependencies {
     implementation('org.java-websocket:Java-WebSocket:1.6.0') {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
+    // slf4j-android routes slf4j calls to android.util.Log; required because
+    // Java-WebSocket uses slf4j internally but we exclude the API jar above.
+    implementation 'org.slf4j:slf4j-android:1.7.36'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.5.2'
