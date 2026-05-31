@@ -137,4 +137,26 @@
     <string name="toast_threshold_saved">Umbral guardado</string>
     <string name="toast_warning_must_be_less_than_danger">El umbral de advertencia debe ser menor que el umbral de peligro</string>
     <string name="toast_danger_must_be_greater_than_warning">El umbral de peligro debe ser mayor que el umbral de advertencia</string>
+
+    <string name="section_alert_settings">Configuración de alertas</string>
+    <string name="label_alert_min_level">Alertar desde el nivel</string>
+    <string name="desc_alert_min_level">Elegir el nivel mínimo de gas que activa una notificación</string>
+    <string name="alert_level_warning_and_above">Advertencia y superior</string>
+    <string name="alert_level_danger_only">Solo peligro</string>
+    <string name="toast_alert_min_level_saved">Nivel de alerta guardado</string>
+    <string name="label_alert_delay">Retraso de alerta (minutos)</string>
+    <string name="desc_alert_delay">Tiempo mínimo entre alertas repetidas del mismo nivel (mínimo 1 minuto)</string>
+    <string name="alert_delay_value_fmt">%d min</string>
+    <string name="toast_alert_delay_saved">Retraso de alerta guardado</string>
+    <string name="stat_loading">Cargando…</string>
+    <string name="stat_loading_nodes">Cargando %1$d elementos…</string>
+    <string name="stat_no_data">Sin datos para el rango %1$s</string>
+    <string name="stat_error">Error: %1$s</string>
+    <string name="stat_config_missing">API no configurada. Ve a Ajustes para añadir tus datos.</string>
+    <string name="stat_avg">Prom: %.1f PPM</string>
+    <string name="stat_min">Mín: %.0f PPM</string>
+    <string name="stat_max">Máx: %.0f PPM</string>
+    <string name="stat_nodes">Puntos: %1$d</string>
+    <string name="chart_empty_message">Esperando datos…</string>
+    <string name="error_invalid_number">Número no válido</string>
 </resources>
