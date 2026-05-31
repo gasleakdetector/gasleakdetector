@@ -157,6 +157,7 @@
     <string name="desc_danger_threshold">Gas level (ppm) that triggers a danger alert</string>
     <string name="threshold_value_fmt">%d ppm</string>
     <string name="toast_threshold_saved">Threshold saved</string>
+    <string name="error_invalid_number">Invalid number</string>
     <string name="toast_warning_must_be_less_than_danger">Warning threshold must be less than danger threshold</string>
     <string name="toast_danger_must_be_greater_than_warning">Danger threshold must be greater than warning threshold</string>
 

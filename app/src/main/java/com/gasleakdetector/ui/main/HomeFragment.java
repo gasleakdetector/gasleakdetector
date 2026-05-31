@@ -409,7 +409,7 @@ public class HomeFragment extends Fragment
         dataPoints.clear();
         dataPoints.addAll(points);
         app.setCachedNodes(dataPoints);
-        localStorage.saveNodes(points);
+        localStorage.replaceAll(points);
         sharedPrefs.markFetchTime();
         updateToLatestNode();
         nodeInfoText.setText(getString(R.string.loaded_data_points, points.size()));
@@ -432,7 +432,7 @@ public class HomeFragment extends Fragment
         dataPoints.clear();
         dataPoints.addAll(points);
         app.setCachedNodes(dataPoints);
-        localStorage.saveNodes(points);
+        localStorage.replaceAll(points);
         sharedPrefs.markFetchTime();
         updateToLatestNode();
         nodeInfoText.setText(getString(R.string.loaded_data_points, points.size()));

@@ -42,10 +42,20 @@ public class LocalDataStorage {
     }
 
     /**
-     * Writes data points to disk, capping at {@code MAX_NODES} to avoid unbounded growth.
-     * Silently returns false on I/O error.
+     * Replaces all cached data points with the given list. Thread-safe.
+     * Use this instead of calling saveNodes directly from outside.
      */
-    public boolean saveNodes(List<HistoricalDataPoint> dataPoints) {
+    public boolean replaceAll(List<HistoricalDataPoint> dataPoints) {
+        synchronized (writeLock) { // #67: protect against concurrent addNode writes
+            return saveNodes(dataPoints);
+        }
+    }
+
+    /**
+     * Writes data points to disk, capping at {@code MAX_NODES} to avoid unbounded growth.
+     * Silently returns false on I/O error. Must be called with writeLock held.
+     */
+    private boolean saveNodes(List<HistoricalDataPoint> dataPoints) {
         if (dataPoints == null || dataPoints.isEmpty()) return false;
 
         try {

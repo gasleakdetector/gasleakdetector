@@ -220,7 +220,14 @@ public class SettingActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     String raw = input.getText().toString().trim();
                     if (raw.isEmpty()) return;
-                    int value = Integer.parseInt(raw);
+                    int value;
+                    try {
+                        value = Integer.parseInt(raw);
+                    } catch (NumberFormatException ignored) {
+                        Toast.makeText(SettingActivity.this,
+                            getString(R.string.error_invalid_number), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
                     if (!isDanger && value >= sharedPrefs.getDangerThreshold()) {
                         Toast.makeText(SettingActivity.this,
@@ -290,7 +297,14 @@ public class SettingActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     String raw = input.getText().toString().trim();
                     if (raw.isEmpty()) return;
-                    int value = Integer.parseInt(raw);
+                    int value;
+                    try {
+                        value = Integer.parseInt(raw);
+                    } catch (NumberFormatException ignored) {
+                        Toast.makeText(SettingActivity.this,
+                            getString(R.string.error_invalid_number), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     if (value < 1) value = 1;
                     sharedPrefs.setAlertDelayMinutes(value);
                     updateAlertDelayLabel();

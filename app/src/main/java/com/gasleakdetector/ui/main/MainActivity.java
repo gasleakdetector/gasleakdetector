@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity
             if (pm != null) {
                 if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
                 wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getString(R.string.wakelock_tag));
-                wakeLock.acquire();
+                wakeLock.acquire(10 * 60 * 1000L); // #62: 10 min max, re-acquired on next onResume
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
