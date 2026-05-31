@@ -32,6 +32,12 @@
 
 ## Overview
 
+<p>
+  <a href="https://hosted.weblate.org/engage/gas-leak-detector/">
+    <img alt="Translation Status" src="https://hosted.weblate.org/widgets/gas-leak-detector/-/svg-badge.svg"/>
+  </a>
+</p>
+
 Gas Leak Detector is a full-stack IoT safety system. An MQ-6 sensor on an ESP8266 continuously samples ambient gas levels and pushes readings to a serverless Vercel API. Data is persisted in Supabase and streamed in real time to the Android app via WebSocket - no polling, no delay.
 
 The system is composed of three independent repositories that form one pipeline:
