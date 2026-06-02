@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-28
+ * Modified: 2026-06-02
  */
 package com.gasleakdetector.ui.main;
 
@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity
             if (pm != null) {
                 if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
                 wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getString(R.string.wakelock_tag));
-                wakeLock.acquire(10 * 60 * 1000L); // #62: 10 min max, re-acquired on next onResume
+                wakeLock.acquire(10 * 60 * 1000L); 
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

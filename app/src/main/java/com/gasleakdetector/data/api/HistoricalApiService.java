@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-06-02
  */
 package com.gasleakdetector.data.api;
 
