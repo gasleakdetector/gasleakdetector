@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-06-02
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.ui.main;
 
@@ -375,8 +375,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setActiveTab(boolean isHome) {
         int activeColor   = ContextCompat.getColor(this, R.color.colorPrimary);
-        int inactiveColor = 0xCCFFFFFF;
-        int activeBg      = 0x1A4CAF50;
+        int inactiveColor = ContextCompat.getColor(this, R.color.menuInactiveText);
+        int activeBg      = ContextCompat.getColor(this, R.color.menuActiveBackground);
 
         menuHomeText.setTextColor(isHome ? activeColor : inactiveColor);
         menuStatisticsText.setTextColor(isHome ? inactiveColor : activeColor);
@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity
             if (pm != null) {
                 if (wakeLock != null && wakeLock.isHeld()) wakeLock.release();
                 wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getString(R.string.wakelock_tag));
-                wakeLock.acquire(10 * 60 * 1000L); 
+                wakeLock.acquire();
             }
         } else {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
