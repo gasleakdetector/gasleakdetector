@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.notification;
 
@@ -22,6 +22,9 @@ public class NotificationChannelManager {
     public static final String CHANNEL_FOREGROUND = "foreground_service";
     public static final String CHANNEL_GAS_ALERT  = "gas_alert";
     public static final String CHANNEL_STATUS      = "gas_status";
+
+    /* Vibration: 0 ms delay, 500 ms on, 200 ms off, 500 ms on */
+    private static final long[] VIBRATION_PATTERN_ALERT = {0, 500, 200, 500};
 
     public static void createChannels(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -59,7 +62,7 @@ public class NotificationChannelManager {
             );
             channel.setDescription(context.getString(R.string.notif_channel_alert_desc));
             channel.enableVibration(true);
-            channel.setVibrationPattern(new long[]{0, 500, 200, 500});
+            channel.setVibrationPattern(VIBRATION_PATTERN_ALERT);
             manager.createNotificationChannel(channel);
         }
     }
