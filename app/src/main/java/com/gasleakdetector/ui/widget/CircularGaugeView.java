@@ -19,6 +19,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import androidx.core.content.ContextCompat;
+import com.gasleakdetector.R;
 import com.gasleakdetector.data.model.GasStatus;
 
 /**

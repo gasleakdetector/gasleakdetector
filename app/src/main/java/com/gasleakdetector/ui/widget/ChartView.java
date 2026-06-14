@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import androidx.core.content.ContextCompat;
+import com.gasleakdetector.R;
 
 /**
  * Scrollable, zoomable line chart for gas ppm readings.
@@ -242,7 +243,7 @@ public class ChartView extends View {
     private void drawEmptyMessage(Canvas canvas) {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setTextSize(32f);
-        p.setColor(ContextCompat.getColor(context, R.color.chartAxisText) & 0x80FFFFFF);
+        p.setColor(ContextCompat.getColor(getContext(), R.color.chartAxisText) & 0x80FFFFFF);
         p.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(emptyMessage, getWidth() / 2f, getHeight() / 2f, p);
     }
