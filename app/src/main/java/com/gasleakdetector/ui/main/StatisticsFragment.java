@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-28
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.ui.main;
 
@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import com.gasleakdetector.R;
 import com.gasleakdetector.data.api.StatsApiService;
+import com.gasleakdetector.data.local.StatsLocalStorage;
 import com.gasleakdetector.data.model.HourlyStatPoint;
 import com.gasleakdetector.data.model.RealtimeConfig;
 import com.gasleakdetector.data.prefs.SharedPrefs;
@@ -39,14 +40,27 @@ import java.util.TimeZone;
 
 public class StatisticsFragment extends Fragment {
 
-    private StatsChartView             chartView;
-    private LinearLayout               tableContainer;
-    private FrameLayout                loadingOverlay;
-    private TextView                   tvLoading;
-    private android.widget.ScrollView  tableScrollView;
+    /* ------------------------------------------------------------------ */
+    /*  Views                                                               */
+    /* ------------------------------------------------------------------ */
 
-    private RealtimeConfig config;
-    private final Handler  mainHandler = new Handler(Looper.getMainLooper());
+    private StatsChartView            chartView;
+    private LinearLayout              tableContainer;
+    private FrameLayout               loadingOverlay;
+    private TextView                  tvLoading;
+    private android.widget.ScrollView tableScrollView;
+
+    /* ------------------------------------------------------------------ */
+    /*  Dependencies                                                        */
+    /* ------------------------------------------------------------------ */
+
+    private RealtimeConfig    config;
+    private StatsLocalStorage statsStorage;
+    private final Handler     mainHandler = new Handler(Looper.getMainLooper());
+
+    /* ------------------------------------------------------------------ */
+    /*  Lifecycle                                                           */
+    /* ------------------------------------------------------------------ */
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,27 +70,62 @@ public class StatisticsFragment extends Fragment {
         loadingOverlay  = root.findViewById(R.id.loading_overlay);
         tvLoading       = root.findViewById(R.id.tv_loading);
         tableScrollView = root.findViewById(R.id.table_scroll_view);
-        config = new SharedPrefs(requireContext()).getRealtimeConfig();
+
+        SharedPrefs prefs = new SharedPrefs(requireContext());
+        config       = prefs.getRealtimeConfig();
+        statsStorage = new StatsLocalStorage(requireContext());
+
         loadStats();
         return root;
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Load - cache first, then network                                    */
+    /* ------------------------------------------------------------------ */
+
     private void loadStats() {
-        showLoading(true);
         if (config == null || !config.isValid()) {
-            showLoading(false);
             showError(getString(R.string.stat_config_missing));
             return;
         }
+
+        // Show cached data immediately while network loads
+        if (statsStorage.hasCache()) {
+            List<HourlyStatPoint> cached = statsStorage.loadStats();
+            if (!cached.isEmpty()) {
+                renderChart(cached);
+                renderTable(cached);
+                if (tableScrollView != null) tableScrollView.scrollTo(0, 0);
+            }
+        }
+
+        showLoading(true);
+        fetchFromNetwork();
+    }
+
+    private void fetchFromNetwork() {
         StatsApiService.fetchHourlyStats(config, new StatsApiService.StatsCallback() {
             @Override
             public void onSuccess(final List<HourlyStatPoint> points) {
+                // Save to cache on background thread before posting to UI
+                if (!points.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            statsStorage.saveStats(points);
+                        }
+                    }).start();
+                }
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (!isSafe()) return;
                         showLoading(false);
                         if (points.isEmpty()) {
-                            showError(getString(R.string.stat_no_data, "hourly"));
+                            // Keep cached data visible if network returns empty
+                            if (!statsStorage.hasCache()) {
+                                showError(getString(R.string.stat_no_data, "hourly"));
+                            }
                             return;
                         }
                         renderChart(points);
@@ -85,18 +134,29 @@ public class StatisticsFragment extends Fragment {
                     }
                 });
             }
+
             @Override
             public void onError(final String error) {
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        if (!isSafe()) return;
                         showLoading(false);
-                        showError(getString(R.string.stat_error, error));
+                        if (statsStorage.hasCache()) {
+                            Toast.makeText(requireContext(),
+                                    getString(R.string.network_error_cache), Toast.LENGTH_SHORT).show();
+                        } else {
+                            showError(getString(R.string.stat_error, error));
+                        }
                     }
                 });
             }
         });
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                              */
+    /* ------------------------------------------------------------------ */
 
     private void renderChart(List<HourlyStatPoint> points) {
         if (chartView != null) chartView.setPoints(points);
@@ -106,7 +166,7 @@ public class StatisticsFragment extends Fragment {
         if (tableContainer == null) return;
         tableContainer.removeAllViews();
         List<HourlyStatPoint> sorted = new ArrayList<>(points);
-        Collections.reverse(sorted); // newest on the right, matches chart order
+        Collections.reverse(sorted);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm  dd/MM", Locale.getDefault());
         sdf.setTimeZone(TimeZone.getDefault());
         for (HourlyStatPoint p : sorted) {
@@ -117,6 +177,10 @@ public class StatisticsFragment extends Fragment {
             tableContainer.addView(buildRowDivider());
         }
     }
+
+    /* ------------------------------------------------------------------ */
+    /*  Private - row builders                                              */
+    /* ------------------------------------------------------------------ */
 
     private View buildDataRow(String time, String avg) {
         LinearLayout row = newRow();
@@ -154,6 +218,10 @@ public class StatisticsFragment extends Fragment {
         return tv;
     }
 
+    /* ------------------------------------------------------------------ */
+    /*  Private - helpers                                                   */
+    /* ------------------------------------------------------------------ */
+
     private String formatBucket(String bucket, SimpleDateFormat sdf) {
         if (bucket == null || bucket.isEmpty()) return "--";
         try {
@@ -180,5 +248,10 @@ public class StatisticsFragment extends Fragment {
 
     private void showError(String msg) {
         if (getContext() != null) Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    /** Check Fragment is still attached before touching views. */
+    private boolean isSafe() {
+        return isAdded() && getActivity() != null;
     }
 }
