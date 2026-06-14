@@ -10,6 +10,7 @@
  */
 package com.gasleakdetector.ui.main;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.gasleakdetector.R;
 import com.gasleakdetector.data.api.StatsApiService;
@@ -190,30 +192,36 @@ public class StatisticsFragment extends Fragment {
     }
 
     private View buildRowDivider() {
+        int heightPx = (int) getResources().getDimension(R.dimen.stats_divider_height);
         View v = new View(requireContext());
         v.setLayoutParams(new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        v.setBackgroundColor(0x11FFFFFF);
+            LinearLayout.LayoutParams.MATCH_PARENT, heightPx));
+        v.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.statsRowDivider));
         return v;
     }
 
     private LinearLayout newRow() {
+        int paddingPx = (int) getResources().getDimension(R.dimen.stats_row_padding_vertical);
         LinearLayout row = new LinearLayout(requireContext());
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setLayoutParams(new LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        row.setPadding(0, 22, 0, 22);
+        row.setPadding(0, paddingPx, 0, paddingPx);
         return row;
     }
 
     private TextView newCell(String text, boolean header) {
+        int colorPrimary   = ContextCompat.getColor(requireContext(), R.color.statsTextPrimary);
+        int colorSecondary = ContextCompat.getColor(requireContext(), R.color.statsTextSecondary);
+        float textSizeSp   = getResources().getDimension(R.dimen.stats_text_size)
+                                 / getResources().getDisplayMetrics().scaledDensity;
         TextView tv = new TextView(requireContext());
         tv.setLayoutParams(new LinearLayout.LayoutParams(
             0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         tv.setText(text);
         tv.setGravity(Gravity.CENTER);
-        tv.setTextSize(14f);
-        tv.setTextColor(header ? 0xFFFFFFFF : 0xCCFFFFFF);
+        tv.setTextSize(textSizeSp);
+        tv.setTextColor(header ? colorPrimary : colorSecondary);
         if (header) tv.setTypeface(null, Typeface.BOLD);
         return tv;
     }

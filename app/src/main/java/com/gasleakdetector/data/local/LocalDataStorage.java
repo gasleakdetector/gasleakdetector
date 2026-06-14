@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-06-02
  */
 package com.gasleakdetector.data.local;
 
@@ -35,8 +35,7 @@ public class LocalDataStorage {
     private static final int    MAX_NODES = 1000;
 
     private final File   cacheFile;
-    private final Object writeLock = new Object(); // #8: serialize concurrent disk writes
-
+    private final Object writeLock = new Object();
     public LocalDataStorage(Context context) {
         this.cacheFile = new File(context.getApplicationContext().getFilesDir(), FILE_NAME);
     }
@@ -46,7 +45,7 @@ public class LocalDataStorage {
      * Use this instead of calling saveNodes directly from outside.
      */
     public boolean replaceAll(List<HistoricalDataPoint> dataPoints) {
-        synchronized (writeLock) { // #67: protect against concurrent addNode writes
+        synchronized (writeLock) {
             return saveNodes(dataPoints);
         }
     }
@@ -95,7 +94,7 @@ public class LocalDataStorage {
     /** Appends a single new point to the existing cache file. */
     public boolean addNode(HistoricalDataPoint newPoint) {
         if (newPoint == null) return false;
-        synchronized (writeLock) { // #8: prevent concurrent read-modify-write data loss
+        synchronized (writeLock) {
             List<HistoricalDataPoint> current = loadNodes();
             current.add(newPoint);
             return saveNodes(current);
@@ -118,7 +117,7 @@ public class LocalDataStorage {
                 for (int i = 0; i < nodesArray.length(); i++) {
                     JSONObject node = nodesArray.getJSONObject(i);
                     HistoricalDataPoint point = new HistoricalDataPoint();
-                    point.setId(node.optLong("id")); // #12: use optLong, Supabase IDs are bigint
+                    point.setId(node.optLong("id"));
                     point.setDeviceId(node.optString("device_id"));
                     point.setGasPpm(node.optInt("gas_ppm"));
                     point.setStatus(node.optString("status"));

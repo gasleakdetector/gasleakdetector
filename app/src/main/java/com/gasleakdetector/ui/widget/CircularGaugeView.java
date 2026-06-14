@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-28
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.ui.widget;
 
@@ -19,6 +19,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import androidx.core.content.ContextCompat;
+import com.gasleakdetector.R;
 import com.gasleakdetector.data.model.GasStatus;
 
 /**
@@ -34,19 +36,18 @@ public class CircularGaugeView extends View {
     private static final int   MAX_VALUE         = 1000;
     private static final int   ANIMATION_DURATION = 800;
 
-    /* Gauge arc colors - kept as constants because they drive custom blending logic,
-     * not simple theme colors. */
-    private static final int COLOR_NORMAL  = 0xFF4CAF50;
-    private static final int COLOR_WARNING = 0xFFFFC107;
-    private static final int COLOR_DANGER  = 0xFFF44336;
-    private static final int COLOR_TRACK   = 0xFF424242; // background arc
+    /* Gauge arc colors - loaded from color resources in init() to support theming. */
+    private int colorNormal;
+    private int colorWarning;
+    private int colorDanger;
+    private int colorTrack;
 
     private Paint backgroundPaint;
     private Paint progressPaint;
     private RectF arcRect;
 
     private float animatedValue = 0f;
-    private int   animatedColor = COLOR_NORMAL;
+    private int   animatedColor;
 
     private ValueAnimator valueAnimator;
     private ValueAnimator colorAnimator;
@@ -62,17 +63,23 @@ public class CircularGaugeView extends View {
     }
 
     private void init() {
+        colorNormal  = ContextCompat.getColor(getContext(), R.color.statusNormal);
+        colorWarning = ContextCompat.getColor(getContext(), R.color.statusWarning);
+        colorDanger  = ContextCompat.getColor(getContext(), R.color.statusDanger);
+        colorTrack   = ContextCompat.getColor(getContext(), R.color.gaugeTrack);
+        animatedColor = colorNormal;
+
         backgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         backgroundPaint.setStyle(Paint.Style.STROKE);
         backgroundPaint.setStrokeWidth(STROKE_WIDTH);
         backgroundPaint.setStrokeCap(Paint.Cap.ROUND);
-        backgroundPaint.setColor(COLOR_TRACK);
+        backgroundPaint.setColor(colorTrack);
 
         progressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         progressPaint.setStyle(Paint.Style.STROKE);
         progressPaint.setStrokeWidth(STROKE_WIDTH);
         progressPaint.setStrokeCap(Paint.Cap.ROUND);
-        progressPaint.setColor(COLOR_NORMAL);
+        progressPaint.setColor(colorNormal);
 
         arcRect = new RectF();
     }
@@ -119,14 +126,14 @@ public class CircularGaugeView extends View {
      */
     private int getColorForValue(int value) {
         if (value < GasStatus.WARNING_THRESHOLD) {
-            return COLOR_NORMAL;
+            return colorNormal;
         } else if (value < GasStatus.DANGER_THRESHOLD) {
             float ratio = (value - GasStatus.WARNING_THRESHOLD)
                         / (float) (GasStatus.DANGER_THRESHOLD - GasStatus.WARNING_THRESHOLD);
-            return blendColors(COLOR_NORMAL, COLOR_WARNING, ratio);
+            return blendColors(colorNormal, colorWarning, ratio);
         } else {
             float ratio = Math.min(1f, (value - GasStatus.DANGER_THRESHOLD) / 200f);
-            return blendColors(COLOR_WARNING, COLOR_DANGER, ratio);
+            return blendColors(colorWarning, colorDanger, ratio);
         }
     }
 
