@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.ui.widget;
 
@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import androidx.core.content.ContextCompat;
 
 public class StatsChartView extends View {
 
@@ -49,19 +50,19 @@ public class StatsChartView extends View {
     public StatsChartView(Context context, AttributeSet attrs) { super(context, attrs); init(); }
 
     private void init() {
-        linePaint.setColor(0xFF4CAF50);
+        linePaint.setColor(ContextCompat.getColor(getContext(), R.color.chartLine));
         linePaint.setStrokeWidth(STROKE_W);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeJoin(Paint.Join.ROUND);
         linePaint.setStrokeCap(Paint.Cap.ROUND);
 
-        dotPaint.setColor(0xFF4CAF50);
+        dotPaint.setColor(ContextCompat.getColor(getContext(), R.color.chartLine));
         dotPaint.setStyle(Paint.Style.FILL);
 
-        gridPaint.setColor(0x22FFFFFF);
+        gridPaint.setColor(ContextCompat.getColor(getContext(), R.color.chartAxisText) & 0x22FFFFFF);
         gridPaint.setStrokeWidth(1f);
 
-        labelPaint.setColor(0xAAFFFFFF);
+        labelPaint.setColor(ContextCompat.getColor(getContext(), R.color.chartLabelText));
         labelPaint.setTextSize(26f);
     }
 
@@ -74,7 +75,7 @@ public class StatsChartView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawColor(0xFF0D0D0D);
+        canvas.drawColor(ContextCompat.getColor(getContext(), R.color.chartBackground));
         if (points.isEmpty()) return;
 
         float w = getWidth(), h = getHeight();
@@ -120,7 +121,7 @@ public class StatsChartView extends View {
         path.lineTo(xs[xs.length - 1], bottom);
         path.close();
         fillPaint.setShader(new LinearGradient(0, PAD_TOP, 0, bottom,
-            0x554CAF50, 0x004CAF50, Shader.TileMode.CLAMP));
+            ContextCompat.getColor(getContext(), R.color.chartLine) | 0x55000000, ContextCompat.getColor(getContext(), R.color.chartLine) & 0x00FFFFFF, Shader.TileMode.CLAMP));
         canvas.drawPath(path, fillPaint);
     }
 

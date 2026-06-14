@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-28
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.ui.widget;
 
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import androidx.core.content.ContextCompat;
 
 /**
  * Scrollable, zoomable line chart for gas ppm readings.
@@ -94,43 +95,43 @@ public class ChartView extends View {
     private void init(Context context) {
         areaPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         areaPaint.setStyle(Paint.Style.FILL);
-        areaPaint.setColor(0x504CAF50);
+        areaPaint.setColor(ContextCompat.getColor(context, R.color.chartLine) & 0x50FFFFFF);
 
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(3f);
-        linePaint.setColor(0xFF4CAF50);
+        linePaint.setColor(ContextCompat.getColor(context, R.color.chartLine));
 
         nodePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nodePaint.setStyle(Paint.Style.FILL);
-        nodePaint.setColor(0xFF4CAF50);
+        nodePaint.setColor(ContextCompat.getColor(context, R.color.chartLine));
 
         selectedNodePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         selectedNodePaint.setStyle(Paint.Style.FILL);
-        selectedNodePaint.setColor(0xFFFFFFFF);
+        selectedNodePaint.setColor(ContextCompat.getColor(context, R.color.chartSelectedNode));
 
         gridPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         gridPaint.setStyle(Paint.Style.STROKE);
         gridPaint.setStrokeWidth(1f);
-        gridPaint.setColor(0x30FFFFFF);
+        gridPaint.setColor(ContextCompat.getColor(context, R.color.chartAxisText) & 0x30FFFFFF);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setTextSize(24f);
-        textPaint.setColor(0x80FFFFFF);
+        textPaint.setColor(ContextCompat.getColor(context, R.color.chartAxisText) & 0x80FFFFFF);
 
         axisPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         axisPaint.setStyle(Paint.Style.STROKE);
         axisPaint.setStrokeWidth(2f);
-        axisPaint.setColor(0xFFFFFFFF);
+        axisPaint.setColor(ContextCompat.getColor(context, R.color.chartAxisText));
 
         axisTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         axisTextPaint.setTextSize(28f);
-        axisTextPaint.setColor(0xFFFFFFFF);
+        axisTextPaint.setColor(ContextCompat.getColor(context, R.color.chartAxisText));
         axisTextPaint.setTextAlign(Paint.Align.CENTER);
 
         nodeCountPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         nodeCountPaint.setTextSize(26f);
-        nodeCountPaint.setColor(0xFFFFFFFF);
+        nodeCountPaint.setColor(ContextCompat.getColor(context, R.color.chartAxisText));
         nodeCountPaint.setTextAlign(Paint.Align.LEFT);
 
         areaPath     = new Path();
@@ -241,7 +242,7 @@ public class ChartView extends View {
     private void drawEmptyMessage(Canvas canvas) {
         Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
         p.setTextSize(32f);
-        p.setColor(0x80FFFFFF);
+        p.setColor(ContextCompat.getColor(context, R.color.chartAxisText) & 0x80FFFFFF);
         p.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(emptyMessage, getWidth() / 2f, getHeight() / 2f, p);
     }
