@@ -22,8 +22,8 @@ class LocalDataStorageBenchmark {
     private lateinit var storage: LocalDataStorage
 
     private fun makePoint(ppm: Int) = HistoricalDataPoint(ppm, "2024-01-01T00:00:00Z").also {
-        it.deviceId = "device-01"
-        it.status = if (ppm < 300) "normal" else if (ppm < 800) "warning" else "danger"
+        it.deviceId  = "device-01"
+        it.status    = if (ppm < 300) "normal" else if (ppm < 800) "warning" else "danger"
         it.ipAddress = "192.168.1.1"
     }
 
@@ -109,5 +109,72 @@ class LocalDataStorageBenchmark {
     fun hasCache_emptyCache() = benchmarkRule.measureRepeated {
         runWithTimingDisabled { storage.clearCache() }
         storage.hasCache()
+    }
+
+    @Test
+    fun saveNodes_2000_heavyTrim() = benchmarkRule.measureRepeated {
+        val list = runWithTimingDisabled { makeList(2_000) }
+        storage.saveNodes(list)
+        runWithTimingDisabled { storage.clearCache() }
+    }
+
+    @Test
+    fun saveNodes_5000() = benchmarkRule.measureRepeated {
+        val list = runWithTimingDisabled { makeList(5_000) }
+        storage.saveNodes(list)
+        runWithTimingDisabled { storage.clearCache() }
+    }
+
+    @Test
+    fun loadNodes_after2000Save() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { storage.saveNodes(makeList(2_000)) }
+        storage.loadNodes()
+    }
+
+    @Test
+    fun addNode_200Times_onPartialCache() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { storage.saveNodes(makeList(500)) }
+        repeat(200) { i ->
+            storage.addNode(makePoint(i % 1200))
+        }
+        runWithTimingDisabled { storage.clearCache() }
+    }
+
+    @Test
+    fun addNode_500Times_accumulated() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { storage.saveNodes(makeList(200)) }
+        repeat(500) { i ->
+            storage.addNode(makePoint(i % 1200))
+        }
+        runWithTimingDisabled { storage.clearCache() }
+    }
+
+    @Test
+    fun cyclic_save_load_clear_50() = benchmarkRule.measureRepeated {
+        val list = runWithTimingDisabled { makeList(500) }
+        repeat(50) {
+            storage.saveNodes(list)
+            storage.loadNodes()
+            storage.clearCache()
+        }
+    }
+
+    @Test
+    fun hasCache_10k_hotPath() = benchmarkRule.measureRepeated {
+        runWithTimingDisabled { storage.saveNodes(makeList(1000)) }
+        repeat(10_000) {
+            storage.hasCache()
+        }
+    }
+
+    @Test
+    fun saveLoad_twoBatches_1000Each() = benchmarkRule.measureRepeated {
+        val batch1 = runWithTimingDisabled { makeList(1_000) }
+        val batch2 = runWithTimingDisabled { makeList(1_000) }
+        storage.saveNodes(batch1)
+        storage.loadNodes()
+        storage.saveNodes(batch2)
+        storage.loadNodes()
+        runWithTimingDisabled { storage.clearCache() }
     }
 }
