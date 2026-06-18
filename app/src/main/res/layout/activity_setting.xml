@@ -220,6 +220,44 @@
                 android:paddingBottom="8dp"/>
 
             <LinearLayout
+                android:id="@+id/themeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surfaceDark"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/label_theme"
+                    android:textSize="16sp"
+                    android:textColor="@color/onBackgroundDark"/>
+
+                <TextView
+                    android:id="@+id/themeValueText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.6"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chevron"
+                    android:textSize="20sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.5"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/languageButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

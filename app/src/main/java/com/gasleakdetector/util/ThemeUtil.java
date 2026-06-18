@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-06-19
  */
 package com.gasleakdetector.util;
 
@@ -16,15 +16,31 @@ import com.gasleakdetector.data.prefs.SharedPrefs;
 
 public class ThemeUtil {
 
+    /* Theme IDs stored in SharedPrefs. */
+    public static final int THEME_DEFAULT = 0;
+    public static final int THEME_DARK    = 1;
+    public static final int THEME_LIGHT   = 2;
+
     /**
      * Applies the theme saved in SharedPrefs.
-     * Must be called before {@code super.onCreate()} and {@code setContentView()}.
+     * Must be called before super.onCreate() and setContentView().
      */
     public static void applyTheme(Activity activity) {
         applyTheme(activity, new SharedPrefs(activity).getTheme());
     }
 
     public static void applyTheme(Activity activity, int themeId) {
-        activity.setTheme(themeId == 1 ? R.style.AppTheme_Dark : R.style.AppTheme);
+        switch (themeId) {
+            case THEME_LIGHT:
+                activity.setTheme(R.style.AppTheme);
+                break;
+            case THEME_DARK:
+                activity.setTheme(R.style.AppTheme_Dark);
+                break;
+            case THEME_DEFAULT:
+            default:
+                activity.setTheme(R.style.AppTheme_Default);
+                break;
+        }
     }
 }

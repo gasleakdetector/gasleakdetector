@@ -72,6 +72,10 @@
     <string name="desc_keep_running">Giữ màn hình sáng và ngăn app ngủ (tốn pin hơn)</string>
     <string name="section_display">Hiển thị</string>
     <string name="label_language">Ngôn ngữ</string>
+    <string name="label_theme">Giao diện</string>
+    <string name="theme_default">Mặc định hệ thống</string>
+    <string name="theme_dark">Tối</string>
+    <string name="theme_light">Sáng</string>
     <string name="section_advanced">Nâng cao</string>
     <string name="label_clear_cache">Xóa cache</string>
     <string name="desc_clear_cache">Xóa toàn bộ dữ liệu cache và lịch sử</string>
