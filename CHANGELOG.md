@@ -9,6 +9,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+The upcoming bug-fix release is scheduled for around July 1, 2026.
+
 ### Features
 
 - #68: Replace programmatic crash report UI with XML layout and `AppCompatActivity` for theme consistency and
