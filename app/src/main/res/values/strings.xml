@@ -172,4 +172,12 @@
     <string name="desc_alert_delay">Minimum time between repeated alerts of the same level (1 or more minutes)</string>
     <string name="alert_delay_value_fmt">%d min</string>
     <string name="toast_alert_delay_saved">Alert delay saved</string>
+
+    <!-- Crash Report -->
+    <string name="app_crash_report">App Crash Report</string>
+    <string name="copy_and_open_issue">Copy &amp; Open Issue</string>
+    <string name="copy">Copy</string>
+    <string name="close">Close</string>
+    <string name="no_report_found">(no report found)</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
 </resources>
