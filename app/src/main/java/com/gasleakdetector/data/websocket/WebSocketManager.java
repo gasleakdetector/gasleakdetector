@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-06-02
+ * Modified: 2026-06-27
  */
 package com.gasleakdetector.data.websocket;
 
@@ -58,14 +58,16 @@ public class WebSocketManager {
 
     private WebSocketClient               client;
     private final WeakReference<Callback> callbackRef;
-    private final Handler                 mainHandler;
-    private final Handler                 heartbeatHandler;
-    private final Handler                 reconnectHandler;
+    private final Handler                 handler;
     private RealtimeConfig                config;
     private volatile boolean              isDestroyed     = false;
     private volatile boolean              shouldReconnect = false;
     private volatile boolean              everConnected   = false;
     private String                        cachedWsUrl     = null;
+
+    /* Runnable references for selective cancellation. */
+    private Runnable heartbeatRunnable;
+    private Runnable reconnectRunnable;
 
     /* Incremented with each message so Supabase never sees a duplicate ref. */
     private final AtomicInteger ref = new AtomicInteger(1);
@@ -74,9 +76,7 @@ public class WebSocketManager {
 
     public WebSocketManager(Callback callback) {
         this.callbackRef     = new WeakReference<>(callback);
-        this.mainHandler     = new Handler(Looper.getMainLooper());
-        this.heartbeatHandler = new Handler(Looper.getMainLooper());
-        this.reconnectHandler = new Handler(Looper.getMainLooper());
+        this.handler         = new Handler(Looper.getMainLooper());
     }
 
     // --- Public API ---
@@ -175,7 +175,7 @@ public class WebSocketManager {
                     if (isDestroyed) return;
                     Log.d(TAG, "WS opened");
                     /* Short delay before joining; the socket isn't always ready immediately after onOpen. */
-                    mainHandler.postDelayed(new Runnable() {
+                    handler.postDelayed(new Runnable() {
                         @Override public void run() { if (!isDestroyed) joinChannel(); }
                     }, 300);
                 }
@@ -244,7 +244,7 @@ public class WebSocketManager {
 
     private void startHeartbeat() {
         stopHeartbeat();
-        heartbeatHandler.postDelayed(new Runnable() {
+        heartbeatRunnable = new Runnable() {
             @Override
             public void run() {
                 if (isDestroyed || !isConnected()) return;
@@ -259,13 +259,19 @@ public class WebSocketManager {
                 } catch (JSONException e) {
                     Log.e(TAG, "Heartbeat error", e);
                 }
-                heartbeatHandler.postDelayed(this, HEARTBEAT_MS);
+                if (!isDestroyed && isConnected()) {
+                    handler.postDelayed(heartbeatRunnable, HEARTBEAT_MS);
+                }
             }
-        }, HEARTBEAT_MS);
+        };
+        handler.postDelayed(heartbeatRunnable, HEARTBEAT_MS);
     }
 
     private void stopHeartbeat() {
-        heartbeatHandler.removeCallbacksAndMessages(null);
+        if (heartbeatRunnable != null) {
+            handler.removeCallbacks(heartbeatRunnable);
+            heartbeatRunnable = null;
+        }
     }
 
     // --- Auto-reconnect ---
@@ -273,7 +279,7 @@ public class WebSocketManager {
     private void scheduleReconnect() {
         if (!shouldReconnect || isDestroyed) return;
         Log.d(TAG, "Reconnect in " + RECONNECT_MS + " ms");
-        reconnectHandler.postDelayed(new Runnable() {
+        reconnectRunnable = new Runnable() {
             @Override
             public void run() {
                 if (!shouldReconnect || isDestroyed) return;
@@ -287,11 +293,15 @@ public class WebSocketManager {
                     }).start();
                 }
             }
-        }, RECONNECT_MS);
+        };
+        handler.postDelayed(reconnectRunnable, RECONNECT_MS);
     }
 
     private void stopReconnect() {
-        reconnectHandler.removeCallbacksAndMessages(null);
+        if (reconnectRunnable != null) {
+            handler.removeCallbacks(reconnectRunnable);
+            reconnectRunnable = null;
+        }
     }
 
     // --- Handle incoming messages ---
@@ -305,7 +315,7 @@ public class WebSocketManager {
                 JSONObject payload = json.optJSONObject("payload");
                 if (payload != null && "ok".equals(payload.optString("status"))) {
                     Log.d(TAG, "Channel joined OK");
-                    mainHandler.post(new Runnable() {
+                    handler.post(new Runnable() {
                         @Override
                         public void run() {
                             startHeartbeat();
@@ -331,7 +341,7 @@ public class WebSocketManager {
                 final String timestamp = record.optString("created_at", "");
                 final String deviceId  = record.optString("device_id", "");
 
-                mainHandler.post(new Runnable() {
+                handler.post(new Runnable() {
                     @Override
                     public void run() {
                         Callback cb = callbackRef.get();
@@ -360,19 +370,19 @@ public class WebSocketManager {
     }
 
     private void postConnected() {
-        mainHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override public void run() { Callback cb = callbackRef.get(); if (cb != null) cb.onConnected(); }
         });
     }
 
     private void postDisconnected() {
-        mainHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override public void run() { Callback cb = callbackRef.get(); if (cb != null) cb.onDisconnected(); }
         });
     }
 
     private void postError(final String msg) {
-        mainHandler.post(new Runnable() {
+        handler.post(new Runnable() {
             @Override public void run() { Callback cb = callbackRef.get(); if (cb != null) cb.onError(msg); }
         });
     }
