@@ -3,12 +3,12 @@ apply plugin: 'com.diffplug.spotless'
 
 android {
     namespace 'com.gasleakdetector'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.gasleakdetector"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 4
         versionName "1.0.3"
     }
