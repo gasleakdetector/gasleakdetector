@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.2.2'
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:7.2.1'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:8.8.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.22'
         classpath 'androidx.benchmark:benchmark-gradle-plugin:1.4.1'
     }
