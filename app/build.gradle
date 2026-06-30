@@ -3,12 +3,12 @@ apply plugin: 'com.diffplug.spotless'
 
 android {
     namespace 'com.gasleakdetector'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.gasleakdetector"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 4
         versionName "1.0.3"
     }
@@ -46,6 +46,14 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+    }
+}
+
 spotless {
     java {
         googleJavaFormat()
@@ -54,12 +62,12 @@ spotless {
 }
 
 dependencies {
-    implementation('androidx.appcompat:appcompat:1.6.1') {
+    implementation('androidx.appcompat:appcompat:1.7.1') {
         exclude group: 'androidx.annotation', module: 'annotation-experimental'
     }
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
     implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 
     implementation('org.java-websocket:Java-WebSocket:1.6.0') {
         exclude group: 'org.slf4j', module: 'slf4j-api'
@@ -69,6 +77,6 @@ dependencies {
     implementation 'org.slf4j:slf4j-android:1.7.36'
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.5.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }
