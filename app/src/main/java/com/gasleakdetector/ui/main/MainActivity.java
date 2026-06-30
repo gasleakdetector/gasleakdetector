@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-23
+ * Modified: 2026-06-15
  */
 package com.gasleakdetector.ui.main;
 
@@ -32,7 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import android.Manifest;
-import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.gasleakdetector.R;
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity
     /* ------------------------------------------------------------------ */
 
     private boolean isMonitoring      = false;
-    private boolean isMenuOpen        = false;
     private boolean statisticsLoaded  = false;
 
     /* ------------------------------------------------------------------ */
@@ -362,7 +360,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openMenu() {
-        isMenuOpen = true;
         menuOverlay.setVisibility(View.VISIBLE);
         menuOverlay.setAlpha(0f);
         menuPanel.animate().translationX(0).setDuration(250).start();
@@ -370,7 +367,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void closeMenu() {
-        isMenuOpen = false;
         menuPanel.animate().translationX(-menuPanel.getWidth()).setDuration(200).start();
         menuOverlay.animate().alpha(0f).setDuration(200).withEndAction(new Runnable() {
             @Override public void run() { menuOverlay.setVisibility(View.GONE); }
@@ -379,8 +375,8 @@ public class MainActivity extends AppCompatActivity
 
     private void setActiveTab(boolean isHome) {
         int activeColor   = ContextCompat.getColor(this, R.color.colorPrimary);
-        int inactiveColor = 0xCCFFFFFF;
-        int activeBg      = 0x1A4CAF50;
+        int inactiveColor = ContextCompat.getColor(this, R.color.menuInactiveText);
+        int activeBg      = ContextCompat.getColor(this, R.color.menuActiveBackground);
 
         menuHomeText.setTextColor(isHome ? activeColor : inactiveColor);
         menuStatisticsText.setTextColor(isHome ? inactiveColor : activeColor);

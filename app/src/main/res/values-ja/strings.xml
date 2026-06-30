@@ -137,4 +137,26 @@
     <string name="toast_threshold_saved">しきい値を保存しました</string>
     <string name="toast_warning_must_be_less_than_danger">警告しきい値は危険しきい値より低くしてください</string>
     <string name="toast_danger_must_be_greater_than_warning">危険しきい値は警告しきい値より高くしてください</string>
+
+    <string name="section_alert_settings">アラート設定</string>
+    <string name="label_alert_min_level">アラート最低レベル</string>
+    <string name="desc_alert_min_level">通知をトリガーする最低ガス濃度レベルを選択</string>
+    <string name="alert_level_warning_and_above">警告以上</string>
+    <string name="alert_level_danger_only">危険のみ</string>
+    <string name="toast_alert_min_level_saved">アラートレベルを保存しました</string>
+    <string name="label_alert_delay">アラート遅延（分）</string>
+    <string name="desc_alert_delay">同じレベルの繰り返しアラート間の最小時間（1分以上）</string>
+    <string name="alert_delay_value_fmt">%d 分</string>
+    <string name="toast_alert_delay_saved">アラート遅延を保存しました</string>
+    <string name="stat_loading">読み込み中…</string>
+    <string name="stat_loading_nodes">%1$d 件を読み込み中…</string>
+    <string name="stat_no_data">範囲 %1$s のデータなし</string>
+    <string name="stat_error">エラー：%1$s</string>
+    <string name="stat_config_missing">API 未設定。設定から API 情報を追加してください。</string>
+    <string name="stat_avg">平均：%.1f PPM</string>
+    <string name="stat_min">最小：%.0f PPM</string>
+    <string name="stat_max">最大：%.0f PPM</string>
+    <string name="stat_nodes">ノード：%1$d</string>
+    <string name="chart_empty_message">データを待っています…</string>
+    <string name="error_invalid_number">無効な数値</string>
 </resources>

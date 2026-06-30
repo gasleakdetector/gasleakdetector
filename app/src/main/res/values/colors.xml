@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#388E3C</color>
     <color name="colorAccent">#4CAF50</color>
 
-    <!-- Gas level status colors — used by text, gauge, and notifications -->
+    <!-- Gas level status colors - used by text, gauge, and notifications -->
     <color name="statusNormal">#4CAF50</color>
     <color name="statusWarning">#FFC107</color>
     <color name="statusDanger">#F44336</color>
@@ -35,4 +35,19 @@
     <!-- Surface backgrounds (overridden in values-night) -->
     <color name="backgroundColor">#FFFFFF</color>
     <color name="cardBackground">#F5F5F5</color>
+
+    <!-- Chart and widget colors -->
+    <color name="chartLine">#4CAF50</color>
+    <color name="chartBackground">#0D0D0D</color>
+    <color name="chartAxisText">#FFFFFF</color>
+    <color name="chartLabelText">#AAFFFFFF</color>
+    <color name="chartSelectedNode">#FFFFFF</color>
+
+    <!-- Statistics table -->
+    <color name="statsRowDivider">#11FFFFFF</color>
+    <color name="statsTextPrimary">#FFFFFFFF</color>
+    <color name="statsTextSecondary">#CCFFFFFF</color>
+
+    <!-- Gauge track (background arc) -->
+    <color name="gaugeTrack">#424242</color>
 </resources>

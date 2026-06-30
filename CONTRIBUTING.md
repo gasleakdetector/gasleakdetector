@@ -28,7 +28,7 @@ Follow [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 type(scope): short imperative summary
 
-Optional body — what and why, not how.
+Optional body - what and why, not how.
 ```
 
 Allowed types: `feat`, `fix`, `refactor`, `chore`, `docs`, `test`, `style`, `perf`.
@@ -44,8 +44,8 @@ Allowed types: `feat`, `fix`, `refactor`, `chore`, `docs`, `test`, `style`, `per
 
 ## Code Style
 
-- Java — follow the existing style in the project (4-space indent, `/* block comments */` for class-level docs).
-- XML — 4-space indent, attribute-per-line for elements with more than 2 attributes.
+- Java - follow the existing style in the project (4-space indent, `/* block comments */` for class-level docs).
+- XML - 4-space indent, attribute-per-line for elements with more than 2 attributes.
 - No auto-formatter commits (do not mix formatting changes with logic changes).
 
 ## Security Issues

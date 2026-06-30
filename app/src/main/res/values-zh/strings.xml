@@ -137,4 +137,26 @@
     <string name="toast_threshold_saved">阈值已保存</string>
     <string name="toast_warning_must_be_less_than_danger">警告阈值必须小于危险阈值</string>
     <string name="toast_danger_must_be_greater_than_warning">危险阈值必须大于警告阈值</string>
+
+    <string name="section_alert_settings">警报设置</string>
+    <string name="label_alert_min_level">警报起始级别</string>
+    <string name="desc_alert_min_level">选择触发通知的最低气体浓度级别</string>
+    <string name="alert_level_warning_and_above">警告及以上</string>
+    <string name="alert_level_danger_only">仅危险</string>
+    <string name="toast_alert_min_level_saved">警报级别已保存</string>
+    <string name="label_alert_delay">警报延迟（分钟）</string>
+    <string name="desc_alert_delay">同级别重复警报之间的最短时间（至少1分钟）</string>
+    <string name="alert_delay_value_fmt">%d 分钟</string>
+    <string name="toast_alert_delay_saved">警报延迟已保存</string>
+    <string name="stat_loading">加载中…</string>
+    <string name="stat_loading_nodes">正在加载 %1$d 个节点…</string>
+    <string name="stat_no_data">范围 %1$s 无数据</string>
+    <string name="stat_error">错误：%1$s</string>
+    <string name="stat_config_missing">未配置 API。请前往设置添加 API 信息。</string>
+    <string name="stat_avg">均值：%.1f PPM</string>
+    <string name="stat_min">最低：%.0f PPM</string>
+    <string name="stat_max">最高：%.0f PPM</string>
+    <string name="stat_nodes">节点：%1$d</string>
+    <string name="chart_empty_message">等待数据…</string>
+    <string name="error_invalid_number">无效数字</string>
 </resources>

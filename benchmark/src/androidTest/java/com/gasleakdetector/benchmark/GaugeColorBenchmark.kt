@@ -68,4 +68,54 @@ class GaugeColorBenchmark {
             colorForValue(ppm)
         }
     }
+
+    @Test
+    fun colorForValue_fullSweep_step1() = benchmarkRule.measureRepeated {
+        for (ppm in 0..1999) {
+            colorForValue(ppm)
+        }
+    }
+
+    @Test
+    fun colorForValue_uiFrameStress_50k() = benchmarkRule.measureRepeated {
+        val values = intArrayOf(0, 150, 299, 300, 450, 550, 799, 800, 900, 1000,
+                                1100, 1200, 1500, 1800, 1999)
+        repeat(50_000) { i ->
+            colorForValue(values[i % values.size])
+        }
+    }
+
+    @Test
+    fun blendColors_100k_varyingRatio() = benchmarkRule.measureRepeated {
+        repeat(100_000) { i ->
+            blendColors(colorNormal, colorDanger, i / 100_000f)
+        }
+    }
+
+    @Test
+    fun colorForValue_60fps_30s_simulation() = benchmarkRule.measureRepeated {
+        repeat(1_800) { frame ->
+            for (point in 0 until 100) {
+                colorForValue((frame * 100 + point) % 1200)
+            }
+        }
+    }
+
+    @Test
+    fun blendColors_allPairs_10k_each() = benchmarkRule.measureRepeated {
+        repeat(10_000) { i ->
+            val r = i / 10_000f
+            blendColors(colorNormal,  colorWarning, r)
+            blendColors(colorWarning, colorDanger,  r)
+            blendColors(colorNormal,  colorDanger,  r)
+        }
+    }
+
+    @Test
+    fun colorForValue_chartBatch_5000Points() = benchmarkRule.measureRepeated {
+        val points = runWithTimingDisabled {
+            IntArray(5_000) { it % 1200 }
+        }
+        for (ppm in points) colorForValue(ppm)
+    }
 }

@@ -137,4 +137,26 @@
     <string name="toast_threshold_saved">Schwellenwert gespeichert</string>
     <string name="toast_warning_must_be_less_than_danger">Warnschwelle muss unter der Gefahrenschwelle liegen</string>
     <string name="toast_danger_must_be_greater_than_warning">Gefahrenschwelle muss über der Warnschwelle liegen</string>
+
+    <string name="section_alert_settings">Alarmeinstellungen</string>
+    <string name="label_alert_min_level">Alarm ab Stufe</string>
+    <string name="desc_alert_min_level">Mindest-Gasstufe auswählen, die eine Benachrichtigung auslöst</string>
+    <string name="alert_level_warning_and_above">Warnung und höher</string>
+    <string name="alert_level_danger_only">Nur Gefahr</string>
+    <string name="toast_alert_min_level_saved">Alarmstufe gespeichert</string>
+    <string name="label_alert_delay">Alarmverzögerung (Minuten)</string>
+    <string name="desc_alert_delay">Mindestzeit zwischen wiederholten Alarmen derselben Stufe (mindestens 1 Minute)</string>
+    <string name="alert_delay_value_fmt">%d Min.</string>
+    <string name="toast_alert_delay_saved">Alarmverzögerung gespeichert</string>
+    <string name="stat_loading">Laden…</string>
+    <string name="stat_loading_nodes">%1$d Einträge werden geladen…</string>
+    <string name="stat_no_data">Keine Daten für Bereich %1$s</string>
+    <string name="stat_error">Fehler: %1$s</string>
+    <string name="stat_config_missing">API nicht konfiguriert. Gehe zu Einstellungen, um API-Daten hinzuzufügen.</string>
+    <string name="stat_avg">Ø: %.1f PPM</string>
+    <string name="stat_min">Min: %.0f PPM</string>
+    <string name="stat_max">Max: %.0f PPM</string>
+    <string name="stat_nodes">Punkte: %1$d</string>
+    <string name="chart_empty_message">Warte auf Daten…</string>
+    <string name="error_invalid_number">Ungültige Zahl</string>
 </resources>

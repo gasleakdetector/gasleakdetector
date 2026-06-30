@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-20
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.data.prefs;
 
@@ -31,6 +31,12 @@ public class SharedPrefs {
     private static final String KEY_INTRO_SHOWN          = "intro_shown";
     private static final String KEY_WARNING_THRESHOLD    = "warning_threshold";
     private static final String KEY_DANGER_THRESHOLD     = "danger_threshold";
+    private static final String KEY_ALERT_MIN_LEVEL      = "alert_min_level";
+    private static final String KEY_ALERT_DELAY_MINUTES  = "alert_delay_minutes";
+
+    /* Default: notify from Warning level (1) and above, cooldown 1 minute. */
+    public  static final int  DEFAULT_ALERT_MIN_LEVEL     = 1;
+    public  static final int  DEFAULT_ALERT_DELAY_MINUTES = 1;
 
     /* Re-fetch historical data if the last fetch is older than this. */
     private static final long REFETCH_INTERVAL_MS = 5 * 60 * 1000L;
@@ -103,6 +109,14 @@ public class SharedPrefs {
     public int  getDangerThreshold()      { return prefs.getInt(KEY_DANGER_THRESHOLD, GasStatus.DANGER_THRESHOLD); }
     public void setDangerThreshold(int v) { prefs.edit().putInt(KEY_DANGER_THRESHOLD, v).apply(); }
 
+    /* Minimum alert level: 1 = Warning and above, 2 = Danger only. */
+    public int  getAlertMinLevel()      { return prefs.getInt(KEY_ALERT_MIN_LEVEL, DEFAULT_ALERT_MIN_LEVEL); }
+    public void setAlertMinLevel(int v) { prefs.edit().putInt(KEY_ALERT_MIN_LEVEL, v).apply(); }
+
+    /* Cooldown between repeated alerts of the same level, in minutes. */
+    public int  getAlertDelayMinutes()      { return prefs.getInt(KEY_ALERT_DELAY_MINUTES, DEFAULT_ALERT_DELAY_MINUTES); }
+    public void setAlertDelayMinutes(int v) { prefs.edit().putInt(KEY_ALERT_DELAY_MINUTES, v).apply(); }
+
     public void resetToDefaults() {
         prefs.edit()
             .putInt(KEY_THEME, 1)
@@ -112,6 +126,8 @@ public class SharedPrefs {
             .putBoolean(KEY_KEEP_RUNNING, true)
             .putInt(KEY_WARNING_THRESHOLD, GasStatus.WARNING_THRESHOLD)
             .putInt(KEY_DANGER_THRESHOLD,  GasStatus.DANGER_THRESHOLD)
+            .putInt(KEY_ALERT_MIN_LEVEL,     DEFAULT_ALERT_MIN_LEVEL)
+            .putInt(KEY_ALERT_DELAY_MINUTES, DEFAULT_ALERT_DELAY_MINUTES)
             .apply();
     }
 }

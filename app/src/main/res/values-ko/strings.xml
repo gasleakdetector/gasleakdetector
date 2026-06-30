@@ -137,4 +137,26 @@
     <string name="toast_threshold_saved">임계값이 저장되었습니다</string>
     <string name="toast_warning_must_be_less_than_danger">경고 임계값은 위험 임계값보다 낮아야 합니다</string>
     <string name="toast_danger_must_be_greater_than_warning">위험 임계값은 경고 임계값보다 높아야 합니다</string>
+
+    <string name="section_alert_settings">알림 설정</string>
+    <string name="label_alert_min_level">알림 최소 수준</string>
+    <string name="desc_alert_min_level">알림을 트리거할 최소 가스 농도 수준 선택</string>
+    <string name="alert_level_warning_and_above">경고 이상</string>
+    <string name="alert_level_danger_only">위험만</string>
+    <string name="toast_alert_min_level_saved">알림 수준 저장됨</string>
+    <string name="label_alert_delay">알림 지연 (분)</string>
+    <string name="desc_alert_delay">동일 수준의 반복 알림 사이 최소 시간 (1분 이상)</string>
+    <string name="alert_delay_value_fmt">%d분</string>
+    <string name="toast_alert_delay_saved">알림 지연 저장됨</string>
+    <string name="stat_loading">로딩 중…</string>
+    <string name="stat_loading_nodes">%1$d개 항목 로딩 중…</string>
+    <string name="stat_no_data">%1$s 범위의 데이터 없음</string>
+    <string name="stat_error">오류: %1$s</string>
+    <string name="stat_config_missing">API 미설정. 설정에서 API 정보를 추가하세요.</string>
+    <string name="stat_avg">평균: %.1f PPM</string>
+    <string name="stat_min">최소: %.0f PPM</string>
+    <string name="stat_max">최대: %.0f PPM</string>
+    <string name="stat_nodes">항목: %1$d</string>
+    <string name="chart_empty_message">데이터 대기 중…</string>
+    <string name="error_invalid_number">유효하지 않은 숫자</string>
 </resources>

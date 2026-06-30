@@ -23,7 +23,7 @@ import java.util.List;
 public class GasLeakApplication extends Application {
 
     private boolean historicalDataLoaded = false;
-    private List<HistoricalDataPoint> cachedDataPoints = new ArrayList<>();
+    private volatile List<HistoricalDataPoint> cachedDataPoints = new ArrayList<>();
 
     public boolean isHistoricalDataLoaded() { return historicalDataLoaded; }
     public void setHistoricalDataLoaded(boolean loaded) { this.historicalDataLoaded = loaded; }

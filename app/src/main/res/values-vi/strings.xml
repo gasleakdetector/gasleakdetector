@@ -137,4 +137,33 @@
     <string name="toast_threshold_saved">Đã lưu ngưỡng</string>
     <string name="toast_warning_must_be_less_than_danger">Ngưỡng cảnh báo phải nhỏ hơn ngưỡng nguy hiểm</string>
     <string name="toast_danger_must_be_greater_than_warning">Ngưỡng nguy hiểm phải lớn hơn ngưỡng cảnh báo</string>
+
+    <!-- Alert notification settings -->
+    <string name="section_alert_settings">Cài đặt cảnh báo</string>
+    <string name="label_alert_min_level">Cảnh báo từ mức</string>
+    <string name="desc_alert_min_level">Chọn mức nồng độ khí tối thiểu để kích hoạt thông báo</string>
+    <string name="alert_level_warning_and_above">Cảnh báo trở lên</string>
+    <string name="alert_level_danger_only">Chỉ nguy hiểm</string>
+    <string name="toast_alert_min_level_saved">Đã lưu mức cảnh báo</string>
+    <string name="label_alert_delay">Độ trễ cảnh báo (phút)</string>
+    <string name="desc_alert_delay">Thời gian tối thiểu giữa các cảnh báo lặp lại cùng mức (từ 1 phút trở lên)</string>
+    <string name="alert_delay_value_fmt">%d phút</string>
+    <string name="toast_alert_delay_saved">Đã lưu độ trễ cảnh báo</string>
+
+    <!-- Statistics -->
+    <string name="stat_loading">Đang tải…</string>
+    <string name="stat_loading_nodes">Đang tải %1$d điểm…</string>
+    <string name="stat_no_data">Không có dữ liệu cho khoảng %1$s</string>
+    <string name="stat_error">Lỗi: %1$s</string>
+    <string name="stat_config_missing">Chưa cấu hình API. Vào Cài đặt để thêm thông tin API.</string>
+    <string name="stat_avg">TB: %.1f PPM</string>
+    <string name="stat_min">Thấp: %.0f PPM</string>
+    <string name="stat_max">Cao: %.0f PPM</string>
+    <string name="stat_nodes">Điểm: %1$d</string>
+
+    <!-- Chart -->
+    <string name="chart_empty_message">Đang chờ dữ liệu…</string>
+
+    <!-- Error -->
+    <string name="error_invalid_number">Số không hợp lệ</string>
 </resources>

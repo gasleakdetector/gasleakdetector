@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-23
+ * Modified: 2026-05-26
  */
 package com.gasleakdetector.data.model;
 
@@ -121,11 +121,14 @@ public class HistoricalDataPoint {
             }
         } catch (Exception ignored) {}
 
+        // Supabase returns microseconds (6 digits after dot). SimpleDateFormat only handles
+        // milliseconds (3 digits). Truncate fractional seconds to 3 digits before parsing.
+        String truncated = normalized.replaceAll("(\\.\\d{3})\\d+", "$1");
+
         Date d;
-        d = tryParse(normalized, "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZ"); if (d != null) return d.getTime();
-        d = tryParse(normalized, "yyyy-MM-dd'T'HH:mm:ss.SSSZ");    if (d != null) return d.getTime();
-        d = tryParse(normalized, "yyyy-MM-dd'T'HH:mm:ssZ");         if (d != null) return d.getTime();
-        d = tryParse(raw,        "yyyy-MM-dd");                      if (d != null) return d.getTime();
+        d = tryParse(truncated, "yyyy-MM-dd'T'HH:mm:ss.SSSZ"); if (d != null) return d.getTime();
+        d = tryParse(truncated, "yyyy-MM-dd'T'HH:mm:ssZ");      if (d != null) return d.getTime();
+        d = tryParse(raw,       "yyyy-MM-dd");                   if (d != null) return d.getTime();
 
         Log.w(TAG, "Cannot parse timestamp: " + raw);
         return System.currentTimeMillis();
