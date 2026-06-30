@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  fragment_home.xml — Home screen: circular gauge, live chart, node info label.
+  fragment_home.xml - Home screen: circular gauge, live chart, node info label.
   Hosted by HomeFragment inside activity_main.xml#homePanel (FragmentContainerView).
 -->
 <LinearLayout

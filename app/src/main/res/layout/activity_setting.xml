@@ -370,6 +370,120 @@
                     android:alpha="0.5"/>
             </LinearLayout>
 
+            <!-- Alert Settings section -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/section_alert_settings"
+                android:textSize="18sp"
+                android:textColor="@color/onBackgroundDark"
+                android:textStyle="bold"
+                android:paddingBottom="8dp"/>
+
+            <LinearLayout
+                android:id="@+id/alertMinLevelButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surfaceDark"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="8dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_alert_min_level"
+                        android:textSize="16sp"
+                        android:textColor="@color/onBackgroundDark"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desc_alert_min_level"
+                        android:textSize="12sp"
+                        android:textColor="@color/onBackgroundDark"
+                        android:alpha="0.6"
+                        android:paddingTop="2dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/alertMinLevelValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="#FFB300"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chevron"
+                    android:textSize="20sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.5"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/alertDelayButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/surfaceDark"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/label_alert_delay"
+                        android:textSize="16sp"
+                        android:textColor="@color/onBackgroundDark"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/desc_alert_delay"
+                        android:textSize="12sp"
+                        android:textColor="@color/onBackgroundDark"
+                        android:alpha="0.6"
+                        android:paddingTop="2dp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/alertDelayValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:paddingEnd="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/chevron"
+                    android:textSize="20sp"
+                    android:textColor="@color/onBackgroundDark"
+                    android:alpha="0.5"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

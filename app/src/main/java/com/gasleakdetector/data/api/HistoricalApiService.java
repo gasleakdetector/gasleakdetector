@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-06-02
  */
 package com.gasleakdetector.data.api;
 
@@ -47,7 +47,7 @@ public class HistoricalApiService {
         void onError(String error);
     }
 
-    // --- Called from MainActivity with a default 1d range ---
+    // --- Loads the default 1d range, no progress reporting ---
 
     public static void fetchHistoricalData(
             final RealtimeConfig config,
@@ -64,7 +64,7 @@ public class HistoricalApiService {
         });
     }
 
-    // --- Called from StatisticsFragment with an explicit range and progress callback ---
+    // --- Loads an explicit range with incremental progress reporting ---
 
     public static void fetchHistoricalData(
             final RealtimeConfig config,

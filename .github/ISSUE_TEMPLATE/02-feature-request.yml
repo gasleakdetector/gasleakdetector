@@ -1,0 +1,21 @@
+name: "Feature request"
+description: "Suggest a new feature for the Gas Leak Detector application"
+title: "[Feature]: "
+labels: ["feature request"]
+
+body:
+  - type: textarea
+    attributes:
+      label: Feature description
+      description: Describe the feature and explain why it would be useful.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional information
+      description: |
+        Does another app/device have a similar feature?
+        Provide screenshots, references, or links if available.
+    validations:
+      required: true

@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-04-15
+ * Modified: 2026-05-28
  */
 package com.gasleakdetector.notification;
 
@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 /** Builds and posts gas alert notifications. */
 public class GasNotificationHelper {
 
-    private static final int    NOTIFICATION_ID_STATUS = 1002;
     private static final String NOTIF_DATE_FORMAT      = "dd MMM yyyy, HH:mm:ss";
 
     /* Each alert gets a unique ID so they stack in the shade instead of replacing each other. */
@@ -62,15 +61,6 @@ public class GasNotificationHelper {
             context.getString(R.string.notif_warning_title),
             status.getMessage() + "\n" + getCurrentDateTime(),
             Notification.PRIORITY_HIGH
-        ));
-    }
-
-    public void showStatusUpdate(GasStatus status) {
-        notificationManager.notify(NOTIFICATION_ID_STATUS, buildNotification(
-            NotificationChannelManager.CHANNEL_STATUS,
-            context.getString(R.string.notif_status_title),
-            status.getMessage(),
-            Notification.PRIORITY_LOW
         ));
     }
 
