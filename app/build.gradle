@@ -32,7 +32,9 @@ android {
                     'proguard-android-optimize.txt'
             ), 'proguard-rules.pro'
 
-            signingConfig signingConfigs.release
+            if (System.getenv("KEYSTORE_PATH") != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 
