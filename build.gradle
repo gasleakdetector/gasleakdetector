@@ -4,10 +4,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+
         classpath 'com.android.tools.build:gradle:8.4.0'
         classpath 'com.diffplug.spotless:spotless-plugin-gradle:8.8.0'
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.21'
         classpath 'androidx.benchmark:benchmark-gradle-plugin:1.4.1'
+
     }
 }
 
