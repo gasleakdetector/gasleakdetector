@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-29
+ * Modified: 2026-01-08
  */
 package com.gasleakdetector.ui.main;
 
@@ -160,6 +160,16 @@ public class HomeFragment extends Fragment
         gasLevelText  = null;
         gasStatusText = null;
         nodeInfoText  = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isSafe()) return;
+        if (sharedPrefs.getAutoRefreshEnabled() && sharedPrefs.hasRealtimeConfig()) {
+            app.setHistoricalDataLoaded(false);
+            loadHistoricalData();
+        }
     }
 
     /* ------------------------------------------------------------------ */
