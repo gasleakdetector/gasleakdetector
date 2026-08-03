@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-06-15
+ * Modified: 2026-01-08
  */
 package com.gasleakdetector.ui.main;
 
@@ -32,6 +32,7 @@ import com.gasleakdetector.data.model.HourlyStatPoint;
 import com.gasleakdetector.data.model.RealtimeConfig;
 import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.ui.widget.StatsChartView;
+import com.gasleakdetector.util.DateUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -233,13 +234,8 @@ public class StatisticsFragment extends Fragment {
     private String formatBucket(String bucket, SimpleDateFormat sdf) {
         if (bucket == null || bucket.isEmpty()) return "--";
         try {
-            String norm = bucket;
-            if (norm.endsWith("Z")) norm = norm.substring(0, norm.length() - 1) + "+0000";
-            if (norm.length() > 6) {
-                String tail = norm.substring(norm.length() - 6);
-                if (tail.matches("[+-]\\d{2}:\\d{2}"))
-                    norm = norm.substring(0, norm.length() - 6) + tail.replace(":", "");
-            }
+            String norm = DateUtils.normalizeIso8601(bucket);
+            if (norm == null) return bucket;
             SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
             parser.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date d = parser.parse(norm);

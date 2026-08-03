@@ -6,7 +6,7 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-06-15
+ * Modified: 2026-01-08
  */
 package com.gasleakdetector.ui.widget;
 
@@ -28,6 +28,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import androidx.core.content.ContextCompat;
 import com.gasleakdetector.R;
+import com.gasleakdetector.util.DateUtils;
 
 public class StatsChartView extends View {
 
@@ -153,13 +154,8 @@ public class StatsChartView extends View {
     private String parseBucketLabel(String bucket, SimpleDateFormat sdf) {
         if (bucket == null || bucket.isEmpty()) return "--";
         try {
-            String norm = bucket;
-            if (norm.endsWith("Z")) norm = norm.substring(0, norm.length() - 1) + "+0000";
-            if (norm.length() > 6) {
-                String tail = norm.substring(norm.length() - 6);
-                if (tail.matches("[+-]\\d{2}:\\d{2}"))
-                    norm = norm.substring(0, norm.length() - 6) + tail.replace(":", "");
-            }
+            String norm = DateUtils.normalizeIso8601(bucket);
+            if (norm == null) return bucket.substring(11, Math.min(16, bucket.length()));
             SimpleDateFormat p = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.US);
             p.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date d = p.parse(norm);
