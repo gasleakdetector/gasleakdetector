@@ -1,0 +1,23 @@
+codecov:
+  require_ci_to_pass: yes
+
+coverage:
+  precision: 2
+  round: down
+
+  status:
+    patch: off
+
+    project:
+      default:
+        target: auto
+        threshold: 0.5%
+        removed_code_behavior: adjust_base
+
+ignore:
+  - "benchmark/**"
+
+comment:
+  layout: "reach,diff,files,footer"
+  behavior: default
+  require_changes: true
