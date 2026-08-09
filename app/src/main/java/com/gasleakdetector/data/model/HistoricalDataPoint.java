@@ -6,11 +6,12 @@
  * Author  : Phuc An <pan2512811@gmail.com>
  * Email   : pan2512811@gmail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
- * Modified: 2026-05-26
+ * Modified: 2026-01-08
  */
 package com.gasleakdetector.data.model;
 
 import android.util.Log;
+import com.gasleakdetector.util.DateUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -106,29 +107,13 @@ public class HistoricalDataPoint {
         String raw = bucket != null ? bucket : createdAt;
         if (raw == null || raw.isEmpty()) return System.currentTimeMillis();
 
-        // ISO 8601 with a colon in the offset (e.g. +07:00) isn't supported by SimpleDateFormat;
-        // strip the colon to get +0700.
-        String normalized = raw;
-        try {
-            if (normalized.length() > 6) {
-                String tail = normalized.substring(normalized.length() - 6);
-                if (tail.matches("[+-]\\d{2}:\\d{2}")) {
-                    normalized = normalized.substring(0, normalized.length() - 6) + tail.replace(":", "");
-                }
-            }
-            if (normalized.endsWith("Z")) {
-                normalized = normalized.substring(0, normalized.length() - 1) + "+0000";
-            }
-        } catch (Exception ignored) {}
-
-        // Supabase returns microseconds (6 digits after dot). SimpleDateFormat only handles
-        // milliseconds (3 digits). Truncate fractional seconds to 3 digits before parsing.
-        String truncated = normalized.replaceAll("(\\.\\d{3})\\d+", "$1");
+        String normalized = DateUtils.normalizeIso8601(raw);
+        if (normalized == null) return System.currentTimeMillis();
 
         Date d;
-        d = tryParse(truncated, "yyyy-MM-dd'T'HH:mm:ss.SSSZ"); if (d != null) return d.getTime();
-        d = tryParse(truncated, "yyyy-MM-dd'T'HH:mm:ssZ");      if (d != null) return d.getTime();
-        d = tryParse(raw,       "yyyy-MM-dd");                   if (d != null) return d.getTime();
+        d = tryParse(normalized, "yyyy-MM-dd'T'HH:mm:ss.SSSZ"); if (d != null) return d.getTime();
+        d = tryParse(normalized, "yyyy-MM-dd'T'HH:mm:ssZ");      if (d != null) return d.getTime();
+        d = tryParse(raw,        "yyyy-MM-dd");                   if (d != null) return d.getTime();
 
         Log.w(TAG, "Cannot parse timestamp: " + raw);
         return System.currentTimeMillis();
