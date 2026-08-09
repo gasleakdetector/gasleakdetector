@@ -220,4 +220,4 @@ Toca **Save**. La app se conectará y comenzará a mostrar lecturas en vivo.
 
 ---
 
-*Para preguntas o problemas, abre un [issue en GitHub](https://github.com/gasleakdetector/gasleakdetector/issues) o contacta a [pan2512811@gmail.com](mailto:pan2512811@gmail.com). ¡Las contribuciones son bienvenidas! 😊*
+*Para preguntas o problemas, abre un [issue en GitHub](https://github.com/gasleakdetector/gasleakdetector/issues) o contacta a [phucan@tutamail.com](mailto:phucan@tutamail.com). ¡Las contribuciones son bienvenidas! 😊*

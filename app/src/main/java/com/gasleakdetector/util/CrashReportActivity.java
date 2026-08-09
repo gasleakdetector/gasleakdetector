@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0
  *
  * Project : Gas Leak Detector
- * Author  : Phuc An <pan2512811@gmail.com>
+ * Author  : Phuc An <phucan@tutamail.com>
  * Modified: 2026-06-27
  */
 package com.gasleakdetector.util;

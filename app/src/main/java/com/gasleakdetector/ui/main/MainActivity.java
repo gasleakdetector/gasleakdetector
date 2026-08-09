@@ -3,8 +3,8 @@
  * Licensed under the Apache License, Version 2.0
  *
  * Project : Gas Leak Detector
- * Author  : Phuc An <pan2512811@gmail.com>
- * Email   : pan2512811@gmail.com
+ * Author  : Phuc An <phucan@tutamail.com>
+ * Email   : phucan@tutamail.com
  * GitHub  : https://github.com/gasleakdetector/gasleakdetector
  * Modified: 2026-06-15
  */
@@ -59,7 +59,7 @@ import com.gasleakdetector.util.ThemeUtil;
 public class MainActivity extends AppCompatActivity
         implements WebSocketManager.Callback, HomeFragment.Host {
 
-    private static final String FEEDBACK_EMAIL = "pan2512811@gmail.com";
+    private static final String FEEDBACK_EMAIL = "phucan@tutamail.com";
 
     /* ------------------------------------------------------------------ */
     /*  Views                                                               */

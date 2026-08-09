@@ -220,4 +220,4 @@ Nhấn **Save**. Ứng dụng sẽ kết nối và hiển thị dữ liệu theo
 
 ---
 
-*Nếu có thắc mắc hoặc gặp sự cố, hãy tạo [GitHub issue](https://github.com/gasleakdetector/gasleakdetector/issues) hoặc liên hệ qua [pan2512811@gmail.com](mailto:pan2512811@gmail.com). Mọi đóng góp đều được chào đón 😊*
+*Nếu có thắc mắc hoặc gặp sự cố, hãy tạo [GitHub issue](https://github.com/gasleakdetector/gasleakdetector/issues) hoặc liên hệ qua [phucan@tutamail.com](mailto:phucan@tutamail.com). Mọi đóng góp đều được chào đón 😊*

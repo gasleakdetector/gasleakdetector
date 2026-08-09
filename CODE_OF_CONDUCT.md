@@ -21,7 +21,7 @@ Unacceptable behaviour:
 
 ## Enforcement
 
-Instances of abusive or unacceptable behaviour may be reported to the maintainer at `pan2512811@gmail.com`.
+Instances of abusive or unacceptable behaviour may be reported to the maintainer at `phucan@tutamail.com`.
 All reports will be reviewed and investigated promptly and fairly.
 
 ## Attribution

@@ -51,4 +51,4 @@ Allowed types: `feat`, `fix`, `refactor`, `chore`, `docs`, `test`, `style`, `per
 ## Security Issues
 
 Do not open a public issue for security vulnerabilities.
-Email the maintainer directly at `pan2512811@gmail.com`.
+Email the maintainer directly at `phucan@tutamail.com`.

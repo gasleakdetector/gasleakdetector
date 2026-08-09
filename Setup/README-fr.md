@@ -220,4 +220,4 @@ Appuyez sur **Save**. L'application se connectera et commencera à afficher les 
 
 ---
 
-*Pour toute question ou problème, ouvrez un [issue GitHub](https://github.com/gasleakdetector/gasleakdetector/issues) ou contactez [pan2512811@gmail.com](mailto:pan2512811@gmail.com). Les contributions sont les bienvenues 😊*
+*Pour toute question ou problème, ouvrez un [issue GitHub](https://github.com/gasleakdetector/gasleakdetector/issues) ou contactez [phucan@tutamail.com](mailto:phucan@tutamail.com). Les contributions sont les bienvenues 😊*

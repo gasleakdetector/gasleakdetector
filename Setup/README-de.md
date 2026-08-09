@@ -220,4 +220,4 @@ Tippen Sie auf **Save**. Die App verbindet sich und zeigt Live-Messwerte an.
 
 ---
 
-*Bei Fragen oder Problemen öffnen Sie ein [GitHub-Issue](https://github.com/gasleakdetector/gasleakdetector/issues) oder kontaktieren Sie [pan2512811@gmail.com](mailto:pan2512811@gmail.com). Beiträge sind willkommen 😊*
+*Bei Fragen oder Problemen öffnen Sie ein [GitHub-Issue](https://github.com/gasleakdetector/gasleakdetector/issues) oder kontaktieren Sie [phucan@tutamail.com](mailto:phucan@tutamail.com). Beiträge sind willkommen 😊*
