@@ -3,12 +3,12 @@ apply plugin: 'com.diffplug.spotless'
 
 android {
     namespace 'com.gasleakdetector'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.gasleakdetector"
-        minSdk 21
-        targetSdk 34
+        minSdk 23
+        targetSdk 35
         versionCode 5
         versionName "1.1.0"
     }
@@ -68,7 +68,7 @@ dependencies {
         exclude group: 'androidx.annotation', module: 'annotation-experimental'
     }
     implementation 'androidx.drawerlayout:drawerlayout:1.2.0'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
 
     implementation('org.java-websocket:Java-WebSocket:1.6.0') {
