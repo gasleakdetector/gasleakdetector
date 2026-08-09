@@ -11,7 +11,7 @@
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
-Send a report to `pan2512811@gmail.com` with:
+Send a report to `phucan@tutamail.com` with:
 
 - A description of the vulnerability and its potential impact
 - Steps to reproduce or a proof-of-concept

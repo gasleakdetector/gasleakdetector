@@ -220,4 +220,4 @@ Vercel の `SUPABASE_ANON_KEY` と `SUPABASE_SERVICE_KEY` に割り当てます�
 
 ---
 
-*ご質問や問題がある場合は、[GitHub issue](https://github.com/gasleakdetector/gasleakdetector/issues) を開くか、[pan2512811@gmail.com](mailto:pan2512811@gmail.com) にお問い合わせください。貢献を歓迎します 😊*
+*ご質問や問題がある場合は、[GitHub issue](https://github.com/gasleakdetector/gasleakdetector/issues) を開くか、[phucan@tutamail.com](mailto:phucan@tutamail.com) にお問い合わせください。貢献を歓迎します 😊*

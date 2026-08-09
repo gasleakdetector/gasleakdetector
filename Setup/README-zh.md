@@ -220,4 +220,4 @@ Gas Leak Detector 项目的完整配置指南。本文档按照配置顺序介�
 
 ---
 
-*如有问题，请提交 [GitHub Issue](https://github.com/gasleakdetector/gasleakdetector/issues) 或联系 [pan2512811@gmail.com](mailto:pan2512811@gmail.com)。欢迎贡献代码 😊*
+*如有问题，请提交 [GitHub Issue](https://github.com/gasleakdetector/gasleakdetector/issues) 或联系 [phucan@tutamail.com](mailto:phucan@tutamail.com)。欢迎贡献代码 😊*
