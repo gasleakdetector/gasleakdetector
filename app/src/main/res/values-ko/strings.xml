@@ -72,6 +72,10 @@
     <string name="desc_keep_running">화면을 켜두고 앱이 절전 모드로 전환되지 않도록 함 (배터리 더 소모)</string>
     <string name="section_display">화면</string>
     <string name="label_language">언어</string>
+    <string name="label_theme">테마</string>
+    <string name="theme_default">시스템 기본값</string>
+    <string name="theme_dark">어두움</string>
+    <string name="theme_light">밝음</string>
     <string name="section_advanced">고급</string>
     <string name="label_clear_cache">캐시 지우기</string>
     <string name="desc_clear_cache">캐시된 모든 데이터 및 기록 삭제</string>
