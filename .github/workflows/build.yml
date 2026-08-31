@@ -28,14 +28,29 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon
 
-      - name: Decode keystore
+      - name: Decode & convert keystore to PKCS12
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-        run: echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > ${{ runner.temp }}/keystore.jks
+          keytool -importkeystore \
+            -srckeystore ${{ runner.temp }}/keystore.jks \
+            -srcstorepass "$KEYSTORE_PASSWORD" \
+            -destkeystore ${{ runner.temp }}/keystore.p12 \
+            -deststoretype PKCS12 \
+            -deststorepass "$KEYSTORE_PASSWORD" \
+            -srcalias "$KEY_ALIAS" \
+            -destalias "$KEY_ALIAS" \
+            -srckeypass "$KEY_PASSWORD" \
+            -destkeypass "$KEY_PASSWORD" \
+            -noprompt
 
       - name: Build & sign release APK
         env:
-          KEYSTORE_PATH: ${{ runner.temp }}/keystore.jks
+          KEYSTORE_PATH: ${{ runner.temp }}/keystore.p12
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
