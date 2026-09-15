@@ -34,6 +34,7 @@ jobs:
         run: gradle jacocoTestReport --no-daemon
 
       - name: Upload coverage to Codecov
+        if: github.event_name != 'pull_request' || !startsWith(github.head_ref, 'dependabot/')
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
