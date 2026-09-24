@@ -38,6 +38,8 @@ public class SettingActivity extends AppCompatActivity {
     private Switch   keepAppRunningSwitch;
     private View     clearCacheButton;
     private View     resetDefaultsButton;
+    private View     themeButton;
+    private TextView themeValueText;
     private View     languageButton;
     private TextView languageValueText;
     private View     warningThresholdButton;
@@ -85,6 +87,8 @@ public class SettingActivity extends AppCompatActivity {
         keepAppRunningSwitch = findViewById(R.id.keepAppRunningSwitch);
         clearCacheButton        = findViewById(R.id.clearCacheButton);
         resetDefaultsButton     = findViewById(R.id.resetDefaultsButton);
+        themeButton             = findViewById(R.id.themeButton);
+        themeValueText          = findViewById(R.id.themeValueText);
         languageButton          = findViewById(R.id.languageButton);
         languageValueText       = findViewById(R.id.languageValueText);
         warningThresholdButton  = findViewById(R.id.warningThresholdButton);
@@ -103,6 +107,7 @@ public class SettingActivity extends AppCompatActivity {
         autoStreamSwitch.setChecked(sharedPrefs.getAutoStreamEnabled());
         keepAppRunningSwitch.setChecked(sharedPrefs.getKeepAppRunning());
         updateLanguageLabel();
+        updateThemeLabel();
         updateThresholdLabels();
         updateAlertMinLevelLabel();
         updateAlertDelayLabel();
@@ -114,6 +119,17 @@ public class SettingActivity extends AppCompatActivity {
             if (LANG_CODES[i].equals(current)) { languageValueText.setText(LANG_LABELS[i]); return; }
         }
         languageValueText.setText(LANG_LABELS[0]);
+    }
+
+    private void updateThemeLabel() {
+        int theme = sharedPrefs.getTheme();
+        int labelRes;
+        switch (theme) {
+            case ThemeUtil.THEME_DARK:  labelRes = R.string.theme_dark;  break;
+            case ThemeUtil.THEME_LIGHT: labelRes = R.string.theme_light; break;
+            default:                    labelRes = R.string.theme_default; break;
+        }
+        themeValueText.setText(getString(labelRes));
     }
 
     private void updateThresholdLabels() {
@@ -180,6 +196,10 @@ public class SettingActivity extends AppCompatActivity {
 
         languageButton.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) { showLanguageDialog(); }
+        });
+
+        themeButton.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) { showThemeDialog(); }
         });
 
         warningThresholdButton.setOnClickListener(new View.OnClickListener() {
@@ -310,6 +330,40 @@ public class SettingActivity extends AppCompatActivity {
                     updateAlertDelayLabel();
                     Toast.makeText(SettingActivity.this,
                         getString(R.string.toast_alert_delay_saved), Toast.LENGTH_SHORT).show();
+                }
+            })
+            .setNegativeButton(getString(R.string.btn_cancel), null)
+            .show();
+    }
+
+    private void showThemeDialog() {
+        final String[] options = {
+            getString(R.string.theme_default),
+            getString(R.string.theme_dark),
+            getString(R.string.theme_light)
+        };
+        final int[] themeIds = {ThemeUtil.THEME_DEFAULT, ThemeUtil.THEME_DARK, ThemeUtil.THEME_LIGHT};
+        final int current = sharedPrefs.getTheme();
+        int currentIndex = 0;
+        for (int i = 0; i < themeIds.length; i++) {
+            if (themeIds[i] == current) { currentIndex = i; break; }
+        }
+        final int[] selected = {currentIndex};
+        new AlertDialog.Builder(this)
+            .setTitle(getString(R.string.label_theme))
+            .setSingleChoiceItems(options, selected[0], new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialog, int which) { selected[0] = which; }
+            })
+            .setPositiveButton(getString(R.string.btn_ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int newTheme = themeIds[selected[0]];
+                    if (newTheme == sharedPrefs.getTheme()) return;
+                    sharedPrefs.setTheme(newTheme);
+                    updateThemeLabel();
+                    Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                 }
             })
             .setNegativeButton(getString(R.string.btn_cancel), null)
