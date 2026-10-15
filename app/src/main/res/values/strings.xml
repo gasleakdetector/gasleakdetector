@@ -78,6 +78,10 @@
     <string name="desc_keep_running">Keep screen on and prevent app from sleeping (uses more battery)</string>
     <string name="section_display">Display</string>
     <string name="label_language">Language</string>
+    <string name="label_theme">Theme</string>
+    <string name="theme_default">System Default</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
     <string name="section_advanced">Advanced</string>
     <string name="label_clear_cache">Clear Cache</string>
     <string name="desc_clear_cache">Clear all cached data and historical records</string>

@@ -72,6 +72,10 @@
     <string name="desc_keep_running">Bildschirm eingeschaltet lassen und App-Schlaf verhindern (verbraucht mehr Akku)</string>
     <string name="section_display">Anzeige</string>
     <string name="label_language">Sprache</string>
+    <string name="label_theme">Design</string>
+    <string name="theme_default">Systemstandard</string>
+    <string name="theme_dark">Dunkel</string>
+    <string name="theme_light">Hell</string>
     <string name="section_advanced">Erweitert</string>
     <string name="label_clear_cache">Cache leeren</string>
     <string name="desc_clear_cache">Alle zwischengespeicherten Daten und Verlaufsdatensätze löschen</string>

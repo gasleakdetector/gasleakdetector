@@ -72,6 +72,10 @@
     <string name="desc_keep_running">Garder l\'écran allumé et empêcher l\'application de se mettre en veille (consomme plus de batterie)</string>
     <string name="section_display">Affichage</string>
     <string name="label_language">Langue</string>
+    <string name="label_theme">Thème</string>
+    <string name="theme_default">Par défaut système</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="theme_light">Clair</string>
     <string name="section_advanced">Avancé</string>
     <string name="label_clear_cache">Vider le cache</string>
     <string name="desc_clear_cache">Effacer toutes les données en cache et les enregistrements historiques</string>

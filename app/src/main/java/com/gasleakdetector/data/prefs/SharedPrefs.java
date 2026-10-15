@@ -50,7 +50,7 @@ public class SharedPrefs {
     }
 
     public void setTheme(int theme) { prefs.edit().putInt(KEY_THEME, theme).apply(); }
-    public int  getTheme()          { return prefs.getInt(KEY_THEME, 1); }
+    public int  getTheme()          { return prefs.getInt(KEY_THEME, 0); }
 
     public void saveRealtimeConfig(RealtimeConfig config) {
         prefs.edit()
@@ -119,7 +119,7 @@ public class SharedPrefs {
 
     public void resetToDefaults() {
         prefs.edit()
-            .putInt(KEY_THEME, 1)
+            .putInt(KEY_THEME, 0)
             .putBoolean(KEY_NOTIFICATIONS, true)
             .putBoolean(KEY_AUTO_REFRESH, true)
             .putBoolean(KEY_AUTO_STREAM, true)
