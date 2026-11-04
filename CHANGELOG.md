@@ -9,6 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+Upcoming bug-fix release, expected around 1 February 2027.
+
+### Fixed
+
+- #111: Fixed Historical API connection leaks on request failures.
+
 ## [1.1.0] - 2026-07-01
 
 ### Features
