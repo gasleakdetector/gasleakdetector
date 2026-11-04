@@ -131,17 +131,21 @@ public class HistoricalApiService {
         Log.d(TAG, "GET " + sb);
         URL url = new URL(sb.toString());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("x-api-key", config.getApiKey());
-        conn.setRequestProperty("Accept-Encoding", "gzip");
-        conn.setConnectTimeout(TIMEOUT);
-        conn.setReadTimeout(TIMEOUT);
+        String body;
+        try {
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("x-api-key", config.getApiKey());
+            conn.setRequestProperty("Accept-Encoding", "gzip");
+            conn.setConnectTimeout(TIMEOUT);
+            conn.setReadTimeout(TIMEOUT);
 
-        int code = conn.getResponseCode();
-        if (code != 200) { conn.disconnect(); throw new Exception("HTTP " + code); }
+            int code = conn.getResponseCode();
+            if (code != 200) throw new Exception("HTTP " + code);
 
-        String body = readResponse(conn);
-        conn.disconnect();
+            body = readResponse(conn);
+        } finally {
+            conn.disconnect();
+        }
 
         JSONObject root     = new JSONObject(body);
         JSONArray  arr      = root.optJSONArray("data");
