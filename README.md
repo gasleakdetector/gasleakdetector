@@ -48,9 +48,9 @@ The system is composed of three independent repositories that form one pipeline:
 
 [Watch Demo Video](https://www.youtube.com/watch?v=RLNf9Zphb1I)
 
-## Setup Full Project
+## Setup Project
 
-You can view a detailed guide on how to set up the entire project [Here](Tutorial/README.md)
+You can view a detailed guide on how to set up the entire project [Here](setup/README.md)
 
 ## System Flow
 
