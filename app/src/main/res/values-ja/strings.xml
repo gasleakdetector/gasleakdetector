@@ -72,6 +72,10 @@
     <string name="desc_keep_running">画面をオンに保ちアプリのスリープを防ぐ（バッテリー消費増）</string>
     <string name="section_display">表示</string>
     <string name="label_language">言語</string>
+    <string name="label_theme">テーマ</string>
+    <string name="theme_default">システム既定</string>
+    <string name="theme_dark">ダーク</string>
+    <string name="theme_light">ライト</string>
     <string name="section_advanced">詳細設定</string>
     <string name="label_clear_cache">キャッシュを削除</string>
     <string name="desc_clear_cache">すべてのキャッシュデータと履歴を削除</string>
