@@ -49,7 +49,7 @@ El sistema está compuesto por tres repositorios independientes que forman un pi
 
 ## Configuración del Proyecto Completo
 
-Puede ver una guía detallada sobre cómo configurar todo el proyecto [aquí](Tutorial/README-es.md)
+Puede ver una guía detallada sobre cómo configurar todo el proyecto [aquí](setup/README-es.md)
 
 ## Flujo del Sistema
 

@@ -49,7 +49,7 @@ Hệ thống gồm ba repository độc lập tạo thành một pipeline:
 
 ## Cài Đặt Toàn Bộ Dự Án
 
-Bạn có thể xem hướng dẫn chi tiết cách cài đặt toàn bộ dự án [tại đây](Tutorial/README-vi.md)
+Bạn có thể xem hướng dẫn chi tiết cách cài đặt toàn bộ dự án [tại đây](setup/README-vi.md)
 
 ## Luồng Hoạt Động
 

@@ -49,7 +49,7 @@ Le système est composé de trois dépôts indépendants formant un pipeline :
 
 ## Configuration du Projet Complet
 
-Vous pouvez consulter un guide détaillé sur la configuration de l'ensemble du projet [ici](Tutorial/README-fr.md)
+Vous pouvez consulter un guide détaillé sur la configuration de l'ensemble du projet [ici](setup/README-fr.md)
 
 ## Flux du Système
 

@@ -49,7 +49,7 @@ Das System besteht aus drei unabhängigen Repositories, die eine Pipeline bilden
 
 ## Gesamtprojekt einrichten
 
-Eine detaillierte Anleitung zur Einrichtung des gesamten Projekts finden Sie [hier](Tutorial/README-de.md)
+Eine detaillierte Anleitung zur Einrichtung des gesamten Projekts finden Sie [hier](setup/README-de.md)
 
 ## Systemablauf
 

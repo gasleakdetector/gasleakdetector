@@ -49,7 +49,7 @@ Gas Leak Detector 是一个全栈 IoT 安全系统。ESP8266 上的 MQ-6 传感�
 
 ## 完整项目配置
 
-您可以在[这里](Tutorial/README-zh.md)查看完整的项目配置详细指南
+您可以在[这里](setup/README-zh.md)查看完整的项目配置详细指南
 
 ## 系统流程
 

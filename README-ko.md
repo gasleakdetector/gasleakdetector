@@ -49,7 +49,7 @@ Gas Leak Detector는 풀스택 IoT 안전 시스템입니다. ESP8266의 MQ-6 �
 
 ## 전체 프로젝트 설정
 
-전체 프로젝트 설정 방법에 대한 자세한 가이드는 [여기](Tutorial/README-ko.md)에서 확인하세요
+전체 프로젝트 설정 방법에 대한 자세한 가이드는 [여기](setup/README-ko.md)에서 확인하세요
 
 ## 시스템 흐름
 
