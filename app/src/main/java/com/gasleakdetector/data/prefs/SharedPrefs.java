@@ -37,6 +37,8 @@ public class SharedPrefs {
     /* Default: notify from Warning level (1) and above, cooldown 1 minute. */
     public  static final int  DEFAULT_ALERT_MIN_LEVEL     = 1;
     public  static final int  DEFAULT_ALERT_DELAY_MINUTES = 1;
+    private static final String KEY_FCM_TOKEN            = "fcm_token";
+    private static final String KEY_FCM_PUSH_ENABLED     = "fcm_push_enabled";
 
     /* Re-fetch historical data if the last fetch is older than this. */
     private static final long REFETCH_INTERVAL_MS = 5 * 60 * 1000L;
@@ -116,6 +118,14 @@ public class SharedPrefs {
     /* Cooldown between repeated alerts of the same level, in minutes. */
     public int  getAlertDelayMinutes()      { return prefs.getInt(KEY_ALERT_DELAY_MINUTES, DEFAULT_ALERT_DELAY_MINUTES); }
     public void setAlertDelayMinutes(int v) { prefs.edit().putInt(KEY_ALERT_DELAY_MINUTES, v).apply(); }
+    /* FCM push notification token. */
+    public void   setFcmToken(String token) { prefs.edit().putString(KEY_FCM_TOKEN, token).apply(); }
+    public String getFcmToken()             { return prefs.getString(KEY_FCM_TOKEN, ""); }
+    public boolean hasFcmToken()            { return !getFcmToken().isEmpty(); }
+
+    /* FCM push notification user toggle (default true). */
+    public void    setFcmPushEnabled(boolean v) { prefs.edit().putBoolean(KEY_FCM_PUSH_ENABLED, v).apply(); }
+    public boolean getFcmPushEnabled()           { return prefs.getBoolean(KEY_FCM_PUSH_ENABLED, true); }
 
     public void resetToDefaults() {
         prefs.edit()
@@ -128,6 +138,7 @@ public class SharedPrefs {
             .putInt(KEY_DANGER_THRESHOLD,  GasStatus.DANGER_THRESHOLD)
             .putInt(KEY_ALERT_MIN_LEVEL,     DEFAULT_ALERT_MIN_LEVEL)
             .putInt(KEY_ALERT_DELAY_MINUTES, DEFAULT_ALERT_DELAY_MINUTES)
+            .putBoolean(KEY_FCM_PUSH_ENABLED, true)
             .apply();
     }
 }

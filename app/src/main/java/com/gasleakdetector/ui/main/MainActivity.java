@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.provider.Settings;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +36,7 @@ import android.Manifest;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.gasleakdetector.R;
+import com.gasleakdetector.data.api.FcmTokenApiService;
 import com.gasleakdetector.data.model.RealtimeConfig;
 import com.gasleakdetector.data.prefs.SharedPrefs;
 import com.gasleakdetector.data.websocket.WebSocketManager;
@@ -400,6 +402,13 @@ public class MainActivity extends AppCompatActivity
                     this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PowerManager pm = (PowerManager) getSystemService(POWER_SERVICE);
+            if (pm != null && !pm.isIgnoringBatteryOptimizations(getPackageName())) {
+                startActivity(new Intent(
+                    Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS,
+                    Uri.parse("package:" + getPackageName())));
+        }
     }
 
     private void setupKeepAppRunning() {
@@ -425,6 +434,10 @@ public class MainActivity extends AppCompatActivity
                 boolean changed = !newConfig.hasSameParams(current);
                 sharedPrefs.saveRealtimeConfig(newConfig);
                 Toast.makeText(MainActivity.this, getString(R.string.config_saved), Toast.LENGTH_SHORT).show();
+                String fcmToken = sharedPrefs.getFcmToken();
+                if (sharedPrefs.getFcmPushEnabled() && !fcmToken.isEmpty()) {
+                    FcmTokenApiService.register(MainActivity.this, newConfig, fcmToken, null);
+                }
                 if (!changed) return;
                 HomeFragment frag = getHomeFragment();
                 if (frag != null) frag.reloadAfterConfigChange();
