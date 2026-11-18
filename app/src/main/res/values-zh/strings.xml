@@ -72,6 +72,10 @@
     <string name="desc_keep_running">保持屏幕常亮并防止应用休眠（耗电更多）</string>
     <string name="section_display">显示</string>
     <string name="label_language">语言</string>
+    <string name="label_theme">主题</string>
+    <string name="theme_default">系统默认</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_light">浅色</string>
     <string name="section_advanced">高级</string>
     <string name="label_clear_cache">清除缓存</string>
     <string name="desc_clear_cache">清除所有缓存数据和历史记录</string>
