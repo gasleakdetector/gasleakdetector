@@ -33,7 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
 
-          gradle-version: '9.5.1'
+          gradle-version: '9.9.1'
 
 
       - name: Make gradlew executable
